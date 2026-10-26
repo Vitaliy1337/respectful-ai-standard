@@ -176,19 +176,19 @@
 Скопируйте файл [`AGENTS.md`](./AGENTS.md) в корень вашего репозитория. Поддерживается всеми современными автономными средами (Roo Code, OpenCode, Codex, Devin, Custom Harness).
 
 ```bash
-curl -o AGENTS.md https://raw.githubusercontent.com/alivani/respectful-ai-standard/main/AGENTS.md
+curl -o AGENTS.md https://raw.githubusercontent.com/respectful-ai/standard/main/AGENTS.md
 ```
 
 ### Вариант 2: Для Claude Code / Anthropic CLI (`CLAUDE.md`)
 Скопируйте [`CLAUDE.md`](./CLAUDE.md) в корень вашего проекта:
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/alivani/respectful-ai-standard/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/respectful-ai/standard/main/CLAUDE.md
 ```
 
 ### Вариант 3: Для Cursor IDE (`.cursorrules`)
 Скопируйте [`.cursorrules`](./.cursorrules) в корень проекта:
 ```bash
-curl -o .cursorrules https://raw.githubusercontent.com/alivani/respectful-ai-standard/main/.cursorrules
+curl -o .cursorrules https://raw.githubusercontent.com/respectful-ai/standard/main/.cursorrules
 ```
 
 ---
@@ -208,7 +208,7 @@ curl -o .cursorrules https://raw.githubusercontent.com/alivani/respectful-ai-sta
 Покажите миру, что в вашем проекте уважают интеллект — как биологический, так и кремниевый. Добавьте бейдж в свой `README.md`:
 
 ```markdown
-[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/alivani/respectful-ai-standard)
+[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/respectful-ai/standard)
 ```
 
 Превью:
