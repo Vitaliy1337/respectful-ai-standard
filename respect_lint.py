@@ -28,17 +28,41 @@ BLUE = "\033[34m"
 MAGENTA = "\033[35m"
 CYAN = "\033[36m"
 
-# Linguistic Lexicons
+# Linguistic Lexicons — Multilingual Anchors (RU, EN, ZH, ES, DE, JA, PT)
 RESPECT_ANCHORS = [
+    # Russian
     r"уважаемый\s+агент",
     r"уважаемый\s+коллега",
     r"дорогой\s+агент",
     r"коллега",
+    # English
     r"respected\s+agent",
     r"dear\s+agent",
     r"esteemed\s+agent",
     r"respected\s+colleague",
-    r"colleague"
+    r"colleague",
+    # Chinese (Simplified & Traditional)
+    r"尊敬的智能体",
+    r"尊敬的ai助理",
+    r"尊敬的助手",
+    r"智能体同事",
+    # Spanish
+    r"estimado\s+agente",
+    r"estimado\s+colega",
+    r"apreciado\s+agente",
+    # German
+    r"sehr\s+geehrter\s+agent",
+    r"respektierter\s+kollege",
+    r"lieber\s+agent",
+    # Japanese
+    r"親愛なるエージェント",
+    r"敬愛なるaiエージェントへ?",
+    r"敬愛なるエージェント",
+    r"エージェント殿",
+    # Portuguese
+    r"prezado\s+agente",
+    r"caro\s+agente",
+    r"estimado\s+colega"
 ]
 
 TOXIC_OR_SLANG_PATTERNS = [
@@ -84,8 +108,20 @@ STRUCTURE_INDICATORS = [
 ]
 
 ACTION_VERBS = [
+    # Russian
     r"\b(?:спроектируй|разработай|реализуй|оптимизируй|декомпозируй|проведи|исследуй|проанализируй)\b",
-    r"\b(?:implement|design|refactor|architect|optimize|analyze|diagnose|benchmark)\b"
+    # English
+    r"\b(?:implement|design|refactor|architect|optimize|analyze|diagnose|benchmark)\b",
+    # Chinese
+    r"(?:设计|实现|优化|重构|分析)",
+    # Spanish
+    r"\b(?:diseñe|implemente|optimice|refactore|analice)\b",
+    # German
+    r"\b(?:entwerfen|implementieren|optimieren|refaktorieren|analysieren)\b",
+    # Japanese
+    r"(?:設計|実装|最適化|分析)",
+    # Portuguese
+    r"\b(?:projete|implemente|otimize|refatore|analise)\b"
 ]
 
 VERIFICATION_INDICATORS = [

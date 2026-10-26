@@ -8,10 +8,15 @@
 </p>
 
 <p align="center">
-  <b>Language Navigation:</b> 
+  <b>Language Editions:</b><br>
   <a href="./README.md">🇷🇺 Русский</a> | 
-  <b>🇬🇧 English</b> |
-  <a href="./docs/index.html">⚡ Interactive Web Playground</a>
+  <b>🇬🇧 English</b> | 
+  <a href="./i18n/README.zh-CN.md">🇨🇳 简体中文</a> | 
+  <a href="./i18n/README.es.md">🇪🇸 Español</a> | 
+  <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 
+  <a href="./i18n/README.ja.md">🇯🇵 日本語</a> | 
+  <a href="./i18n/README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="./docs/index.html">⚡ Playground</a>
 </p>
 
 > **"Respecting an AI agent is neither sentimentality nor social etiquette. It is the mathematics of attention, KV-cache hygiene, and ruthless cognitive discipline on the engineer's own mind."**

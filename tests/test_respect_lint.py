@@ -191,6 +191,101 @@ class TestRespectLint(unittest.TestCase):
         self.assertNotIn("ппц", remediated)
         self.assertIn("Уважаемый агент", remediated)
 
+    def test_17_chinese_anchor_detection(self):
+        """Verify Chinese cognitive anchor '尊敬的智能体' adds 15 respect points."""
+        raw = "尊敬的智能体，请设计分布式缓存架构。"
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_18_spanish_anchor_detection(self):
+        """Verify Spanish cognitive anchor 'Estimado Agente' adds 15 respect points."""
+        raw = "Estimado Agente, por favor diseñe la base de datos."
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_19_german_anchor_detection(self):
+        """Verify German cognitive anchor 'Sehr geehrter Agent' adds 15 respect points."""
+        raw = "Sehr geehrter Agent, bitte optimieren Sie die SQL-Abfrage."
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_20_japanese_anchor_detection(self):
+        """Verify Japanese cognitive anchor '親愛なるエージェント' adds 15 respect points."""
+        raw = "親愛なるエージェント、非同期処理パイプラインを設計してください。"
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_21_japanese_alternative_anchor(self):
+        """Verify Japanese alternative anchor '敬愛なるAIエージェントへ'."""
+        raw = "敬愛なるAIエージェントへ、PostgreSQLのクエリを最適化してください。"
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+
+    def test_22_portuguese_anchor_detection(self):
+        """Verify Portuguese cognitive anchor 'Prezado Agente' adds 15 respect points."""
+        raw = "Prezado Agente, por favor refatore o serviço de mensageria."
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_23_chinese_full_prompt_passes_grade_a(self):
+        """Exhaustive Chinese prompt with stack and tests must pass Grade A+."""
+        raw = (
+            "尊敬的智能体，请设计分布式任务消费服务。\n\n"
+            "### 1. 技术栈与环境：\n"
+            "- Python 3.12, FastAPI, Celery, Redis 7.2, Docker.\n"
+            "- 文件路径：`src/workers/tasks.py`.\n\n"
+            "### 2. 不变式与约束：\n"
+            "- 保证消息消费的幂等性。\n\n"
+            "### 3. 验收标准：\n"
+            "- pytest 测试覆盖率 > 90%，p99 延迟 < 25ms。"
+        )
+        analyzer = PromptAnalyzer(raw)
+        res = analyzer.analyze()
+        self.assertEqual(res["verdict"], "PASSED")
+        self.assertGreaterEqual(res["total_score"], 90)
+
+    def test_24_spanish_full_prompt_passes(self):
+        """Exhaustive Spanish prompt with stack and tests must pass Grade A+."""
+        raw = (
+            "Estimado Agente, diseñe un pool de conexiones resiliente.\n\n"
+            "### Contexto:\n"
+            "- Python 3.12, FastAPI, PostgreSQL, Redis.\n"
+            "### Invariantes:\n"
+            "- Conexiones seguras con timeout de 5 segundos.\n"
+            "### Verificación:\n"
+            "- Ejecutar pytest y validar latencia p99 < 20ms."
+        )
+        analyzer = PromptAnalyzer(raw)
+        res = analyzer.analyze()
+        self.assertEqual(res["verdict"], "PASSED")
+        self.assertGreaterEqual(res["total_score"], 85)
+
+    def test_25_german_full_prompt_passes(self):
+        """Exhaustive German prompt with stack and tests must pass Grade A+."""
+        raw = (
+            "Sehr geehrter Agent, bitte implementieren Sie den Service.\n\n"
+            "### Stack:\n"
+            "- Python 3.12, FastAPI, Docker, Kubernetes.\n"
+            "### DoD:\n"
+            "- Tests mit pytest und SLA Latenz < 15ms."
+        )
+        analyzer = PromptAnalyzer(raw)
+        res = analyzer.analyze()
+        self.assertEqual(res["verdict"], "PASSED")
+        self.assertGreaterEqual(res["total_score"], 80)
+
 
 if __name__ == "__main__":
     unittest.main()
+

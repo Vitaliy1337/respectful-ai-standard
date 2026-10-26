@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "rahsps-respect-protocol",
+  "version": "3.0.0",
+  "description": "Model Context Protocol (MCP) prompt and resource definition enforcing the Respectful AI & High-Signal Standard across Claude Desktop, Cursor, and Zed.",
+  "prompts": [
+    {
+      "name": "high_signal_task",
+      "description": "Structures a user request according to the Respectful AI & High-Signal Prompting Standard (RAHSPS).",
+      "arguments": [
+        {
+          "name": "objective",
+          "description": "The technical objective or engineering goal.",
+          "required": true
+        },
+        {
+          "name": "stack",
+          "description": "Programming language, frameworks, and runtime versions.",
+          "required": true
+        },
+        {
+          "name": "invariants",
+          "description": "Architectural constraints and non-negotiables.",
+          "required": false
+        },
+        {
+          "name": "verification",
+          "description": "Machine-checkable test command or Definition of Done.",
+          "required": false
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "uri": "rahsps://standard/manifesto",
+      "name": "RAHSPS Canonical Manifesto",
+      "mimeType": "text/markdown",
+      "description": "Canonical specification of the Respectful AI standard, KV-cache hygiene, and cognitive anchors."
+    }
+  ]
+}

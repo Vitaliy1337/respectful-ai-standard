@@ -8,10 +8,15 @@
 </p>
 
 <p align="center">
-  <b>Язык / Language:</b> 
+  <b>Языковые версии / Languages:</b><br>
   <b>🇷🇺 Русский</b> | 
   <a href="./README.en.md">🇬🇧 English</a> | 
-  <a href="./docs/index.html">⚡ Интерактивный Web Playground</a>
+  <a href="./i18n/README.zh-CN.md">🇨🇳 简体中文</a> | 
+  <a href="./i18n/README.es.md">🇪🇸 Español</a> | 
+  <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 
+  <a href="./i18n/README.ja.md">🇯🇵 日本語</a> | 
+  <a href="./i18n/README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="./docs/index.html">⚡ Playground</a>
 </p>
 
 > **«Уважение к агенту — это не сентиментальность и не этикет. Это математика внимания, гигиена контекстного окна и бескомпромиссная когнитивная дисциплина самого инженера.»**

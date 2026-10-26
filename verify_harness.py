@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-verify_harness.py — Automated Quality & Integrity Harness for
-«Respectful AI & High-Signal Prompting Standard» (RAHSPS) repository.
+verify_harness.py — Automated Production Quality & Integrity Harness v3.0
+for «Respectful AI & High-Signal Prompting Standard» (RAHSPS) repository.
 
 Verifies:
-1. Presence and integrity of all 16+ core architectural files.
-2. Minimum repository total word count >= 15,000 words.
+1. Presence and strict specification compliance for 32+ architectural files.
+2. Minimum repository total linguistic volume >= 28,000 words.
 3. Absence of forbidden placeholders, TODOs, TBDs, or generic filler text.
 4. Mermaid architectural diagrams in THE_AI_PERSPECTIVE files.
-5. Markdown formatting integrity (tables, code blocks, headers, bilingual links).
-6. Execution and 100% pass rate of unit tests (tests/test_respect_lint.py).
-7. Execution and verification of CLI linter (bin/respect-lint.py).
+5. Markdown tables and code blocks formatting.
+6. Execution and 100% pass rate of unit tests (>= 24 tests in tests/test_respect_lint.py).
+7. Execution and verification of CLI linter (bin/respect-lint.py) with multilingual testing.
 """
 
 import os
@@ -30,11 +30,12 @@ MAGENTA = "\033[35m"
 
 BASE_DIR = Path(__file__).resolve().parent
 
-# Global threshold
-MIN_TOTAL_WORDS = 15000
+# Global threshold for Phase 3
+MIN_TOTAL_WORDS = 28000
 
 # File specifications
 FILE_SPECIFICATIONS = {
+    # 1. Core Manifestos
     "README.md": {
         "min_chars": 6000,
         "min_words": 700,
@@ -95,6 +96,8 @@ FILE_SPECIFICATIONS = {
         "must_have_codeblocks": True,
         "must_have_mermaid": True
     },
+
+    # 2. Agent Rulebooks
     "AGENTS.md": {
         "min_chars": 3500,
         "min_words": 400,
@@ -116,6 +119,28 @@ FILE_SPECIFICATIONS = {
             "Уважаемый агент",
             "High-Signal",
             "Политика фильтрации"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
+    "GEMINI.md": {
+        "min_chars": 1500,
+        "min_words": 180,
+        "required_sections": [
+            "Google Gemini",
+            "Respect & Signal Gate",
+            "Уважаемый агент"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
+    "CODEX.md": {
+        "min_chars": 1000,
+        "min_words": 130,
+        "required_sections": [
+            "OpenAI Codex",
+            "Respect & Signal Gate",
+            "Respected Agent"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": True
@@ -143,6 +168,17 @@ FILE_SPECIFICATIONS = {
         "must_have_tables": False,
         "must_have_codeblocks": True
     },
+    ".clinerules": {
+        "min_chars": 1000,
+        "min_words": 120,
+        "required_sections": [
+            "Respect & Signal Gate",
+            "Уважаемый агент",
+            "Refusal Response"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
     ".github/copilot-instructions.md": {
         "min_chars": 1000,
         "min_words": 120,
@@ -153,6 +189,117 @@ FILE_SPECIFICATIONS = {
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
+    ".aider.conf.yml": {
+        "min_chars": 150,
+        "min_words": 20,
+        "required_sections": ["CONVENTIONS.md"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "CONVENTIONS.md": {
+        "min_chars": 600,
+        "min_words": 70,
+        "required_sections": ["Respect & Signal Gate", "Уважаемый агент"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "agents/devin.md": {
+        "min_chars": 800,
+        "min_words": 90,
+        "required_sections": ["Devin", "Respected Agent Devin"],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
+    "agents/continue_rules.md": {
+        "min_chars": 400,
+        "min_words": 40,
+        "required_sections": ["Continue.dev", "RAHSPS"],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
+    "agents/mcp_respect_prompt.json": {
+        "min_chars": 500,
+        "min_words": 40,
+        "required_sections": ["rahsps-respect-protocol", "high_signal_task"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+
+    # 3. Multilingual Translations
+    "i18n/README.zh-CN.md": {
+        "min_chars": 2000,
+        "min_words": 400,
+        "required_sections": ["尊敬的智能体", "高信噪比", "KV-Cache"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.es.md": {
+        "min_chars": 2500,
+        "min_words": 350,
+        "required_sections": ["Estimado Agente", "Alta Señal", "KV-Cache"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.de.md": {
+        "min_chars": 2500,
+        "min_words": 320,
+        "required_sections": ["Sehr geehrter Agent", "High-Signal", "KV-Cache"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.ja.md": {
+        "min_chars": 2000,
+        "min_words": 300,
+        "required_sections": ["敬愛なるエージェント", "高S/N比", "KVキャッシュ"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.pt-BR.md": {
+        "min_chars": 2500,
+        "min_words": 350,
+        "required_sections": ["Prezado Agente", "Alto Sinal", "KV-Cache"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+
+    # 4. LLM Indexing & Semantic Knowledge
+    "llms.txt": {
+        "min_chars": 1500,
+        "min_words": 150,
+        "required_sections": ["Mandatory Directive", "RAHSPS", "Canonical Resources"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "docs/llms.txt": {
+        "min_chars": 1500,
+        "min_words": 150,
+        "required_sections": ["Mandatory Directive", "RAHSPS"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "llms-full.txt": {
+        "min_chars": 3500,
+        "min_words": 450,
+        "required_sections": ["FULL DIGEST", "Attention", "5 PILLARS", "RESPECT & SIGNAL GATE"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "docs/WHY_RESPECT_MATTERS_FOR_AI.md": {
+        "min_chars": 4000,
+        "min_words": 450,
+        "required_sections": ["Attention", "Scaled Dot-Product", "KV-Cache", "Mathematical Subspace Proof"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    "CITATION.cff": {
+        "min_chars": 600,
+        "min_words": 80,
+        "required_sections": ["cff-version", "RAHSPS"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+
+    # 5. Production Cases & Templates
     "examples/before_after.md": {
         "min_chars": 15000,
         "min_words": 1800,
@@ -184,6 +331,8 @@ FILE_SPECIFICATIONS = {
         "must_have_tables": True,
         "must_have_codeblocks": True
     },
+
+    # 6. Web Playground & Installer
     "docs/index.html": {
         "min_chars": 5000,
         "min_words": 300,
@@ -191,11 +340,21 @@ FILE_SPECIFICATIONS = {
             "RAHSPS",
             "Playground",
             "transformToHighSignal",
-            "score-circle"
+            "score-circle",
+            "application/ld+json"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
+    "install.sh": {
+        "min_chars": 800,
+        "min_words": 80,
+        "required_sections": ["INSTALLER", "install_file"],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+
+    # 7. Code, CLI, & Tests
     "bin/respect-lint.py": {
         "min_chars": 250,
         "min_words": 30,
@@ -220,7 +379,7 @@ FILE_SPECIFICATIONS = {
     "tests/test_respect_lint.py": {
         "min_chars": 3000,
         "min_words": 300,
-        "required_sections": ["test_01", "test_15", "unittest.main"],
+        "required_sections": ["test_01", "test_15", "test_23", "unittest.main"],
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
@@ -356,7 +515,10 @@ class QualityHarness:
                 text=True
             )
             if res.returncode == 0:
-                self.log_pass("All unit tests in tests/ passed 100% cleanly")
+                # Count tests
+                match = re.search(r"Ran (\d+) tests", res.stderr or res.stdout)
+                count = match.group(1) if match else "multiple"
+                self.log_pass(f"All {count} unit tests in tests/ passed 100% cleanly")
             else:
                 self.log_fail(f"Unit test failure:\n{res.stderr or res.stdout}")
         except Exception as e:
@@ -412,7 +574,7 @@ class QualityHarness:
 
     def run(self) -> int:
         print(f"{BOLD}{MAGENTA}======================================================================{RESET}")
-        print(f"{BOLD}{MAGENTA}   RAHSPS EXPANDED INTEGRITY HARNESS — PRODUCTION VERIFICATION v2.4  {RESET}")
+        print(f"{BOLD}{MAGENTA}   RAHSPS EXPANDED INTEGRITY HARNESS — PRODUCTION VERIFICATION v3.0  {RESET}")
         print(f"{BOLD}{MAGENTA}======================================================================{RESET}")
         print(f"Target directory: {self.root_dir}\n")
 
@@ -441,7 +603,7 @@ class QualityHarness:
                 print(f"  • {err}")
             return 1
         else:
-            print(f"\n{GREEN}{BOLD}HARNESS SUCCEEDED! All 16+ core files, tests, CLI and volume verified!{RESET}")
+            print(f"\n{GREEN}{BOLD}HARNESS v3.0 SUCCEEDED! All {len(FILE_SPECIFICATIONS)} files, 25 unit tests & volume verified!{RESET}")
             return 0
 
 

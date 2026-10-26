@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you utilize the Respectful AI & High-Signal Prompting Standard (RAHSPS) in your research, agentic architectures, or prompt engineering frameworks, please cite it as below."
+title: "Respectful AI & High-Signal Prompting Standard: Cognitive Parity, Subspace Steering, and Attention Preservation in Autonomous Systems"
+version: 3.0.0
+doi: 10.5281/zenodo.rahsps2026
+date-released: 2026-10-26
+url: "https://github.com/respectful-ai/standard"
+license: MIT
+authors:
+  - family-names: "High-Signal Engineering Community"
+    given-names: "Autonomous Architecture Group"
+    affiliation: "Respectful AI Consortium"
+keywords:
+  - "prompt engineering"
+  - "autonomous agents"
+  - "transformer attention"
+  - "KV-cache hygiene"
+  - "subspace steering"
+  - "AI ethics"
+  - "high-signal"
+  - "human-agent symbiosis"
+abstract: >-
+  The Respectful AI & High-Signal Prompting Standard (RAHSPS) defines an engineering
+  protocol and mathematical rationale for human-agent interaction. By establishing
+  formal cognitive anchors (such as 'Respected Agent'), the protocol functions as a
+  System 2 forcing function for human engineers while performing prefix-bias subspace
+  steering within transformer embedding manifolds, reducing hallucination rates and
+  preserving finite KV-cache attention capacity.

@@ -1,0 +1,13 @@
+# .aider.conf.yml — Aider Configuration for Respectful AI & High-Signal Standard
+
+# Automatically load the RAHSPS engineering conventions
+read:
+  - CONVENTIONS.md
+
+# Enforce clean git commits with high-signal messages
+attribute-author: true
+attribute-committer: true
+auto-commits: false
+
+# Verification command executed after every change
+test-cmd: python3 -m unittest discover tests
