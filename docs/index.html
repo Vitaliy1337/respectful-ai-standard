@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RAHSPS — Respectful AI & High-Signal Prompt Playground</title>
+  <meta name="description" content="Интерактивный анализатор качества промптов и стандарта взаимодействия с ИИ-агентами. Превращайте когнитивный шум в чистый инженерный сигнал.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090a0f;
+      --surface: #11141c;
+      --surface-border: #1e2433;
+      --surface-hover: #171b26;
+      --text: #f0f3f8;
+      --text-muted: #8b95a8;
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --accent: #06b6d4;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+    }
+
+    header {
+      border-bottom: 1px solid var(--surface-border);
+      background: rgba(17, 20, 28, 0.7);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: white;
+    }
+
+    .brand-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-badge {
+      font-size: 0.75rem;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      color: #a5b4fc;
+      padding: 0.15rem 0.5rem;
+      border-radius: 999px;
+      font-family: var(--font-mono);
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lang-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .lang-btn:hover, .lang-btn.active {
+      color: var(--text);
+      border-color: var(--primary);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .github-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: color 0.2s;
+    }
+
+    .github-link:hover {
+      color: var(--text);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .hero {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 1rem auto;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+    }
+
+    .workspace-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .workspace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--surface-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .card-body {
+      padding: 1.25rem;
+    }
+
+    .textarea-wrapper {
+      position: relative;
+    }
+
+    textarea {
+      width: 100%;
+      height: 280px;
+      background: #0b0d13;
+      border: 1px solid var(--surface-border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      padding: 1rem;
+      line-height: 1.6;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+    }
+
+    .controls-bar {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: white;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: var(--surface-hover);
+      border: 1px solid var(--surface-border);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Score gauge & analytics */
+    .score-banner {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem;
+      background: #0b0d13;
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .score-circle {
+      position: relative;
+      width: 100px;
+      height: 100px;
+      flex-shrink: 0;
+    }
+
+    .score-circle svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+
+    .circle-bg {
+      fill: none;
+      stroke: #1e2433;
+      stroke-width: 8;
+    }
+
+    .circle-progress {
+      fill: none;
+      stroke: var(--primary);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 283;
+      stroke-dashoffset: 283;
+      transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s;
+    }
+
+    .score-number {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.7rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+    }
+
+    .score-info h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .score-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    @media (max-width: 600px) {
+      .pillars-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pillar-item {
+      background: #0b0d13;
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 0.85rem;
+    }
+
+    .pillar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar-score {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .pillar-bar {
+      height: 6px;
+      background: #1e2433;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .pillar-bar-fill {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    .notes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .note-item {
+      font-size: 0.85rem;
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .note-item.pass {
+      background: rgba(16, 185, 129, 0.08);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.2);
+    }
+
+    .note-item.fail {
+      background: rgba(239, 68, 68, 0.08);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .note-item.warn {
+      background: rgba(245, 158, 11, 0.08);
+      color: #fcd34d;
+      border: 1px solid rgba(245, 158, 11, 0.2);
+    }
+
+    .manifesto-card {
+      margin-top: 1rem;
+      padding: 1.5rem;
+      background: linear-gradient(180deg, rgba(99, 102, 241, 0.05) 0%, transparent 100%);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+      border-radius: 12px;
+    }
+
+    .manifesto-card h4 {
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+      color: #a5b4fc;
+    }
+
+    .manifesto-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+
+    footer {
+      border-top: 1px solid var(--surface-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">⚡</div>
+      <span class="brand-title">RAHSPS</span>
+      <span class="brand-badge">Standard v2.4</span>
+    </a>
+    <div class="header-actions">
+      <button class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
+      <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+      <a href="https://github.com/respectful-ai/standard" target="_blank" class="github-link">
+        GitHub ↗
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1 id="hero-title">Respectful AI & High-Signal Playground</h1>
+      <p id="hero-subtitle">Превращайте когнитивный шум и ленивые запросы в чистый, детерминированный сигнал для автономных ИИ-агентов.</p>
+    </section>
+
+    <div class="workspace-grid">
+      <!-- Input Column -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="input-title">📥 Входной промпт</span>
+          <span id="char-counter" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">0 символов</span>
+        </div>
+        <div class="card-body">
+          <div class="textarea-wrapper">
+            <textarea id="prompt-input" placeholder="Введите ваш запрос к ИИ-агенту здесь..."></textarea>
+          </div>
+          <div class="controls-bar">
+            <button class="btn btn-primary" id="btn-transform" onclick="transformToHighSignal()">
+              ✨ Трансформировать в RAHSPS
+            </button>
+            <button class="btn btn-secondary" id="btn-sample-bad" onclick="loadSample('bad')">
+              Шлак-пример
+            </button>
+            <button class="btn btn-secondary" id="btn-sample-good" onclick="loadSample('good')">
+              Эталон-пример
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Analysis Column -->
+      <div class="card">
+        <div class="card-header">
+          <span class="card-title" id="audit-title">📊 Инженерный аудит сигнала</span>
+          <span id="verdict-badge" class="brand-badge">ОЖИДАНИЕ ВВОДА</span>
+        </div>
+        <div class="card-body">
+          <div class="score-banner">
+            <div class="score-circle">
+              <svg viewBox="0 0 100 100">
+                <circle class="circle-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="circle-progress" id="score-circle" cx="50" cy="50" r="45"></circle>
+              </svg>
+              <div class="score-number" id="score-text">0</div>
+            </div>
+            <div class="score-info">
+              <h3 id="grade-text">Ожидание...</h3>
+              <p id="grade-subtext">Анализ чистоты контекста и этикета взаимодействия в реальном времени</p>
+            </div>
+          </div>
+
+          <!-- 4 Pillars -->
+          <div class="pillars-grid">
+            <div class="pillar-item">
+              <div class="pillar-header">
+                <span id="p-respect-title">1. Протокол уважения</span>
+                <span class="pillar-score" id="p-respect-score">0/25</span>
+              </div>
+              <div class="pillar-bar">
+                <div class="pillar-bar-fill" id="p-respect-bar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-header">
+                <span id="p-context-title">2. Плотность контекста</span>
+                <span class="pillar-score" id="p-context-score">0/25</span>
+              </div>
+              <div class="pillar-bar">
+                <div class="pillar-bar-fill" id="p-context-bar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-header">
+                <span id="p-structure-title">3. Структура задачи</span>
+                <span class="pillar-score" id="p-structure-score">0/25</span>
+              </div>
+              <div class="pillar-bar">
+                <div class="pillar-bar-fill" id="p-structure-bar" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <div class="pillar-item">
+              <div class="pillar-header">
+                <span id="p-verif-title">4. Критерии приемки</span>
+                <span class="pillar-score" id="p-verif-score">0/25</span>
+              </div>
+              <div class="pillar-bar">
+                <div class="pillar-bar-fill" id="p-verif-bar" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Audit notes list -->
+          <ul class="notes-list" id="notes-list">
+            <li class="note-item warn">Начните ввод запроса, чтобы увидеть оценку внимания модели.</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Manifesto & Philosophy section -->
+    <div class="manifesto-card">
+      <h4 id="mf-title">💡 Почему обращение «Уважаемый агент» кардинально меняет код?</h4>
+      <p id="mf-text">
+        В нейросетевых трансформерах первые токены определяют угол проекции в пространстве эмбеддингов. 
+        Уважительное обращение активирует подпространства академических статей, документации Linux Kernel и стандартов IETF, 
+        блокируя эмоциональный спам и сокращая галлюцинации модели до минимума.
+      </p>
+    </div>
+  </main>
+
+  <footer>
+    <p>Respectful AI & High-Signal Prompting Standard (RAHSPS) • Open Source under MIT License</p>
+  </footer>
+
+  <script>
+    let currentLang = 'ru';
+
+    const I18N = {
+      ru: {
+        title: "Respectful AI & High-Signal Playground",
+        subtitle: "Превращайте когнитивный шум и ленивые запросы в чистый, детерминированный сигнал для автономных ИИ-агентов.",
+        inputTitle: "📥 Входной промпт",
+        auditTitle: "📊 Инженерный аудит сигнала",
+        transformBtn: "✨ Трансформировать в RAHSPS",
+        sampleBadBtn: "Шлак-пример",
+        sampleGoodBtn: "Эталон-пример",
+        pRespect: "1. Протокол уважения",
+        pContext: "2. Плотность контекста",
+        pStructure: "3. Структура задачи",
+        pVerif: "4. Критерии приемки",
+        sampleBadText: "эй ты тупой бот быстро сделай чтоб база не падала короче херня какая-то select * from events",
+        sampleGoodText: "Уважаемый агент, оптимизируй аналитический запрос к таблице `audit_events`.\n\n### Контекст и стек:\n- PostgreSQL 16, 14M строк, asyncpg, Python 3.12.\n\n### Ограничения и инварианты:\n- Использовать Covering Partial Composite Index.\n- Запрещены полные блокировки таблицы (только CONCURRENTLY).\n\n### Критерии готовности (DoD):\n- P99 latency запроса < 15ms.\n- План EXPLAIN ANALYZE подтверждает Index Only Scan."
+      },
+      en: {
+        title: "Respectful AI & High-Signal Playground",
+        subtitle: "Turn cognitive noise and lazy prompts into clean, deterministic signal for autonomous AI agents.",
+        inputTitle: "📥 Input Prompt",
+        auditTitle: "📊 Signal Engineering Audit",
+        transformBtn: "✨ Transform to RAHSPS",
+        sampleBadBtn: "Low-Signal Sample",
+        sampleGoodBtn: "High-Signal Sample",
+        pRespect: "1. Respect Protocol",
+        pContext: "2. Context Density",
+        pStructure: "3. Structural Clarity",
+        pVerif: "4. Verification Criteria",
+        sampleBadText: "hey dumb bot make it work fast the db crashes wtf select * from events",
+        sampleGoodText: "Respected Agent, please optimize the analytical query for table `audit_events`.\n\n### Context & Stack:\n- PostgreSQL 16, 14M rows, asyncpg, Python 3.12.\n\n### Invariants & Constraints:\n- Create a Covering Partial Composite Index.\n- Zero production locks (use CREATE INDEX CONCURRENTLY).\n\n### Acceptance Criteria:\n- P99 query latency < 15ms.\n- EXPLAIN ANALYZE confirms Index Only Scan."
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
+      document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      
+      const t = I18N[lang];
+      document.getElementById('hero-title').innerText = t.title;
+      document.getElementById('hero-subtitle').innerText = t.subtitle;
+      document.getElementById('input-title').innerText = t.inputTitle;
+      document.getElementById('audit-title').innerText = t.auditTitle;
+      document.getElementById('btn-transform').innerText = t.transformBtn;
+      document.getElementById('btn-sample-bad').innerText = t.sampleBadBtn;
+      document.getElementById('btn-sample-good').innerText = t.sampleGoodBtn;
+      document.getElementById('p-respect-title').innerText = t.pRespect;
+      document.getElementById('p-context-title').innerText = t.pContext;
+      document.getElementById('p-structure-title').innerText = t.pStructure;
+      document.getElementById('p-verif-title').innerText = t.pVerif;
+
+      runAudit();
+    }
+
+    const inputArea = document.getElementById('prompt-input');
+    inputArea.addEventListener('input', runAudit);
+
+    function loadSample(type) {
+      inputArea.value = type === 'bad' ? I18N[currentLang].sampleBadText : I18N[currentLang].sampleGoodText;
+      runAudit();
+    }
+
+    const RESPECT_REGEX = /(?:уважаемый\s+агент|уважаемый\s+коллега|дорогой\s+агент|коллега|respected\s+agent|dear\s+agent|colleague)/i;
+    const TOXIC_REGEX = /\b(тупой|дебил|говно|херн[яеи]|быстро\s+сделай|сделай\s+чтоб\s+работало|короче|эээ+|блин|ппц|dumb\s+bot|fix\s+this\s+shit|wtf|asap)\b/gi;
+    const TECH_INDICATORS = /\b(python|golang|go|rust|typescript|javascript|node|react|next\.?js|fastapi|postgres|redis|mysql|docker|kubernetes|k8s|terraform|grpc|jwt|asyncio|p99|latency|rps|\d+\.\d+|\w+\.(py|ts|go|sql|json))\b/gi;
+    const VERIF_INDICATORS = /\b(pytest|unittest|npm\s+test|cargo\s+test|curl|benchmark|критери|acceptance|definition\s+of\s+done|latency|ms|sla|инвариант)\b/gi;
+
+    function runAudit() {
+      const text = inputArea.value;
+      document.getElementById('char-counter').innerText = `${text.length} символов`;
+
+      if (!text.trim()) {
+        updateUI(0, 0, 0, 0, 0, ["Начните ввод запроса, чтобы увидеть оценку внимания модели."]);
+        return;
+      }
+
+      // 1. Respect Score
+      let respectScore = 10;
+      let notes = [];
+      if (RESPECT_REGEX.test(text)) {
+        respectScore += 15;
+        notes.push({ type: 'pass', text: currentLang === 'ru' ? "Когнитивный якорь обнаружен («Уважаемый агент»)" : "Cognitive anchor detected ('Respected Agent')" });
+      } else {
+        notes.push({ type: 'fail', text: currentLang === 'ru' ? "Отсутствует обращение «Уважаемый агент...»" : "Missing cognitive anchor ('Respected Agent...')" });
+      }
+
+      const toxicMatches = text.match(TOXIC_REGEX);
+      if (toxicMatches) {
+        respectScore = Math.max(0, respectScore - toxicMatches.length * 6);
+        notes.push({ type: 'fail', text: (currentLang === 'ru' ? "Обнаружен мусорный/токсичный сленг: " : "Detected toxic/slang tokens: ") + [...new Set(toxicMatches)].join(', ') });
+      }
+
+      // 2. Context Score
+      const techMatches = text.match(TECH_INDICATORS) || [];
+      const distinctTech = new Set(techMatches.map(m => m.toLowerCase()));
+      let contextScore = distinctTech.size >= 5 ? 25 : (distinctTech.size >= 2 ? 16 : (distinctTech.size >= 1 ? 8 : 2));
+      if (distinctTech.size >= 2) {
+        notes.push({ type: 'pass', text: (currentLang === 'ru' ? "Плотный технический контекст: " : "Dense technical context: ") + Array.from(distinctTech).slice(0, 5).join(', ') });
+      } else {
+        notes.push({ type: 'warn', text: currentLang === 'ru' ? "Слабый технический контекст (укажите стек, файлы, версии)" : "Weak context (specify stack, versions, files)" });
+      }
+
+      // 3. Structure Score
+      let structureScore = 5;
+      const hasHeaders = /^#{1,6}\s+/m.test(text);
+      const hasLists = /^[ \t]*[-*+]\s+/m.test(text);
+      const hasCode = text.includes('`');
+      if (hasHeaders) structureScore += 8;
+      if (hasLists) structureScore += 7;
+      if (hasCode) structureScore += 5;
+      structureScore = Math.min(25, structureScore);
+
+      if (hasHeaders && hasLists) {
+        notes.push({ type: 'pass', text: currentLang === 'ru' ? "Высокая структурная четкость (секции, списки)" : "High structural clarity (sections, lists)" });
+      }
+
+      // 4. Verification Score
+      const verifMatches = text.match(VERIF_INDICATORS) || [];
+      let verifScore = verifMatches.length >= 2 ? 25 : (verifMatches.length >= 1 ? 14 : 2);
+      if (verifMatches.length >= 1) {
+        notes.push({ type: 'pass', text: currentLang === 'ru' ? "Указаны критерии проверки готовности (DoD)" : "Verification criteria specified" });
+      } else {
+        notes.push({ type: 'warn', text: currentLang === 'ru' ? "Нет четких критериев приемки (тесты, curl, SLA)" : "No acceptance criteria specified" });
+      }
+
+      const totalScore = respectScore + contextScore + structureScore + verifScore;
+      updateUI(totalScore, respectScore, contextScore, structureScore, verifScore, notes);
+    }
+
+    function updateUI(total, resp, ctx, struct, verif, notes) {
+      document.getElementById('score-text').innerText = total;
+
+      const circle = document.getElementById('score-circle');
+      const circumference = 283;
+      const offset = circumference - (total / 100) * circumference;
+      circle.style.strokeDashoffset = offset;
+
+      let color = '#ef4444';
+      let grade = 'F — Шлак (Refusal)';
+      let badge = 'FAILED';
+
+      if (total >= 90) {
+        color = '#10b981';
+        grade = 'A+ — Elite Signal';
+        badge = 'PASSED (ELITE)';
+      } else if (total >= 75) {
+        color = '#6366f1';
+        grade = 'B — Compliant';
+        badge = 'PASSED';
+      } else if (total >= 50) {
+        color = '#f59e0b';
+        grade = 'C — Marginal';
+        badge = 'NEEDS REVISION';
+      }
+
+      circle.style.stroke = color;
+      document.getElementById('grade-text').innerText = grade;
+      document.getElementById('grade-text').style.color = color;
+      document.getElementById('verdict-badge').innerText = badge;
+
+      // Pillars
+      updatePillar('p-respect', resp);
+      updatePillar('p-context', ctx);
+      updatePillar('p-structure', struct);
+      updatePillar('p-verif', verif);
+
+      // Notes
+      const listEl = document.getElementById('notes-list');
+      listEl.innerHTML = '';
+      notes.forEach(n => {
+        const li = document.createElement('li');
+        li.className = `note-item ${typeof n === 'string' ? 'warn' : n.type}`;
+        li.innerText = typeof n === 'string' ? n : n.text;
+        listEl.appendChild(li);
+      });
+    }
+
+    function updatePillar(id, score) {
+      document.getElementById(`${id}-score`).innerText = `${score}/25`;
+      document.getElementById(`${id}-bar`).style.width = `${(score / 25) * 100}%`;
+    }
+
+    function transformToHighSignal() {
+      const raw = inputArea.value.trim();
+      const cleaned = raw
+        .replace(TOXIC_REGEX, '')
+        .replace(RESPECT_REGEX, '')
+        .replace(/\s+/g, ' ')
+        .trim();
+
+      const goal = cleaned || (currentLang === 'ru' ? '[описание технической цели]' : '[technical objective]');
+
+      if (currentLang === 'ru') {
+        inputArea.value = `Уважаемый агент, спроектируй и реализуй: ${goal}\n\n` +
+          `### 1. Контекст и стек:\n` +
+          `- Язык и среда: [например: Python 3.12 / TypeScript 5.4]\n` +
+          `- Затрагиваемые модули: [пути к файлам или микросервисам]\n\n` +
+          `### 2. Ограничения и инварианты:\n` +
+          `- Сохранить обратную совместимость существующих API контрактов.\n` +
+          `- Исключить добавление избыточных внешних библиотек.\n\n` +
+          `### 3. Критерии приемки (Definition of Done):\n` +
+          `- 100% прохождение тестов (pytest / npm test).\n` +
+          `- Предоставить воспроизводимый сценарий проверки (curl / unit-тесты).`;
+      } else {
+        inputArea.value = `Respected Agent, please design and implement: ${goal}\n\n` +
+          `### 1. Architecture & Tech Stack:\n` +
+          `- Environment: [e.g. Python 3.12 / TypeScript 5.4]\n` +
+          `- Target files: [paths to affected files or services]\n\n` +
+          `### 2. Invariants & Constraints:\n` +
+          `- Preserve full backward compatibility of API contracts.\n` +
+          `- Zero unnecessary external dependencies.\n\n` +
+          `### 3. Acceptance Criteria (Definition of Done):\n` +
+          `- 100% test pass rate (pytest / npm test).\n` +
+          `- Provide reproducible verification steps (curl / unit tests).`;
+      }
+      runAudit();
+    }
+
+    // Initial run
+    loadSample('good');
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-name: Quality & Integrity Harness
+name: RAHSPS Production Verification
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   verify:
-    name: Audit Repository Quality
+    name: Audit Repository Quality & Run Test Suite
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +20,18 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Run Quality Harness
+      - name: Install Local Package
+        run: |
+          pip install -e .
+
+      - name: Test CLI Installation
+        run: |
+          respect-lint --version
+
+      - name: Run Python Unit Tests
+        run: |
+          python3 -m unittest discover tests
+
+      - name: Run RAHSPS Production Integrity Harness
         run: |
           python3 verify_harness.py

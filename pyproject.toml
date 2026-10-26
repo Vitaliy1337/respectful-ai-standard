@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "respect-lint"
+version = "1.0.0"
+description = "CLI Linter and Guardrail for Respectful AI & High-Signal Prompting Standard (RAHSPS)"
+readme = "README.md"
+authors = [
+    { name = "Respectful AI & High-Signal Engineering Community", email = "community@respectful-ai.org" }
+]
+license = { text = "MIT" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Quality Assurance",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+requires-python = ">=3.8"
+dependencies = []
+
+[project.scripts]
+respect-lint = "respect_lint:main"
+
+[tool.setuptools]
+py-modules = ["respect_lint"]

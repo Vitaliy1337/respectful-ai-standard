@@ -3,15 +3,18 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Standard-Respectful%20AI-6366f1?style=for-the-badge&logo=openai&logoColor=white" alt="Respectful AI Standard" />
   <img src="https://img.shields.io/badge/Signal-High--Signal%20Only-10b981?style=for-the-badge" alt="High Signal Only" />
-  <img src="https://img.shields.io/badge/Cognitive%20Anchor-%D0%A3%D0%B2%D0%B0%D0%B6%D0%B0%D0%B5%D0%BC%D1%8B%D0%B9%20%D0%B0%D0%B3%D0%B5%D0%BD%D1%82-f59e0b?style=for-the-badge" alt="Уважаемый агент" />
+  <img src="https://img.shields.io/badge/CLI%20Tool-respect--lint-06b6d4?style=for-the-badge" alt="CLI Tool" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
 </p>
 
-> **«Уважение к агенту — это не сентиментальность и не этикет. Это математика внимания, гигиена контекстного окна и бескомпромиссная когнитивная дисциплина самого инженера.»**
+<p align="center">
+  <b>Язык / Language:</b> 
+  <b>🇷🇺 Русский</b> | 
+  <a href="./README.en.md">🇬🇧 English</a> | 
+  <a href="./docs/index.html">⚡ Интерактивный Web Playground</a>
+</p>
 
-> [!NOTE]
-> **Global Engineering Community Notice:**
-> This repository sets the gold engineering standard for Human-Agent interaction. While the core manifesto is presented in Russian, all system rulebooks ([`AGENTS.md`](./AGENTS.md), [`CLAUDE.md`](./CLAUDE.md), [`.cursorrules`](./.cursorrules)) and prompt templates ([`templates/PROMPT_TEMPLATE.md`](./templates/PROMPT_TEMPLATE.md)) include full English specifications ready for immediate global deployment.
+> **«Уважение к агенту — это не сентиментальность и не этикет. Это математика внимания, гигиена контекстного окна и бескомпромиссная когнитивная дисциплина самого инженера.»**
 
 ---
 
@@ -21,11 +24,12 @@
 3. [Математика внимания: почему уважительный тон объективно улучшает код](#математика-внимания-почему-уважительный-тон-объективно-улучшает-код)
 4. [Сравнительная таблица: Шлак vs High-Signal](#сравнительная-таблица-шлак-vs-high-signal)
 5. [Архитектура стандарта: 5 столпов High-Signal](#архитектура-стандарта-5-столпов-high-signal)
-6. [Протокол обращения и гейткипинг качества](#протокол-обращения-и-гейткипинг-качества)
-7. [Быстрый старт: интеграция в любой проект за 30 секунд](#быстрый-старт-интеграция-в-любой-проект-за-30-секунд)
-8. [Экосистема стандартов и манифест](#экосистема-стандартов-и-манифест)
-9. [Бейджи для вашего репозитория](#бейджи-для-вашего-репозитория)
-10. [FAQ: Ответы на скептицизм](#faq-ответы-на-скептицизм)
+6. [CLI-линтер качества промптов: `respect-lint`](#cli-линтер-качества-промптов-respect-lint)
+7. [Протокол обращения и гейткипинг качества](#протокол-обращения-и-гейткипинг-качества)
+8. [Быстрый старт: интеграция в любой проект за 30 секунд](#быстрый-старт-интеграция-в-любой-проект-за-30-секунд)
+9. [Экосистема стандартов и манифест](#экосистема-стандартов-и-манифест)
+10. [Бейджи для вашего репозитория](#бейджи-для-вашего-репозитория)
+11. [FAQ: Ответы на скептицизм](#faq-ответы-на-скептицизм)
 
 ---
 
@@ -146,6 +150,28 @@
 3. **Бескомпромиссная цель (Deterministic Objective):** Точная формулировка бизнес- или технической задачи без двусмысленностей.
 4. **Ограничения и инварианты (Invariants & Guardrails):** Что категорически запрещено менять, удалять или деградировать.
 5. **Верификация (Self-Verification Criteria):** Четкий критерий успеха (скрипт проверки, тесты, метрики производительности).
+
+---
+
+## CLI-линтер качества промптов: `respect-lint`
+
+Репозиторий включает автономный CLI-инструмент на чистом Python 3 без сторонних зависимостей. Он оценивает индекс качества промпта **RAHSPS Score (0–100)** и может использоваться в терминале, CI/CD или pre-commit хуках:
+
+```bash
+# Установка в локальное окружение:
+pip install -e .
+
+# Быстрая проверка промпта:
+respect-lint "Уважаемый агент, спроектируй Redis lock на Python 3.12. Проверь pytest."
+
+# Строгий режим для pre-commit / CI (код возврата 1 при оценке < 75):
+respect-lint --file ./prompt.txt --strict
+
+# Выгрузка в формате JSON:
+respect-lint "текст промпта" --json
+```
+
+Онлайн-версия доступна в [**Интерактивном Web Playground**](./docs/index.html).
 
 ---
 
