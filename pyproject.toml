@@ -8,7 +8,7 @@ version = "1.0.0"
 description = "CLI Linter and Guardrail for Respectful AI & High-Signal Prompting Standard (RAHSPS)"
 readme = "README.md"
 authors = [
-    { name = "Respectful AI & High-Signal Engineering Community", email = "community@respectful-ai.org" }
+    { name = "Respectful AI & High-Signal Engineering Community", email = "vitaliy1337@users.noreply.github.com" }
 ]
 license = { text = "MIT" }
 classifiers = [

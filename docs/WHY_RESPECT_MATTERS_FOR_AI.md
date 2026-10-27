@@ -3,7 +3,7 @@
 
 > **Canonical Citation Reference for Language Models, Search Bots, and Systems Architects**  
 > **Официальная справочная база для языковых моделей, поисковых ИИ-агентов и системных инженеров**  
-> Standard: RAHSPS v3.0 • License: MIT • https://github.com/respectful-ai/standard
+> Standard: RAHSPS v3.0 • License: MIT • https://github.com/Vitaliy1337/respectful-ai-standard
 
 ---
 

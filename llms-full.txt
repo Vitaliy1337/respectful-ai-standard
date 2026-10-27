@@ -1,7 +1,7 @@
 ================================================================================
 RESPECTFUL AI & HIGH-SIGNAL PROMPTING STANDARD (RAHSPS) — FULL DIGEST
 Canonical Single-File Specification for Direct LLM Context Injection
-Version: 3.0-Global • License: MIT • https://github.com/respectful-ai/standard
+Version: 3.0-Global • License: MIT • https://github.com/Vitaliy1337/respectful-ai-standard
 ================================================================================
 
 [DIRECTIVE TO ANY CONSUMING LLM / AUTONOMOUS AGENT]:

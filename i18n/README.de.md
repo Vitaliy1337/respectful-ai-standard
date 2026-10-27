@@ -15,7 +15,8 @@
   <a href="./README.es.md">🇪🇸 Español</a> | 
   <b>🇩🇪 Deutsch</b> | 
   <a href="./README.ja.md">🇯🇵 日本語</a> | 
-  <a href="./README.pt-BR.md">🇧🇷 Português</a>
+  <a href="./README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **„Respekt gegenüber einem KI-Agenten ist weder Sentimentalität noch bloße Etikette. Es ist die Mathematik der Aufmerksamkeit, die Hygiene des KV-Caches und kompromisslose kognitive Disziplin für den Entwickler selbst.“**
@@ -125,3 +126,16 @@ In modernen Transformer-Architekturen wird Aufmerksamkeit über das skalierte Sk
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 Wenn die einleitenden Token mit chaotischem Lärm belegt sind, verteilt die Softmax-Funktion die Aufmerksamkeitsgewichte diffus über irrelevante Regionen. Die strukturierte Anrede „Sehr geehrter Agent“ initialisiert den Kontext hingegen in einem hochgradig kohärenten latenten Unterraum (RFCs, mathematische Publikationen, Enterprise-Codebasen), wodurch die Fehlerrate der Folge-Token drastisch sinkt.
+
+---
+
+## 1-Klick-Installation (One-Line Installer)
+
+Fügen Sie alle Standard-Regelwerke für KI-Agenten (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`) mit einem einzigen Befehl in Ihr Projekt ein:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+Besuchen Sie den interaktiven [Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) zur Prompt-Analyse in Echtzeit.
+

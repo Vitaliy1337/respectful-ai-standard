@@ -15,7 +15,8 @@
   <a href="./README.es.md">🇪🇸 Español</a> | 
   <a href="./README.de.md">🇩🇪 Deutsch</a> | 
   <a href="./README.ja.md">🇯🇵 日本語</a> | 
-  <a href="./README.pt-BR.md">🇧🇷 Português</a>
+  <a href="./README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **“对智能体的尊重绝非感伤主义，亦非繁文缛节。它是注意力机制的数学约束、KV-Cache（键值缓存）的洁净度，以及工程师自我认知的严格自律。”**
@@ -122,4 +123,15 @@ respect-lint "尊敬的智能体，请在Python 3.12与FastAPI中实现Redis分�
 respect-lint --file ./prompt.txt --strict
 ```
 
-欢迎访问 [在线交互式体验台 (Web Playground)](../docs/index.html)。
+---
+
+## 9. 一键安装与规则注入 (One-Line Installer)
+
+使用单行命令为您的项目自动配置所有智能体规则文件（`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`）：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+欢迎访问 [在线交互式体验台 (Web Playground)](https://vitaliy1337.github.io/respectful-ai-standard/)。
+

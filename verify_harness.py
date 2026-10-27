@@ -396,6 +396,38 @@ FILE_SPECIFICATIONS = {
         "required_sections": ["MIT License"],
         "must_have_tables": False,
         "must_have_codeblocks": False
+    },
+    "marketing/VIRAL_LAUNCH_KIT.md": {
+        "min_chars": 4000,
+        "min_words": 600,
+        "required_sections": [
+            "Show HN",
+            "LocalLLaMA",
+            "Habr",
+            "Vitaliy1337/respectful-ai-standard"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": True
+    },
+    "scripts/setup_github_meta.sh": {
+        "min_chars": 400,
+        "min_words": 40,
+        "required_sections": [
+            "Vitaliy1337/respectful-ai-standard",
+            "gh repo edit"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
+    },
+    ".github/workflows/pages.yml": {
+        "min_chars": 300,
+        "min_words": 30,
+        "required_sections": [
+            "deploy-pages",
+            "upload-pages-artifact"
+        ],
+        "must_have_tables": False,
+        "must_have_codeblocks": False
     }
 }
 
@@ -409,7 +441,11 @@ FORBIDDEN_PLACEHOLDERS = [
     r"\[Заполните позже\]",
     r"\[placeholder\]",
     r"TODO:",
-    r"FIXME:"
+    r"FIXME:",
+    r"respectful-ai/standard",
+    r"respectful-ai\.github\.io",
+    r"alivan-lab",
+    r"community@respectful-ai\.org"
 ]
 
 
@@ -564,6 +600,39 @@ class QualityHarness:
         except Exception as e:
             self.log_fail(f"Failed to run CLI smoke test: {e}")
 
+    def verify_canonical_urls(self):
+        print(f"\n{BOLD}Verifying canonical repository URLs (Vitaliy1337/respectful-ai-standard)...{RESET}")
+        required_repo_url = "Vitaliy1337/respectful-ai-standard"
+        required_pages_url = "vitaliy1337.github.io/respectful-ai-standard"
+        
+        canonical_files = [
+            "README.md",
+            "README.en.md",
+            "llms.txt",
+            "docs/llms.txt",
+            "CITATION.cff",
+            "install.sh",
+            "marketing/VIRAL_LAUNCH_KIT.md"
+        ]
+        
+        all_ok = True
+        for rf in canonical_files:
+            file_path = self.root_dir / rf
+            if not file_path.exists():
+                self.log_fail(f"Missing canonical file for URL check: {rf}")
+                all_ok = False
+                continue
+            content = file_path.read_text(encoding="utf-8")
+            if required_repo_url not in content:
+                self.log_fail(f"File {rf} missing canonical repo URL '{required_repo_url}'")
+                all_ok = False
+            if rf in ["README.md", "README.en.md", "llms.txt", "install.sh"] and required_pages_url not in content:
+                self.log_fail(f"File {rf} missing canonical pages URL '{required_pages_url}'")
+                all_ok = False
+                
+        if all_ok:
+            self.log_pass(f"All {len(canonical_files)} canonical files contain verified URLs ({required_repo_url})")
+
     def verify_repository_total_volume(self):
         print(f"\n{BOLD}Verifying total repository linguistic density (>= {MIN_TOTAL_WORDS:,} words)...{RESET}")
         total_words = sum(s["words"] for s in self.stats.values())
@@ -583,6 +652,7 @@ class QualityHarness:
 
         self.run_unit_tests()
         self.run_cli_smoke_test()
+        self.verify_canonical_urls()
         self.verify_repository_total_volume()
 
         print(f"\n{BOLD}{MAGENTA}======================================================================{RESET}")

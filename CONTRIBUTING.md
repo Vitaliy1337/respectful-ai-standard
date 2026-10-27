@@ -17,7 +17,7 @@ In this repository, we practice what we preach:
 
 1. **Fork and Clone the Repository:**
    ```bash
-   git clone https://github.com/respectful-ai/standard.git
+   git clone https://github.com/Vitaliy1337/respectful-ai-standard.git
    cd standard
    ```
 

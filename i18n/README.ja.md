@@ -15,7 +15,8 @@
   <a href="./README.es.md">🇪🇸 Español</a> | 
   <a href="./README.de.md">🇩🇪 Deutsch</a> | 
   <b>🇯🇵 日本語</b> | 
-  <a href="./README.pt-BR.md">🇧🇷 Português</a>
+  <a href="./README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **「AIエージェントへの敬意とは感傷や礼儀作法ではない。それはアテンション機構の数学的規律であり、KVキャッシュの衛生管理、そしてエンジニア自身の思考の厳格な規律である。」**
@@ -103,3 +104,16 @@ respect-lint "敬愛なるエージェントへ、Python 3.12とFastAPIでRedis�
 8. **LLM API耐障害性ゲートウェイ：** サーキットブレーカーとジッター付き指数バックオフ。
 9. **Go言語による高負荷Kafkaコンシューマー：** At-Least-Once配信保証とDLQ。
 10. **CQRSとイベントソーシングへの移行RFC：** 企業幹部向けアーキテクチャ標準書。
+
+---
+
+## 8. ワンラインインストーラー (One-Line Installer)
+
+1行のコマンドで、主要なAIエージェント向けルール（`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`）をお使いのリポジトリに直接展開します：
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+ブラウザ上で即座にプロンプトを検証できる [Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) もご利用いただけます。
+

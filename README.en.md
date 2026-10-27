@@ -16,7 +16,7 @@
   <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 
   <a href="./i18n/README.ja.md">🇯🇵 日本語</a> | 
   <a href="./i18n/README.pt-BR.md">🇧🇷 Português</a> | 
-  <a href="./docs/index.html">⚡ Playground</a>
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **"Respecting an AI agent is neither sentimentality nor social etiquette. It is the mathematics of attention, KV-cache hygiene, and ruthless cognitive discipline on the engineer's own mind."**
@@ -151,7 +151,7 @@ This repository includes a production-grade, zero-dependency Python CLI tool to 
 ### Installation
 ```bash
 # Clone and install locally
-git clone https://github.com/respectful-ai/standard.git
+git clone https://github.com/Vitaliy1337/respectful-ai-standard.git
 cd standard
 pip install -e .
 ```
@@ -172,6 +172,13 @@ respect-lint "some prompt" --json
 
 ## Agent Gatekeeping & Rulebooks (Drop-in Ready)
 
+### One-Line Express Setup:
+Inject all standard rulebooks (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`) in one command:
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+### Manual Integration:
 Integrate the **Respect & Signal Gate (RSG)** into your workspace in 30 seconds:
 
 - 🤖 [**`AGENTS.md`**](./AGENTS.md) — Universal standard for Roo Code, OpenCode, Codex, Devin, and custom subagents.
@@ -210,7 +217,7 @@ Explore [**`examples/before_after.md`**](./examples/before_after.md) featuring 1
 Display your commitment to cognitive hygiene and high-signal engineering:
 
 ```markdown
-[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/respectful-ai/standard)
+[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 ```
 
 [![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](#)

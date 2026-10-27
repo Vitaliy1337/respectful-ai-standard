@@ -3,7 +3,7 @@
 # Respectful AI & High-Signal Prompting Standard (RAHSPS) — Universal Installer
 # One-command drop-in rulebook generator for all major AI coding environments.
 # Usage:
-#   curl -sSL https://raw.githubusercontent.com/respectful-ai/standard/main/install.sh | bash
+#   curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
 #   or locally: ./install.sh [--all]
 # ==============================================================================
 
@@ -17,7 +17,7 @@ CYAN="\033[36m"
 YELLOW="\033[33m"
 RESET="\033[0m"
 
-REPO_BASE="https://raw.githubusercontent.com/respectful-ai/standard/main"
+REPO_BASE="https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main"
 
 echo -e "${BOLD}${CYAN}======================================================================${RESET}"
 echo -e "${BOLD}${CYAN}   RESPECTFUL AI & HIGH-SIGNAL STANDARD (RAHSPS) — INSTALLER v3.0    ${RESET}"
@@ -68,4 +68,4 @@ echo -e "  • ${CYAN}.clinerules${RESET}    → Cline / Roo Code (VS Code)"
 echo -e "\n${BOLD}Next steps:${RESET}"
 echo -e "  1. Start prompts with: ${BOLD}«Уважаемый агент...»${RESET} or ${BOLD}«Respected Agent...»${RESET}"
 echo -e "  2. Test prompt quality with CLI: ${CYAN}pip install -e . && respect-lint \"...\"${RESET}"
-echo -e "  3. Explore interactive Web Playground: ${CYAN}https://respectful-ai.github.io/standard/${RESET}\n"
+echo -e "  3. Explore interactive Web Playground: ${CYAN}https://vitaliy1337.github.io/respectful-ai-standard/${RESET}\n"

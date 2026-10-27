@@ -15,7 +15,8 @@
   <a href="./README.es.md">🇪🇸 Español</a> | 
   <a href="./README.de.md">🇩🇪 Deutsch</a> | 
   <a href="./README.ja.md">🇯🇵 日本語</a> | 
-  <b>🇧🇷 Português</b>
+  <b>🇧🇷 Português</b> | 
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **"O respeito a um agente de IA não é mero sentimentalismo ou etiqueta social. É a matemática da atenção, a higiene do KV-Cache e uma rigorosa disciplina cognitiva para o próprio engenheiro."**
@@ -125,3 +126,16 @@ Na arquitetura de Redes Neurais Transformer, a atenção é governada pelo produ
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 Quando os tokens iniciais do contexto contêm ruído discursivo ou arrogância, a distribuição softmax dispersa os pesos sobre dimensões irrelevantes do espaço latente. A invocação formal «Prezado Agente» ancora imediatamente a geração nos subespaços de documentação canônica (RFCs, padrões POSIX, papers acadêmicos e código corporativo), minimizando alucinações e convergindo deterministamente para soluções robustas.
+
+---
+
+## Instalação Rápida em Uma Linha (One-Line Installer)
+
+Injete todas as regras padrão de agentes (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`) no seu projeto atual com apenas um comando:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+Acesse o [Ambiente Interativo Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) para auditar seus prompts em tempo real.
+

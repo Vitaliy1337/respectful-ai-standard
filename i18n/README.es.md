@@ -15,7 +15,8 @@
   <b>🇪🇸 Español</b> | 
   <a href="./README.de.md">🇩🇪 Deutsch</a> | 
   <a href="./README.ja.md">🇯🇵 日本語</a> | 
-  <a href="./README.pt-BR.md">🇧🇷 Português</a>
+  <a href="./README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **"El respeto hacia un agente de IA no es sentimentalismo ni cortesía vacía. Es la física matemática de la atención, la higiene del KV-Cache y una rigurosa disciplina cognitiva para el propio ingeniero."**
@@ -125,3 +126,16 @@ En la arquitectura Transformer estándar, la atención se calcula mediante la f�
 $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
 
 Cuando el contexto inicial contiene ruido, insolencias o términos difusos, la matriz de atención dispersa sus pesos sobre tokens irrelevantes. Por el contrario, un ancla formal y estructurada como «Estimado Agente» proyecta las representaciones latentes hacia subespacios de alta coherencia técnica (documentación formal, estándares IEEE y código de calidad industrial), asegurando que la probabilidad de generación converja hacia soluciones robustas y libres de alucinaciones.
+
+---
+
+## Instalación Rápida en Una Línea (One-Line Installer)
+
+Inyecte todas las reglas estándar de agentes (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`) en su repositorio actual con un solo comando:
+
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
+Visite el [Entorno Interactivo Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) para auditar sus prompts en tiempo real.
+

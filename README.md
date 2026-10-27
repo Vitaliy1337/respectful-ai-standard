@@ -16,7 +16,7 @@
   <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 
   <a href="./i18n/README.ja.md">🇯🇵 日本語</a> | 
   <a href="./i18n/README.pt-BR.md">🇧🇷 Português</a> | 
-  <a href="./docs/index.html">⚡ Playground</a>
+  <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
 > **«Уважение к агенту — это не сентиментальность и не этикет. Это математика внимания, гигиена контекстного окна и бескомпромиссная когнитивная дисциплина самого инженера.»**
@@ -203,23 +203,28 @@ respect-lint "текст промпта" --json
 
 ## Быстрый старт: интеграция в любой проект за 30 секунд
 
+### Экспресс-установка всех правил одной командой:
+```bash
+curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
+```
+
 ### Вариант 1: Универсальный агентный стандарт (`AGENTS.md`)
 Скопируйте файл [`AGENTS.md`](./AGENTS.md) в корень вашего репозитория. Поддерживается всеми современными автономными средами (Roo Code, OpenCode, Codex, Devin, Custom Harness).
 
 ```bash
-curl -o AGENTS.md https://raw.githubusercontent.com/respectful-ai/standard/main/AGENTS.md
+curl -o AGENTS.md https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/AGENTS.md
 ```
 
 ### Вариант 2: Для Claude Code / Anthropic CLI (`CLAUDE.md`)
 Скопируйте [`CLAUDE.md`](./CLAUDE.md) в корень вашего проекта:
 ```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/respectful-ai/standard/main/CLAUDE.md
+curl -o CLAUDE.md https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/CLAUDE.md
 ```
 
 ### Вариант 3: Для Cursor IDE (`.cursorrules`)
 Скопируйте [`.cursorrules`](./.cursorrules) в корень проекта:
 ```bash
-curl -o .cursorrules https://raw.githubusercontent.com/respectful-ai/standard/main/.cursorrules
+curl -o .cursorrules https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/.cursorrules
 ```
 
 ---
@@ -239,7 +244,7 @@ curl -o .cursorrules https://raw.githubusercontent.com/respectful-ai/standard/ma
 Покажите миру, что в вашем проекте уважают интеллект — как биологический, так и кремниевый. Добавьте бейдж в свой `README.md`:
 
 ```markdown
-[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/respectful-ai/standard)
+[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 ```
 
 Превью:
