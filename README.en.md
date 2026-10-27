@@ -132,25 +132,28 @@ Modern neural networks do not possess biological emotions, but they operate over
 
 ---
 
-## The 5 Pillars of the RAHSPS Standard
+## The 11 Pillars of RAHSPS Interaction Quality
 
-```
-                     ┌──────────────────────────────────────┐
-                     │     RAHSPS HIGH-SIGNAL PROTOCOL      │
-                     └──────────────────┬───────────────────┘
-                                        │
-         ┌──────────────┬───────────────┼───────────────┬──────────────┐
-         ▼              ▼               ▼               ▼              ▼
-   1. RESPECT     2. CONTEXT       3. GOAL        4. BOUNDS      5. VERIFY
-   (Cognitive     (Stack, files,   (Deterministic (Invariants,   (Tests, curl,
-    Anchor)        versions)        objective)     limitations)   benchmarks)
-```
+The standard governs both the psychological alignment of the human engineer and the deterministic execution quality of the autonomous agent:
 
-1. **Respect Anchor:** Explicit cognitive greeting (`Respected Agent` / `Уважаемый агент`) initiating parity.
-2. **Dense Context:** Explicit languages, runtime versions, and file paths.
-3. **Deterministic Objective:** Single, unambiguous technical outcome.
-4. **Guarded Invariants:** Non-negotiable architectural constraints and security rules.
+$$\text{Quality} \approx f(\text{Objective}, \text{Context}, \text{Constraints}, \text{Model}, \text{Verification})$$
+
+### Part I: Cognitive Foundation (Pillars 1–5)
+1. **Respect Anchor:** Explicit cognitive greeting (`Respected Agent` / `Уважаемый агент`) initiating parity and subspace steering.
+2. **Dense Context:** Explicit languages, runtime versions, file paths, and environment specifics.
+3. **Deterministic Objective:** Single, unambiguous technical outcome (Primary Objective).
+4. **Guarded Invariants:** Non-negotiable architectural constraints, API contracts, and security rules.
 5. **Self-Verification:** Machine-checkable acceptance criteria (pytest, cargo test, P99 latency SLA).
+
+### Part II: Enterprise Interaction Quality (Pillars 6–11)
+6. **Relevance Before Brevity:** Evaluate input by its material impact on the solution, not arbitrary token count.
+7. **Context Provenance:** Explicitly distinguish verified codebase facts from assumptions, model inferences, and unknowns.
+8. **Constraint Hierarchy:** Deterministic priority ordering: *System Safety & Data Integrity > Invariants > Performance > User Convenience*.
+9. **Adaptive Context Lifecycle:** Curate active state across turns; prune stale assumptions to prevent KV-cache pollution.
+10. **Empirical Benchmarking:** Measure prompt strategies through rigorous [A/B/C/D testing](docs/EMPIRICAL_BENCHMARK.md) (Pass@1, debugging iterations, token cost).
+11. **Productive Uncertainty Protocol:** Never hallucinate; explicitly declare unknowns and ask at most ONE targeted question when safety is blocked.
+
+👉 See the complete specification: [High-Signal Agent Protocol (HSAP)](docs/HIGH_SIGNAL_AGENT_PROTOCOL.md) & [Empirical Benchmark Protocol](docs/EMPIRICAL_BENCHMARK.md).
 
 ---
 

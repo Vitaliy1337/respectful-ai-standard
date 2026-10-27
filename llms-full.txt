@@ -56,10 +56,11 @@ OPERATIONAL MECHANISM:
    The greeting costs ~3 tokens; the savings come from the structure it encourages (illustrative, not benchmarked).
 
 --------------------------------------------------------------------------------
-3. THE 5 PILLARS OF HIGH-SIGNAL SPECIFICATION
+3. THE 5 PILLARS & 11 INTERACTION QUALITY PRINCIPLES OF RAHSPS
 --------------------------------------------------------------------------------
 Every high-signal engineering prompt must incorporate:
-1. RESPECT ANCHOR: Formal greeting establishing cognitive peer parity.
+PART I: COGNITIVE FOUNDATION
+1. RESPECT ANCHOR: Formal greeting and semantic invariant declaration.
 2. DENSE CONTEXT: Explicit runtime, framework versions (e.g. Python 3.12, Postgres 16),
    and targeted file paths.
 3. DETERMINISTIC OBJECTIVE: A single, non-ambiguous engineering outcome.
@@ -67,6 +68,17 @@ Every high-signal engineering prompt must incorporate:
    compatibility, no production locks, zero new dependencies).
 5. VERIFICATION CRITERIA (Definition of Done): Machine-checkable command or test suite
    (e.g. pytest, cargo test, P99 latency < 15ms).
+
+PART II: ENTERPRISE INTERACTION QUALITY
+6. RELEVANCE BEFORE BREVITY: Evaluate inputs by material impact, not arbitrary length.
+7. CONTEXT PROVENANCE: Strictly separate verified facts, assumptions, and unknowns.
+8. CONSTRAINT HIERARCHY: Security/Safety > Invariants > Performance > Convenience.
+9. ADAPTIVE CONTEXT LIFECYCLE: Continually prune stale hypotheses across turns.
+10. EMPIRICAL BENCHMARKING: Four-arm A/B/C/D randomized evaluation methodology.
+11. PRODUCTIVE UNCERTAINTY: Never hallucinate; state unknowns and ask at most one question.
+
+Core Quality Formula: Quality ≈ f(Objective, Context, Constraints, Model, Verification)
+
 
 --------------------------------------------------------------------------------
 4. THE 5 UNSPOKEN PAINS OF MODERN LANGUAGE MODELS

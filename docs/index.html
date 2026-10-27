@@ -732,14 +732,20 @@
       // 1. Respect Score
       let respectScore = 10;
       let notes = [];
-      if (RESPECT_REGEX.test(text)) {
+      const hasRespectGreeting = RESPECT_REGEX.test(text);
+      const hasSemanticAnchor = /(?:primary\s+objective|non-negotiable|invariants?|definition\s+of\s+done|acceptance\s+criteria|головна\s+ціль|критерії\s+прийомки|целевой\s+результат|критерии\s+приемки)/i.test(text);
+
+      if (hasRespectGreeting) {
         respectScore += 15;
         const passMsg = currentLang === 'en' ? "Cognitive anchor detected ('Respected Agent')" : (currentLang === 'uk' ? "Когнітивний якір виявлено («Шановний агенте»)" : "Когнитивный якорь обнаружен («Уважаемый агент»)");
+        notes.push({ type: 'pass', text: passMsg });
+      } else if (hasSemanticAnchor) {
+        respectScore += 12;
+        const passMsg = currentLang === 'en' ? "Semantic anchor detected (Objective / Invariants / DoD)" : (currentLang === 'uk' ? "Семантичний якір виявлено (Ціль / Інваріанти / DoD)" : "Семантический якорь обнаружен (Цель / Инварианты / DoD)");
         notes.push({ type: 'pass', text: passMsg });
       } else {
         const failMsg = currentLang === 'en' ? "Missing cognitive anchor ('Respected Agent...')" : (currentLang === 'uk' ? "Відсутнє звернення «Шановний агенте...»" : "Отсутствует обращение «Уважаемый агент...»");
         notes.push({ type: 'fail', text: failMsg });
-      }
       }
 
       const toxicMatches = text.match(TOXIC_REGEX);

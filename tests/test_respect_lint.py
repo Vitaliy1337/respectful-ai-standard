@@ -307,10 +307,44 @@ class TestRespectLint(unittest.TestCase):
         analyzer = PromptAnalyzer(raw)
         res = analyzer.analyze()
         self.assertEqual(res["verdict"], "PASSED")
-        self.assertGreaterEqual(res["total_score"], 85)
+    def test_28_semantic_anchor_detection(self):
+        """Semantic anchor (PRIMARY OBJECTIVE + INVARIANTS + DoD) boosts respect score even without greeting."""
+        raw = (
+            "### PRIMARY OBJECTIVE:\n"
+            "Refactor auth handler to avoid race conditions.\n"
+            "### NON-NEGOTIABLE INVARIANTS:\n"
+            "- Backwards compatibility must be preserved.\n"
+            "### DEFINITION OF DONE:\n"
+            "- pytest tests/test_auth.py passes 100%."
+        )
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 22)
+        self.assertIn("Semantic anchor detected", str(notes))
+
+    def test_29_enterprise_hsap_template_passes(self):
+        """Full Enterprise HSAP prompt with semantic anchors and stack must pass Grade A+."""
+        raw = (
+            "### HIGH-SIGNAL AGENT PROTOCOL (HSAP-v3.1)\n\n"
+            "Communication: Maintain a respectful, direct, professional tone.\n\n"
+            "PRIMARY OBJECTIVE:\n"
+            "Design and implement an asynchronous Redis token bucket rate limiter in Python 3.12.\n\n"
+            "CONTEXT & SOURCES OF TRUTH:\n"
+            "- Stack: Python 3.12, FastAPI, redis-py 5.0, Docker.\n"
+            "- Verified facts: src/limiter.py exists.\n\n"
+            "NON-NEGOTIABLE INVARIANTS:\n"
+            "- Strict P99 latency < 2ms, zero memory leaks, thread-safe.\n\n"
+            "DEFINITION OF DONE:\n"
+            "- pytest tests/test_limiter.py passes with 100% coverage and curl benchmark."
+        )
+        analyzer = PromptAnalyzer(raw)
+        res = analyzer.analyze()
+        self.assertEqual(res["verdict"], "PASSED")
+        self.assertGreaterEqual(res["total_score"], 90)
 
 
 if __name__ == "__main__":
     unittest.main()
+
 
 

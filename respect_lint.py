@@ -71,6 +71,13 @@ RESPECT_ANCHORS = [
     r"колего"
 ]
 
+SEMANTIC_ANCHOR_PATTERNS = [
+    r"\b(?:primary\s+objective|головна\s+ціль|целевой\s+результат)\b",
+    r"\b(?:non-negotiable|invariants?|инвариант[ы]?|інваріант[и]?)\b",
+    r"\b(?:source\s+of\s+truth|источник\s+истины|джерело\s+істини)\b",
+    r"\b(?:definition\s+of\s+done|acceptance\s+criteria|критерии\s+приемки|критерії\s+прийомки)\b"
+]
+
 TOXIC_OR_SLANG_PATTERNS = [
     r"\bтупой\b",
     r"\bдебил\b",
@@ -157,16 +164,23 @@ class PromptAnalyzer:
         score = 10  # Base neutral respect
         messages = []
 
-        # Check for cognitive anchor
+        # Check for cognitive anchor or semantic anchor
         anchor_found = False
         for pat in RESPECT_ANCHORS:
             if re.search(pat, self.lower_text, re.IGNORECASE):
                 anchor_found = True
                 break
 
+        semantic_anchor_count = sum(
+            1 for pat in SEMANTIC_ANCHOR_PATTERNS if re.search(pat, self.lower_text, re.IGNORECASE)
+        )
+
         if anchor_found:
             score += 15
             messages.append("Cognitive anchor detected («Уважаемый агент» / «Respected Agent»)")
+        elif semantic_anchor_count >= 2:
+            score += 12
+            messages.append(f"Semantic anchor detected ({semantic_anchor_count} invariant markers: Objective/Invariants/DoD)")
         else:
             messages.append("Missing respectful cognitive anchor («Уважаемый агент...»)")
 
@@ -185,7 +199,14 @@ class PromptAnalyzer:
 
         # Check for screaming ALL CAPS (more than 3 words in caps)
         words = re.findall(r"\b[A-ZА-ЯЁ]{3,}\b", self.raw_text)
-        filtered_caps = [w for w in words if w not in {"SQL", "API", "HTTP", "REST", "JSON", "JWT", "CPU", "RAM", "HTML", "CSS", "RFC", "PDB", "HPA", "DAU", "RPS", "OOM", "FIFO", "UUID"}]
+        whitelist_caps = {
+            "SQL", "API", "HTTP", "REST", "JSON", "JWT", "CPU", "RAM", "HTML", "CSS",
+            "RFC", "PDB", "HPA", "DAU", "RPS", "OOM", "FIFO", "UUID", "DOD", "SLA", "SLO",
+            "PRIMARY", "OBJECTIVE", "INVARIANTS", "NON", "NEGOTIABLE", "DEFINITION", "DONE",
+            "CONTEXT", "TRUTH", "SOURCE", "SOURCES", "PROTOCOL", "HSAP", "RAHSPS",
+            "HIGH", "SIGNAL", "AGENT"
+        }
+        filtered_caps = [w for w in words if w not in whitelist_caps]
         if len(filtered_caps) >= 3:
             score -= 8
             messages.append(f"Aggressive uppercase screaming detected: {', '.join(filtered_caps[:4])}")

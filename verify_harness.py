@@ -318,6 +318,20 @@ FILE_SPECIFICATIONS = {
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
+    "docs/EMPIRICAL_BENCHMARK.md": {
+        "min_chars": 2000,
+        "min_words": 300,
+        "required_sections": ["Pass@1", "Group A", "Group B", "Group C", "Group D"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "docs/HIGH_SIGNAL_AGENT_PROTOCOL.md": {
+        "min_chars": 2000,
+        "min_words": 300,
+        "required_sections": ["HIGH-SIGNAL AGENT PROTOCOL", "Primary Objective", "Context", "Invariants"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
     "CITATION.cff": {
         "min_chars": 600,
         "min_words": 80,
