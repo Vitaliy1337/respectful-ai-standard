@@ -132,9 +132,9 @@ class TestRespectLint(unittest.TestCase):
         raw = "почини память в питоне короче"
         analyzer = PromptAnalyzer(raw)
         remediation = analyzer.generate_remediation()
-        self.assertIn("Уважаемый агент", remediation)
-        self.assertIn("Контекст и стек:", remediation)
-        self.assertIn("Критерии готовности", remediation)
+        self.assertIn("Respected Agent", remediation)
+        self.assertIn("Context & Stack:", remediation)
+        self.assertIn("Definition of Done", remediation)
         self.assertNotIn("короче", remediation)
 
     def test_12_json_serializable(self):
@@ -189,7 +189,7 @@ class TestRespectLint(unittest.TestCase):
         remediated = analyzer.generate_remediation()
         self.assertNotIn("тупой", remediated)
         self.assertNotIn("ппц", remediated)
-        self.assertIn("Уважаемый агент", remediated)
+        self.assertIn("Respected Agent", remediated)
 
     def test_17_chinese_anchor_detection(self):
         """Verify Chinese cognitive anchor '尊敬的智能体' adds 15 respect points."""

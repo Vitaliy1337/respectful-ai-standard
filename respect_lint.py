@@ -339,16 +339,16 @@ class PromptAnalyzer:
         clean_prompt = clean_prompt.strip()
 
         return (
-            "Уважаемый агент, выполни инженерную задачу: " + (clean_prompt or "[сформулируйте цель]") + "\n\n"
-            "### 1. Контекст и стек:\n"
-            "- Язык и среда: [укажите стек, например: Python 3.12 / TypeScript 5.4]\n"
-            "- Затронутые модули: [пути к файлам или сервисам]\n\n"
-            "### 2. Ограничения и инварианты:\n"
-            "- Сохранить обратную совместимость API contracts.\n"
-            "- Не подключать тяжелых внешних зависимостей без обоснования.\n\n"
-            "### 3. Критерии готовности (Definition of Done):\n"
-            "- Код полностью типизирован и протестирован (pytest / npm test).\n"
-            "- Предоставлен воспроизводимый сценарий верификации."
+            "Respected Agent, please execute the engineering task: " + (clean_prompt or "[formulate objective]") + "\n\n"
+            "### 1. Context & Stack:\n"
+            "- Language and runtime: [specify stack, e.g., Python 3.12 / TypeScript 5.4]\n"
+            "- Affected modules: [paths to files, packages, or services]\n\n"
+            "### 2. Constraints & Invariants:\n"
+            "- Preserve strict backward compatibility for all API contracts.\n"
+            "- No heavy external dependencies without formal justification.\n\n"
+            "### 3. Definition of Done (DoD):\n"
+            "- Code is fully typed and verified with unit tests (pytest / npm test).\n"
+            "- Deterministic reproduction and verification script provided."
         )
 
 

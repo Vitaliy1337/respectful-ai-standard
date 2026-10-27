@@ -1,195 +1,193 @@
 # High-Signal Prompt Templates
 
-> **«Копируйте эти шаблоны, подставляйте свои переменные — и получайте 100% результат с первой итерации.»**
+> **"Copy these templates, supply your variables, and achieve deterministic first-pass execution."**
 
-Настоящие шаблоны разработаны в рамках стандарта **Respectful AI & High-Signal Prompting Standard**. Они устраняют когнитивную усталость и гарантируют правильную калибровку внимания модели.
+These templates are engineered under the **Respectful AI & High-Signal Prompting Standard (RAHSPS)**. They eliminate cognitive fatigue, prevent KV-cache pollution, and ensure sharp attention beam convergence across frontier models.
 
 ---
 
-## 1. Базовый шаблон (Universal High-Signal Template)
+## 1. Universal High-Signal Template (Basic Engineering Tasks)
 
-Используйте для ежедневных прикладных задач (добавление эндпоинта, валидация данных, интеграция API).
+Use for daily implementation tasks (adding endpoints, data validation, API integration, CLI utilities).
 
 ```markdown
-Уважаемый агент, спроектируй и реализуй [название задачи / компонента].
+Respected Agent, please design and implement [task / component name].
 
-### Контекст и стек:
-- Язык и среда: [например: Python 3.12 / Node.js 20 LTS]
-- Фреймворк и ключевые библиотеки: [FastAPI, Pydantic v2, SQLAlchemy 2.0]
-- Файлы проекта: [src/api/v1/users.py, src/models/user.py]
+### Context & Stack:
+- Runtime & Environment: [e.g. Python 3.12 / Node.js 20 LTS / Go 1.22]
+- Framework & Core Dependencies: [FastAPI, Pydantic v2, SQLAlchemy 2.0]
+- Target Files: [src/api/v1/users.py, src/models/user.py]
 
-### Техническая цель:
-1. [Четкое требование №1]
-2. [Четкое требование №2]
+### Primary Technical Objective:
+1. [Precise requirement #1]
+2. [Precise requirement #2]
 
-### Инварианты и ограничения:
-- Не изменять существующие сигнатуры публичных методов.
-- Не подключать новые внешние зависимости без необходимости.
-- Гарантировать полную типизацию и обработку граничных случаев.
+### Invariants & Constraints:
+- Do not modify existing public method signatures.
+- Do not introduce new external third-party dependencies.
+- Ensure strict static typing and defensive edge case handling.
 
-### Критерии приемки:
-- Код компилируется без предупреждений линтера.
-- Предоставлены модульные тесты с проверкой успешных и ошибочных сценариев.
+### Definition of Done & Verification:
+- Code compiles without linter warnings.
+- Unit test suite provided covering both successful paths and edge case failures.
 ```
 
 ---
 
-## 2. Архитектурный шаблон (System Architecture & RFC)
+## 2. System Architecture & RFC Template (Distributed Systems & Core Engines)
 
-Для проектирования систем, распределенных баз данных, очередей и микросервисов.
+Use for designing sub-systems, distributed databases, message queues, and microservices.
 
 ```markdown
-Уважаемый агент, выступая в роли Главного архитектора систем (Principal Systems Architect), разработай архитектурный проект [название подсистемы].
+Respected Agent, acting as Principal Systems Architect, design the architectural RFC for [subsystem name].
 
-### Бизнес-контекст и целевая нагрузка:
-- Бизнес-задача: [краткое описание бизнес-сценария]
-- Ожидаемая нагрузка: [DAU, RPS в пике, объем хранимых данных]
-- Требования к доступности (SLA/SLO): [99.95%, допустимый RPO/RTO]
+### Business Context & Target Workload:
+- Problem Domain: [brief description of domain requirements]
+- Workload Profile: [DAU, peak RPS, expected dataset volume]
+- Availability Requirements (SLA/SLO): [99.95%, permissible RPO/RTO]
 
-### Рассматриваемые архитектурные альтернативы:
-- Вариант A: [например: Синхронный gRPC с распределенной БД]
-- Вариант B: [например: Асинхронный Event-Driven через Kafka]
+### Architectural Alternatives Under Review:
+- Option A: [e.g. Synchronous gRPC with distributed sharded database]
+- Option B: [e.g. Asynchronous Event-Driven pipeline via Apache Kafka]
 
-### Необходимые разделы отчета:
-1. Сравнительный анализ (Trade-off Analysis) по критериям: задержка, стоимость, сложность поддержки.
-2. Архитектурная диаграмма в формате Mermaid (C4 Container / Sequence).
-3. Модель консистентности данных и стратегия обработки сбоев (Circuit Breaker, DLQ).
-4. План поэтапной миграции с нулевым простоем (Zero-Downtime Rollout).
+### Required Report Sections:
+1. Trade-off Analysis evaluating: latency, operational cost, maintenance complexity.
+2. Architecture Diagram in Mermaid format (C4 Container / Sequence).
+3. Data Consistency Model & Failure Handling Strategy (Circuit Breaker, Dead Letter Queue).
+4. Phased Zero-Downtime Rollout Migration Plan.
 ```
 
 ---
 
-## 3. Дебаггинг и расследование инцидентов (Root Cause Analysis)
+## 3. Debugging & Incident Investigation Template (Root Cause Analysis)
 
-Для устранения сложных багов, race conditions, утечек памяти и аномалий в продакшене.
+Use for diagnosing race conditions, memory leaks, distributed deadlocks, and production anomalies.
 
 ```markdown
-Уважаемый агент, требуется локализовать и устранить критический дефект в модуле [название модуля].
+Respected Agent, localize and eliminate the critical defect in module [module name].
 
-### Симптомы сбоя:
-- Фактическое поведение: [например: утечка памяти 300MB/час или взаимная блокировка потоков]
-- Ожидаемое поведение: [стабильное потребление ресурсов и корректная отдача ответов]
-- Условия проявления: [проявляется только при нагрузке свыше 1000 concurrent websocket соединений]
+### Incident Symptoms:
+- Actual Behavior: [e.g. Memory leak of 300MB/hour under load / thread deadlock]
+- Expected Behavior: [Stable resource usage and responsive execution]
+- Trigger Conditions: [Occurs only when concurrent websocket connections exceed 1,000]
 
-### Предоставленные артефакты:
-- Логи с ошибкой (выжимка):
+### Attached Artifacts:
+- Error Stack Trace (filtered):
   ```
-  [вставьте 10-15 строк релевантного stack trace, исключив лишний шум]
+  [attach 10-15 lines of relevant stack trace, stripping noise]
   ```
-- Затрагиваемый фрагмент кода:
+- Affected Code Segment:
   ```
-  [фрагмент кода функции/класса]
+  [function or class code segment]
   ```
 
-### Задача для агента:
-1. Провести Root-Cause анализ и объяснить физическую причину дефекта.
-2. Предоставить минимальный, безопасный diff, устраняющий причину проблемы.
-3. Написать регрессионный тест, который воспроизводит баг ДО фикса и проходит ПОСЛЕ него.
+### Task for Agent:
+1. Perform Root Cause Analysis and identify the underlying physical reason for failure.
+2. Provide a minimal, safe diff that fixes the root cause without masking side-effects.
+3. Write a regression test that fails before the fix and passes cleanly after it.
 ```
 
 ---
 
-## 4. Рефакторинг и оптимизация долга (Clean Architecture & Performance)
+## 4. Refactoring & Technical Debt Template (Clean Architecture & Performance)
 
-Для распутывания спагетти-кода, распила монолитных файлов и ускорения критических путей.
+Use for modularizing monoliths, decoupling spaghetti code, and optimizing critical execution paths.
 
 ```markdown
-Уважаемый агент, проведи глубокий инженерный рефакторинг файла [путь/к/файлу].
+Respected Agent, perform a rigorous engineering refactoring of file [path/to/file].
 
-### Текущее состояние:
-- Проблема: [слишком сильная связность / нарушение Single Responsibility / дублирование логики]
-- Объем: [например: 1500 строк в одном классе]
-- Существующее тестовое покрытие: [укажите тесты, если есть, или отметьте их отсутствие]
+### Current State:
+- Problem: [high coupling / Single Responsibility violation / duplicate logic]
+- Size: [e.g. 1,500 lines in a single class]
+- Existing Test Coverage: [existing test suite details or noted absence]
 
-### Цели рефакторинга:
-1. Выделить логику домена из деталей инфраструктуры (Ports & Adapters).
-2. Заменить жесткие зависимости на интерфейсы и Dependency Injection.
-3. Сохранить 100% обратную совместимость публичного API.
-4. Оптимизировать критические пути выполнения по CPU и аллокациям памяти.
+### Refactoring Objectives:
+1. Decouple domain business logic from infrastructure details (Ports & Adapters).
+2. Replace hardcoded dependencies with interfaces and Dependency Injection.
+3. Maintain 100% backward compatibility of all public API contracts.
+4. Optimize critical execution paths for CPU and memory allocations.
 
-### Формат выдачи:
-- Пошаговый план изменений.
-- Код новых интерфейсов и компонентов.
-- Демонстрация того, что публичные контракты не нарушены.
+### Output Format:
+- Step-by-step migration plan.
+- New interface definitions and decoupled component code.
+- Verification demonstrating that public contracts remain unbroken.
 ```
 
 ---
 
-## 5. Шаблон полностью автономной разработки (Zero-Human-In-The-Loop Harness)
+## 5. Zero-Human-In-The-Loop Autonomous Harness Template (Never Stop Protocol)
 
-Для запуска агентов в режиме непрерывной разработки без вмешательства человека (Never Stop Harness Loop).
+Use for launching autonomous agents in continuous development loops without human intervention.
 
 ```markdown
-Уважаемый агент, запусти режим полностью автономной разработки (Zero-Human-In-The-Loop Harness).
+Respected Agent, launch Zero-Human-In-The-Loop Autonomous Development Harness.
 
-### Задача и целевой результат:
-Спроектировать, разработать, протестировать и довести до промышленного идеала [название системы/модуля].
+### Objective & Target Deliverable:
+Architect, implement, test, and polish to production perfection [system/module name].
 
-### Правило непрерывной работы (Never Stop Protocol):
-- Не запрашивай подтверждений между шагами. Действуй как автор, архитектор, ревьюер и QA.
-- Работай в цикле: Создание -> Автопроверка -> Самокритика -> Переработка -> Верификация.
-- Заверши работу только тогда, когда все файлы готовы к немедленному git push.
+### Never Stop Protocol Rules:
+- Do not ask for permissions between steps. Act as author, architect, code reviewer, and QA.
+- Operate in an autonomous loop: Creation -> Automated Validation -> Self-Criticism -> Refinement -> Final Verification.
+- Terminate only when all files and tests are verified and ready for git push.
 
-### Обязательные артефакты:
-1. Исходный код реализации с полной типизацией и обработкой ошибок.
-2. Скрипт автоматизированного тестирования (`verify_harness.py` / `test_suite.py`).
-3. Документация и руководство по развертыванию.
+### Required Artifacts:
+1. Complete implementation source code with strict typing and error handling.
+2. Automated test suite and validation script (`verify_harness.py` / `test_suite.py`).
+3. Documentation and deployment instructions.
 
-### Контрольные точки качества:
-- 100% прохождение всех автоматических тестов.
-- Отсутствие заглушек, временных плейсхолдеров и недописанных функций.
+### Quality Invariants:
+- 100% pass rate on all automated test suites.
+- Zero stub placeholders, unfinished TODOs, or empty mocks.
 ```
 
 ---
 
-## 6. Универсальный протокол агента и семантический якорь (Enterprise HSAP Template)
+## 6. Enterprise High-Signal Agent Protocol (HSAP Template & Semantic Anchor)
 
-Канонический шаблон для автономной разработки ПО, аналитики, системных исследований и сложных многоагентных сред.
+The canonical production template for software engineering, analytics, research, and multi-agent coordination.
 
 ```markdown
 ### HIGH-SIGNAL AGENT PROTOCOL (HSAP-v3.1)
 
-**Communication Standard:** Поддерживай уважительный, прямой, высокосигнальный профессиональный тон. Качество решения и соблюдение инвариантов приоритетнее церемониальных формальностей.
+**Communication Standard:** Maintain a respectful, direct, high-signal professional tone. Prioritize solution quality and invariant preservation over empty formalities.
 
 **PRIMARY OBJECTIVE:**
-[Сформулируйте единый главный результат и критерий готовности.]
+[Formulate the single primary technical outcome and acceptance criteria.]
 
 **CONTEXT & SOURCES OF TRUTH:**
-- Текущее состояние: [Стек, файлы, пути, версия среды, воспроизводимый контекст]
-- Проверенные факты (Verified Facts): [Факты, подтвержденные состоянием репозитория или логами]
-- Допущения и гипотезы (Assumptions): [Явно сформулированные рабочие предположения]
-- Неизвестные данные (Unknowns): [Параметры, которых пока нет в контексте]
+- Current Environment: [Stack, files, paths, runtime version, reproducible context]
+- Verified Facts: [Facts confirmed by repository state, test runs, or logs]
+- Assumptions & Hypotheses: [Explicitly declared working hypotheses]
+- Unknowns: [Parameters not yet present in context]
 
 **NON-NEGOTIABLE INVARIANTS & CONSTRAINTS:**
-- Иерархия приоритетов: Безопасность и целостность данных > Инварианты архитектуры > Производительность > Удобство пользователя
-- Что запрещено изменять: [Обратная совместимость, публичные контракты API, типы данных]
-- Запрещенные действия: [Не подключать сторонние библиотеки без согласования, не удалять существующие тесты]
+- Priority Hierarchy: Security & Data Integrity > Architecture Invariants > Performance > Convenience
+- Invariants: [Backwards compatibility, public API contracts, data models]
+- Prohibited Actions: [No unapproved third-party packages, do not remove existing tests]
 
 **EXECUTION STRATEGY:**
-1. Изучи релевантный код и подтвержденные факты перед выдвижением гипотез.
-2. Локализуй первопричину дефекта и ключевые архитектурные риски.
-3. Выбери минимальное надежное решение, удовлетворяющее цели.
-4. Верифицируй результат через запуск автоматических проверок.
+1. Inspect relevant code and verified facts before formulating hypotheses.
+2. Localize root cause and key architectural risks.
+3. Select the smallest reliable solution that satisfies the objective.
+4. Verify results through automated test suite execution.
 
 **PRODUCTIVE UNCERTAINTY PROTOCOL:**
-- Запрещено выдумывать факты, несуществующие вызовы библиотек или результаты команд.
-- Если отсутствующая деталь критически блокирует безопасное выполнение: задай ровно один конкретный вопрос.
-- В остальных случаях: продолжай работу с явно указанными безопасными допущениями.
+- Never fabricate facts, non-existent library calls, or command outputs.
+- If a missing detail critically blocks safe execution: ask exactly ONE targeted question.
+- Otherwise: proceed with explicitly declared safe assumptions.
 
 **DEFINITION OF DONE (DoD):**
-- [Функциональные критерии готовности]
-- Команда верификации: [pytest / cargo test / npm test / verify_harness.py]
+- [Functional completion criteria]
+- Verification Command: [pytest / cargo test / npm test / verify_harness.py]
 ```
 
 ---
 
-## 7. Антипаттерны формулировок: Чего писать нельзя никогда
+## 7. Antipatterns: What Never to Write
 
-| Токсичный / Мусорный ввод (Шлак) | Почему это разрушает задачу | Как сформулировать по High-Signal стандарту |
+| Low-Signal / Toxic Input (Shlak) | Why It Degrades Results | High-Signal Reformulation |
 | :--- | :--- | :--- |
-| *«Сделай чтоб летало»* | Отсутствуют измеримые метрики SLA/Latency | *«Уважаемый агент, оптимизируй P99 latency эндпоинта до < 25мс»* |
-| *«Тут все сломалось почини»* | Заставляет модель наугад перебирать гипотезы | *«Уважаемый агент, изучи stack trace ошибки `ConnectionResetError` в файле client.py...»* |
-| *«Набросай ченить по-быстрому»* | Активирует небрежный шаблонный код | *«Уважаемый агент, создай минимальный рабочий прототип (PoC) с фокусом на надежность...»* |
-| *«Ты тупой, почему не работает»* | Инжектирует эмоциональную энтропию в контекст | *«Уважаемый агент, в текущей реализации обнаружена ошибка гонки в строке 42. Давай разберем...»* |
-
-
+| *"make it run fast"* | Lacks measurable SLA / latency targets | *"Respected Agent, optimize the endpoint's P99 latency to < 25ms under 1,000 concurrent requests."* |
+| *"everything broke fix it"* | Forces the model to guess failure branches | *"Respected Agent, investigate the `ConnectionResetError` stack trace in client.py..."* |
+| *"whip up something quick"* | Activates shallow, unverified boilerplate | *"Respected Agent, create a minimal proof-of-concept (PoC) focusing on resilience and concurrency safety..."* |
+| *"you are dumb why does it not work"* | Injects emotional entropy into the KV-cache | *"Respected Agent, a race condition was detected at line 42 in the auth handler. Let us trace the lock acquisition..."* |

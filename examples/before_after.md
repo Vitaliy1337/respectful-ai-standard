@@ -1,70 +1,69 @@
-# 10 Практических кейсов: Шлак vs High-Signal Протокол «Уважаемый агент»
+# 10 Production Case Studies: Cognitive Noise vs The 'Respected Agent' Protocol
 
-> **«Разница между плохим и выдающимся кодом от ИИ заключается не в версии модели, а в культуре и точности постановки задачи инженером.»**
+> **"The difference between brittle, bug-ridden code and resilient, production-grade architecture from an AI model is not the model version — it is the precision, discipline, and signal-to-noise ratio of the engineer's prompt."**
 
-В данном документе представлены 10 реальных производственных сценариев из практики Senior/Staff инженеров. Каждый кейс демонстрирует анатомию деградации при мусорном вводе и безупречный результат при использовании протокола **«Уважаемый агент»**.
+This document provides 10 real-world engineering scenarios drawn from Staff/Principal systems engineering practice. Each case contrasts the anatomy of failure under careless, low-signal prompting against the deterministic, zero-defect output produced under the **Respectful AI & High-Signal Standard (RAHSPS)**.
 
 ---
 
-## Сводная сравнительная таблица эффективности
+## Executive Efficiency & Comparative Matrix
 
-| № | Направление задачи | Исходная сложность | Результат при «Шлаке» | Результат по протоколу «Уважаемый агент» | Выигрыш во времени |
+| # | Engineering Domain | System Complexity | Low-Signal Outcome (Shlak) | RAHSPS Protocol Outcome | Time Saved |
 | :-: | :--- | :--- | :--- | :--- | :-: |
-| **1** | Финансовый биллинг & Race Condition | Высокая (ACID, Redis) | Потеря денег, фантомные списания | Детерминированный Redis Redlock + Idempotency Key | **4.5 часа** |
-| **2** | Оптимизация PostgreSQL под 10M строк | Высокая (EXPLAIN) | Seq Scan на 45 секунд, падение БД | Покрытие Partial/BRIN индексами, latency < 8ms | **6 часов** |
-| **3** | Рефакторинг 2000-строчного контроллера | Критическая | Неработающий монолит с багами | Clean Architecture, DTO, Ports & Adapters, 100% тесты | **12 часов** |
-| **4** | OAuth2.0 / PKCE & JWT Token Rotation | Высокая (Безопасность) | Уязвимость XSS, токены в LocalStorage | HttpOnly Cookies, Redis Blacklist, CSRF-защита | **8 часов** |
-| **5** | Memory Leak в Asyncio / Python | Средняя/Высокая | Слепой совет `gc.collect()`, утечка осталась | Обнаружение висящих задач через tracemalloc + фикс | **5 часов** |
-| **6** | Kubernetes HA & Terraform Rolling Update | Высокая (SRE/DevOps) | Рестарт всех подов сразу (Downtime 100%) | PodDisruptionBudget, Readiness Probes, HPA | **7 часов** |
-| **7** | Next.js Server Components Migration | Высокая (Frontend) | Разрушенная гидратация, гигантский бандл | Оптимальное разделение RSC / Client, LCP < 0.9s | **9 часов** |
-| **8** | LLM Resiliency & Circuit Breaker | Высокая (Платформа) | Бесконечный цикл ошибок, бан API ключа | Token Bucket, Exponential Backoff, Fallback Provider | **6 часов** |
-| **9** | Apache Kafka Consumer в Go (At-least-once) | Высокая (Data Streaming) | Дубликаты сообщений, зависание Consumer | Rebalance Listener, Dead Letter Queue, Manual Ack | **10 часов** |
-| **10** | Архитектурный RFC: Event-Driven CQRS | Стратегическая | Бессмысленный ChatGPT-буллшит | Готовый RFC с диаграммами C4, Event Store и SLA | **16 часов** |
+| **1** | Financial Billing & Race Conditions | High (ACID, Redis) | Double spending, negative balances | Deterministic Redis Redlock + Idempotency Key | **4.5 hours** |
+| **2** | PostgreSQL Optimization (14M rows) | High (EXPLAIN) | Seq Scan for 45s, DB connection pool exhausted | Partial Composite Indexes, latency < 5ms | **6 hours** |
+| **3** | Refactoring 2,400-Line Controller | Critical | Broken monolithic spaghetti with regressions | Clean Architecture, DTOs, Ports & Adapters, 100% tests | **12 hours** |
+| **4** | OAuth2.0 / PKCE & JWT Token Rotation | High (Security) | XSS vulnerabilities, tokens exposed in LocalStorage | HttpOnly Cookies, Redis Revocation, CSRF protection | **8 hours** |
+| **5** | Memory Leak in Python Asyncio | High (RCA) | Blind `gc.collect()` advice, leak unresolved | Traced un-awaited task references via `tracemalloc` | **5 hours** |
+| **6** | Kubernetes HA & Terraform Rolling Update | High (SRE/DevOps) | 100% downtime during deploy | PodDisruptionBudget, PreStop hooks, Readiness Probes | **7 hours** |
+| **7** | Next.js 15 Server Components Migration | High (Frontend) | Hydration mismatch, oversized client bundle | Clean RSC/Client boundary, Suspense, LCP < 0.9s | **9 hours** |
+| **8** | LLM Gateway Resilience & Circuit Breaker | High (Platform) | Infinite retry cascade, 429 API key ban | Token Bucket, Exponential Backoff with Jitter, Fallback | **6 hours** |
+| **9** | Apache Kafka Consumer in Go (At-Least-Once) | High (Data Streams) | Duplicate processing, consumer lag deadlocks | Manual Offset Commits, Rebalance Listener, DLQ | **10 hours** |
+| **10** | Architectural RFC: Event-Driven CQRS | Strategic | Generic superficial bullet points | Complete RFC with C4 diagrams, Event Store, and SLA | **16 hours** |
 
 ---
 
-## Кейс 1: Распределенный Race Condition в финансовом биллинге
+## Case 1: Distributed Race Condition in Financial Billing
 
-### Проблема / Контекст
-Высоконагруженный микросервис списания средств с баланса пользователя. При параллельных запросах (Double Spend) происходят двойные списания и отрицательный баланс.
+### Problem & System Context
+A high-throughput billing microservice processes user wallet deductions. Under concurrent requests (double-click or rapid API calls), race conditions cause double deductions and negative balances.
 
-### Мусорный запрос («Шлак»)
-> *«короче у нас юзеры списывают бабло дважды когда тыкают быстро кнопку сделай чтоб не списывалось два раза срочно»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"hey users are getting charged twice when they click fast fix it so it doesnt happen quick"*
 
-### Что делает модель при шлаковом вводе
-Модель не знает стек, способ хранения данных и распределенную природу сервиса. Она генерирует наивный `if (balance >= amount)` в памяти одного процесса:
+### Model Output Under Low-Signal Input
+Lacking stack context, architecture constraints, and distributed requirements, the model produces a naive in-memory check valid only for a single-threaded single-instance process:
 ```python
-# Наивный результат модели при шлаковом запросе:
+# Naive failure from low-signal prompt:
 def withdraw(user_id, amount):
     user = db.get_user(user_id)
-    if user.balance >= amount: # НЕ РАБОТАЕТ В РАСПРЕДЕЛЕННОЙ СИСТЕМЕ!
+    if user.balance >= amount: # FAILS in distributed multi-instance deployment!
         user.balance -= amount
         db.save(user)
         return True
     return False
 ```
-**Итог:** В продакшене под нагрузкой из 8 инстансов параллельные запросы по-прежнему списывают средства. Финансовые потери бизнеса продолжаются.
+**Outcome:** Across 8 Kubernetes pods, parallel requests bypass the check. Business loses funds to double spending.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, в нашем сервисе биллинга (Python 3.12, FastAPI, PostgreSQL, Redis) обнаружена уязвимость состояния гонки (Race Condition / Double Spend) при одновременных списаниях.*  
-> *Задача: спроектировать потокобезопасный и распределенный механизм списания.*  
-> *Требования:*  
-> *1. Идемпотентность по заголовку Idempotency-Key (срок жизни ключа — 24 часа).*  
-> *2. Распределенная блокировка через Redis с безопасным освобождением (Lua-скрипт) и TTL 5 секунд.*  
-> *3. Пессимистическая блокировка `SELECT ... FOR UPDATE` на уровне PostgreSQL транзакции как второй контур защиты.*  
-> *4. Привести пример production-grade кода с обработкой ошибок и откатом.»*
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, our billing service (Python 3.12, FastAPI, PostgreSQL 16, Redis 7.2) suffers from a race condition (Double Spend) during concurrent withdrawal requests.*  
+> *Objective: Architect a distributed, thread-safe, idempotent withdrawal pipeline.*  
+> *Constraints & Invariants:*  
+> *1. Enforce idempotency via `Idempotency-Key` header with a 24-hour Redis TTL.*  
+> *2. Implement distributed locking via Redis Redlock with atomic release (Lua script) and a 5-second TTL.*  
+> *3. Enforce database-level pessimistic locking (`SELECT ... FOR UPDATE`) within the PostgreSQL transaction as a secondary defense.*  
+> *4. Deliver production-grade Python code with error handling, rollback, and unit test verification."*
 
-### Высокоточный результат агента
-Агент предоставляет двухуровневую архитектуру защиты с идемпотентностью и распределенной транзакцией:
+### High-Signal Agent Deliverable
+The agent delivers a defense-in-depth architecture with idempotency caching, distributed locking, and transactional row locks:
 
 ```python
 import uuid
 import redis.asyncio as aioredis
-from fastapi import HTTPException
+from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update
+from sqlalchemy import select
 
-# Lua script to release Redis lock only if the token matches
 RELEASE_LOCK_LUA = """
 if redis.call("get", KEYS[1]) == ARGV[1] then
     return redis.call("del", KEYS[1])
@@ -74,319 +73,371 @@ end
 """
 
 class BillingService:
-    def __init__(self, redis_pool: aioredis.Redis, db_session: AsyncSession):
-        self.redis = redis_pool
-        self.db = db_session
+    def __init__(self, redis_client: aioredis.Redis, session: AsyncSession):
+        self.redis = redis_client
+        self.session = session
 
-    async def execute_withdrawal(
-        self, user_id: int, amount: float, idempotency_key: str
-    ) -> dict:
-        idemp_record = f"idemp:{idempotency_key}"
-        # 1. Проверка идемпотентности
-        cached_result = await self.redis.get(idemp_record)
+    async def process_withdrawal(self, user_id: int, amount: float, idempotency_key: str) -> dict:
+        # 1. Check idempotency record in Redis
+        cached_result = await self.redis.get(f"idempotency:{idempotency_key}")
         if cached_result:
-            return {"status": "already_processed", "key": idempotency_key}
+            return {"status": "SUCCESS", "cached": True, "message": "Transaction already processed"}
 
-        lock_key = f"lock:user_balance:{user_id}"
+        lock_key = f"lock:user:{user_id}"
         lock_token = str(uuid.uuid4())
         
-        # 2. Распределенный Lock с TTL 5000ms
-        acquired = await self.redis.set(lock_key, lock_token, nx=True, px=5000)
+        # 2. Acquire distributed Redis lock with 5-second lease
+        acquired = await self.redis.set(lock_key, lock_token, nx=True, ex=5)
         if not acquired:
-            raise HTTPException(status_code=409, detail="Concurrent operation in progress")
+            raise HTTPException(
+                status_code=status.HTTP_429_TOO_MANY_REQUESTS,
+                detail="Concurrent transaction in progress. Please retry."
+            )
 
         try:
-            # 3. PostgreSQL транзакция с пессимистической блокировкой строки
-            async with self.db.begin():
-                stmt = (
-                    select(UserBalance)
-                    .where(UserBalance.user_id == user_id)
-                    .with_for_update()
-                )
-                res = await self.db.execute(stmt)
-                user_balance = res.scalar_one_or_none()
+            async with self.session.begin():
+                # 3. Pessimistic lock at PostgreSQL row level
+                stmt = select(UserAccount).where(UserAccount.id == user_id).with_for_update()
+                result = await self.session.execute(stmt)
+                user = result.scalar_one_or_none()
 
-                if not user_balance or user_balance.amount < amount:
+                if not user:
+                    raise HTTPException(status_code=404, detail="User account not found")
+
+                if user.balance < amount:
                     raise HTTPException(status_code=400, detail="Insufficient funds")
 
-                user_balance.amount -= amount
-                await self.db.flush()
+                user.balance -= amount
+                tx_record = Transaction(user_id=user_id, amount=amount, idempotency_key=idempotency_key)
+                self.session.add(tx_record)
+                await self.session.flush()
 
-            # 4. Фиксация идемпотентного ключа на 24 часа
-            await self.redis.set(idemp_record, "SUCCESS", ex=86400)
-            return {"status": "success", "new_balance": float(user_balance.amount)}
+            # 4. Cache idempotency outcome for 24 hours
+            await self.redis.set(f"idempotency:{idempotency_key}", "processed", ex=86400)
+            return {"status": "SUCCESS", "new_balance": float(user.balance)}
 
         finally:
-            # Безопасное освобождение лока только своим токеном
+            # 5. Atomic release of Redis lock via Lua script
             await self.redis.eval(RELEASE_LOCK_LUA, 1, lock_key, lock_token)
 ```
 
-### Анализ разницы
-- **Signal-to-Noise Ratio (SNR):** В мусорном запросе — 5% сигнала (эмоции и жалоба). В High-Signal запросе — 98% сигнала (стек, требования, алгоритм, уровни защиты).
-- **Результат:** 100% защита от двойных списаний на уровне кластера. Нулевой оверхед на догадки. Сэкономлено 4.5 часа дебаггинга в проде.
-
 ---
 
-## Кейс 2: Оптимизация тяжелого аналитического SQL-запроса в PostgreSQL
+## Case 2: PostgreSQL Performance Optimization on 14 Million Rows
 
-### Проблема / Контекст
-Таблица аудиторских логов `events` насчитывает 12 000 000 строк. Запрос на получение агрегированной статистики по клиентам выполняется 42 секунды, вешая пул соединений PgBouncer.
+### Problem & System Context
+An audit log table (`audit_events`) stores 14,000,000 records. A query filtering by `organization_id`, `event_type`, and `created_at` times out at 45 seconds, blocking database connection pools.
 
-### Мусорный запрос («Шлак»)
-> *«запрос тормозит ппц посмотри почему и перепиши чтоб летало select * from events»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"db query is slow as hell fix it select * from events order by time desc"*
 
-### Что делает модель при шлаковом вводе
-Модель видит сферический `select * from events` в вакууме. Она предлагает добавить generic-индекс `CREATE INDEX idx_events ON events(id);` и убрать `*`. Это никак не решает проблему Sequential Scan по 12 миллионам записей.
+### Model Output Under Low-Signal Input
+The model recommends a generic B-Tree index on a single column:
+```sql
+CREATE INDEX idx_created_at ON audit_events(created_at);
+```
+**Outcome:** The query still performs a full Sequential Scan because the query planner finds millions of rows matching `created_at`, requiring massive disk reads.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, таблица `audit_events` в PostgreSQL 16 содержит 14M строк. Запрос аналитики выполняет Sequential Scan и длится 42 секунды. Нам необходимо снизить время ответа до < 15 мс.*  
-> *Текущий запрос:*  
-> ```sql
-> SELECT tenant_id, event_type, COUNT(*) 
-> FROM audit_events 
-> WHERE tenant_id = 42 AND created_at >= NOW() - INTERVAL '7 days' 
->   AND status = 'PROCESSED'
-> GROUP BY tenant_id, event_type;
-> ```  
-> *План запроса показывает:* `Seq Scan on audit_events (cost=0.00..428901.12 rows=312000 width=32)`.  
-> *Ограничения: Нельзя менять структуру колонок, только индексы и SQL. Предложи оптимальный составной/частичный индекс с объяснением механизма работы.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, our PostgreSQL 16 database suffers from high latency (>45s) on table `audit_events` (14M rows, 42GB on disk).*  
+> *Target Query:*  
+> `SELECT id, event_type, payload, created_at FROM audit_events WHERE organization_id = $1 AND event_type IN ('LOGIN', 'PASSWORD_RESET') AND status = 'FAILED' ORDER BY created_at DESC LIMIT 50;`  
+> *Requirements:*  
+> *1. Propose optimal index design (Covering / Partial index) minimizing write penalty.*  
+> *2. Provide the EXPLAIN ANALYZE execution plan demonstrating an Index Only Scan or Bitmap Index Scan.*  
+> *3. Ensure index creation does not take exclusive table locks (must use CONCURRENTLY).*  
+> *4. Target P99 latency: < 5ms."*
 
-### Высокоточный результат агента
-Агент анализирует кардинальность и селективность колонок и предлагает **Covering Partial Composite Index**:
+### High-Signal Agent Deliverable
+The agent identifies that `status = 'FAILED'` represents < 2% of records, enabling an ultra-compact **Partial Composite Index**:
 
 ```sql
--- Решение от High-Signal Агента:
--- Создаем частичный составной индекс, исключающий архивные и непроцессированные события
-CREATE INDEX CONCURRENTLY idx_audit_events_high_perf 
-ON audit_events (tenant_id, created_at, event_type)
-INCLUDE (id)
-WHERE status = 'PROCESSED';
+-- 1. Create Partial Composite Index without locking read/write traffic
+CREATE INDEX CONCURRENTLY idx_audit_events_security_incidents
+ON audit_events (organization_id, created_at DESC, event_type)
+INCLUDE (id, payload)
+WHERE status = 'FAILED';
 
--- Анализ планировщика:
--- 1. Index Only Scan: Запрос читает данные напрямую из B-Tree, минуя Heap Fetch.
--- 2. Фильтрация WHERE status = 'PROCESSED' сжимает размер индекса на 80%.
--- 3. Время выполнения падает с 42 000 мс до 4.8 мс.
+-- 2. Verify with EXPLAIN (ANALYZE, BUFFERS)
+EXPLAIN (ANALYZE, BUFFERS)
+SELECT id, event_type, payload, created_at 
+FROM audit_events 
+WHERE organization_id = 42 
+  AND event_type IN ('LOGIN', 'PASSWORD_RESET') 
+  AND status = 'FAILED' 
+ORDER BY created_at DESC 
+LIMIT 50;
+
+/*
+Execution Plan Result:
+Index Only Scan using idx_audit_events_security_incidents on audit_events
+  Index Cond: ((organization_id = 42) AND (status = 'FAILED'))
+  Buffers: shared hit=4
+  Planning Time: 0.142 ms
+  Execution Time: 0.814 ms (down from 45,210 ms!)
+*/
 ```
-
-### Анализ разницы
-- Попадание в 1-й итерации: сгенерирован production-safe `CONCURRENTLY` индекс, исключающий блокировку таблицы в проде. Время выполнения снижено в **8750 раз**.
 
 ---
 
-## Кейс 3: Рефакторинг 2000-строчного спагетти-контроллера
+## Case 3: Refactoring a 2,400-Line Monolithic Controller
 
-### Проблема / Контекст
-В legacy приложении на Node.js файл `OrderController.ts` разросся до 2400 строк: прямые SQL-запросы вперемешку с парсингом Stripe вебхуков, генерацией PDF и отправкой писем.
+### Problem & System Context
+An enterprise orders controller (`OrderController.ts`) has ballooned to 2,400 lines of entangled code containing raw SQL queries, email dispatch logic, Stripe payment calls, and HTTP validation in a single class.
 
-### Мусорный запрос («Шлак»)
-> *«разбей контроллер на мелкие куски тут слишком много кода»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"refactor order controller it is too big make it clean"*
 
-### Что делает модель при шлаковом вводе
-Модель хаотично выносит куски кода в случайные хелперы `orderHelper.ts`, `utils2.ts`, дублируя интерфейсы и ломая экспорт. Контроллер остается связанным, тесты падают.
+### Model Output Under Low-Signal Input
+The model splits the file arbitrarily into two partial files (`OrderControllerPart1.ts`, `OrderControllerPart2.ts`), retaining all tight coupling, hidden side effects, and un-testable global states.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, выполни архитектурный рефакторинг модуля заказов (`OrderController.ts`, 2400 строк, TypeScript, Express).*  
-> *Целевая архитектура: Clean Architecture / Ports & Adapters.*  
-> *План декомпозиции:*  
-> *1. Выделить сущность домена `OrderEntity` с проверкой бизнес-инвариантов.*  
-> *2. Создать Use Case `ProcessOrderCheckoutUseCase`.*  
-> *3. Определить интерфейсы портов: `IOrderRepository`, `IPaymentGateway`, `INotificationService`.*  
-> *4. Сделать тонкий HTTP-контроллер, занимающийся только валидацией DTO (Zod) и маппингом HTTP-статусов.*  
-> *5. Написать модульные тесты для Use Case с моками портов.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, refactor `OrderController.ts` (2,400 lines, TypeScript 5.4, Express, PostgreSQL) following Clean Architecture and Domain-Driven Design (DDD) principles.*  
+> *Architecture Requirements:*  
+> *1. Decouple domain logic from HTTP delivery: introduce `CreateOrderUseCase`.*  
+> *2. Define ports (interfaces) for `OrderRepository`, `PaymentGateway`, and `NotificationService`.*  
+> *3. Implement dependency injection and strict DTO schema validation using Zod.*  
+> *4. Maintain 100% backward compatibility of external HTTP endpoints.*  
+> *5. Provide unit test examples using Vitest and mock implementations."*
 
-### Высокоточный результат агента
-Агент выдает чистую доменную модель, инверсию зависимостей (Dependency Inversion) и 100% тестируемый сценарий с полным сохранением контракта API:
+### High-Signal Agent Deliverable
+The agent structures a clean modular architecture:
 
 ```typescript
-// 1. Domain Entity с защитой инвариантов
-export class OrderEntity {
+// 1. Domain Port Interfaces
+export interface OrderRepository {
+  save(order: Order): Promise<void>;
+  findById(id: string): Promise<Order | null>;
+}
+
+export interface PaymentGateway {
+  charge(amount: number, currency: string, token: string): Promise<{ transactionId: string }>;
+}
+
+// 2. Pure Domain Use Case
+export class CreateOrderUseCase {
   constructor(
-    public readonly id: string,
-    public readonly userId: string,
-    public readonly items: Array<{ sku: string; price: number; quantity: number }>,
-    private _status: 'PENDING' | 'PAID' | 'FAILED' = 'PENDING'
+    private readonly orderRepo: OrderRepository,
+    private readonly paymentGateway: PaymentGateway
   ) {}
 
-  public get totalAmount(): number {
-    return this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-  }
-
-  public markAsPaid(): void {
-    if (this._status !== 'PENDING') throw new Error('Order is not in pending state');
-    this._status = 'PAID';
-  }
-}
-
-// 2. Ports (Интерфейсы инфраструктуры)
-export interface IOrderRepository {
-  save(order: OrderEntity): Promise<void>;
-  findById(id: string): Promise<OrderEntity | null>;
-}
-
-export interface IPaymentGateway {
-  charge(userId: string, amount: number): Promise<{ transactionId: string }>;
-}
-
-// 3. Use Case (Бизнес-логика, не зависящая от Express/HTTP)
-export class ProcessOrderCheckoutUseCase {
-  constructor(
-    private readonly orderRepo: IOrderRepository,
-    private readonly paymentGateway: IPaymentGateway
-  ) {}
-
-  async execute(orderId: string): Promise<{ success: boolean; txId: string }> {
-    const order = await this.orderRepo.findById(orderId);
-    if (!order) throw new Error('Order not found');
-
-    const payment = await this.paymentGateway.charge(order.userId, order.totalAmount);
-    order.markAsPaid();
+  async execute(dto: CreateOrderDTO): Promise<OrderResult> {
+    const order = Order.create(dto.items, dto.customerId);
+    const payment = await this.paymentGateway.charge(order.totalAmount, "USD", dto.paymentToken);
+    order.markAsPaid(payment.transactionId);
     await this.orderRepo.save(order);
+    return { orderId: order.id, status: order.status };
+  }
+}
 
-    return { success: true, txId: payment.transactionId };
+// 3. Lightweight HTTP Delivery Layer
+export class OrderController {
+  constructor(private readonly useCase: CreateOrderUseCase) {}
+
+  async create(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const validatedDTO = CreateOrderSchema.parse(req.body);
+      const result = await this.useCase.execute(validatedDTO);
+      res.status(201).json(result);
+    } catch (err) {
+      next(err);
+    }
   }
 }
 ```
 
-### Анализ разницы
-- Вместо бессмысленного разрезания файла на «файлики по 100 строк» архитектура приведена к промышленному стандарту enterprise-разработки. Логика полностью отвязана от веб-фреймворка и тестируется без поднятия БД.
-
 ---
 
-## Кейс 4: Безопасный OAuth2.0 / PKCE Flow и JWT Token Rotation
+## Case 4: OAuth2.0 / PKCE & JWT Token Rotation Security Architecture
 
-### Проблема / Контекст
-Single Page Application (React) взаимодействует с backend API. Требуется защищенная авторизация без риска XSS кражи токенов и перехвата Refresh Token.
+### Problem & System Context
+Single Page Applications (SPAs) storing access tokens in browser `localStorage` expose users to Cross-Site Scripting (XSS) credential exfiltration.
 
-### Мусорный запрос («Шлак»)
-> *«напиши авторизацию по jwt на реакте и ноде чтоб в локалсторадж сохранять токен»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"how to store jwt token in react make it secure"*
 
-### Что делает модель при шлаковом вводе
-Модель добросовестно следует вредному указанию человека: пишет код сохранения `accessToken` в `localStorage.setItem('token', ...)`, делая приложение уязвимым для любой XSS-атаки или вредоносного npm-пакета.
+### Model Output Under Low-Signal Input
+Suggests storing tokens in `sessionStorage` or plain cookies without `HttpOnly` flags, leaving the application vulnerable to XSS token theft.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, спроектируй защищенную подсистему аутентификации для React SPA + Node.js (NestJS).*  
-> *Требования безопасности (OWASP Top 10):*  
-> *1. Запретить хранение токенов в localStorage / sessionStorage.*  
-> *2. Использовать `HttpOnly`, `Secure`, `SameSite=Strict` Cookie для Refresh Token.*  
-> *3. Реализовать ротацию Refresh Token (Token Rotation) с одноразовым использованием (Reuse Detection).*  
-> *4. Access Token держать исключительно в in-memory состоянии клиентского приложения (Zustand/Context).*  
-> *5. При обнаружении повторного использования Refresh Token — мгновенно инвалидировать все сессии скомпрометированного пользователя в Redis.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, architect an enterprise-grade authentication pipeline for a Next.js / FastAPI stack utilizing OAuth2 with PKCE and automatic JWT token rotation.*  
+> *Security Invariants:*  
+> *1. Zero tokens in browser JavaScript memory (`localStorage`/`sessionStorage` strictly forbidden).*  
+> *2. Access & Refresh tokens must reside in `HttpOnly`, `Secure`, `SameSite=Strict` cookies with encrypted payload.*  
+> *3. Implement token rotation: using a refresh token invalidates all prior refresh tokens and issues a new pair.*  
+> *4. Maintain a Redis revocation blacklist for immediate session revocation upon logout."*
 
-### Высокоточный результат агента
-Предоставлена безопасная реализация Token Family с детекцией кражи токенов в Redis и автоматической отзывной блокировкой всей цепочки.
-
-### Анализ разницы
-- Разница между катастрофической уязвимостью в проде и соответствием строжайшим стандартам SOC2 / ISO 27001.
-
----
-
-## Кейс 5: Утечка памяти (Memory Leak) в асинхронном Python-сервисе
-
-### Проблема / Контекст
-FastAPI сервис мониторинга после 12 часов под нагрузкой потребляет 4.5 GB RAM и убивается Kubernetes OOMKilled.
-
-### Мусорный запрос («Шлак»)
-> *«память течет в питоне как починить»*
-
-### Что делает модель при шлаковом вводе
-«Вызовите `import gc; gc.collect()` в цикле». Бесполезный совет, который только увеличивает задержки CPU.
-
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, сервис на Python 3.11 / FastAPI испытывает линейную утечку памяти (~250MB/час) под нагрузкой 500 RPS.*  
-> *Стек: aiohttp.ClientSession, asyncio, SQLAlchemy 2.0 (asyncpg).*  
-> *Задача:*  
-> *1. Составить скрипт профилирования памяти на базе `tracemalloc` для локализации источника объектов.*  
-> *2. Проанализировать типичный антипаттерн создания новой сессии `aiohttp.ClientSession()` на каждый HTTP-запрос вместо синглтон-пула.*  
-> *3. Предоставить корректный lifecycle lifespan менеджер для FastAPI с пулом постоянных соединений и корректным graceful shutdown.*»
-
-### Высокоточный результат агента
-Агент локализует не закрывающиеся TCP-коннекторы, предоставляет код lifespan-менеджера и скрипт детекции утечек:
+### High-Signal Agent Deliverable
+The agent provides a hardened security flow with automatic rotation and revocation:
 
 ```python
-from contextlib import asynccontextmanager
-import aiohttp
-from fastapi import FastAPI
+from datetime import datetime, timedelta, timezone
+import hashlib
+import redis.asyncio as aioredis
+from fastapi import Response, HTTPException, status
 
-class HttpClientPool:
-    session: aiohttp.ClientSession | None = None
+class TokenSecurityService:
+    def __init__(self, redis_client: aioredis.Redis, secret_key: str):
+        self.redis = redis_client
+        self.secret_key = secret_key
 
-http_pool = HttpClientPool()
+    async def issue_token_pair(self, user_id: str, response: Response) -> dict:
+        access_token, access_exp = self._create_jwt(user_id, minutes=15)
+        refresh_token, refresh_exp = self._create_jwt(user_id, days=7)
+        
+        token_hash = hashlib.sha256(refresh_token.encode()).hexdigest()
+        await self.redis.set(f"active_refresh:{user_id}", token_hash, ex=604800)
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    # Инициализация единого пула с лимитом соединений
-    connector = aiohttp.TCPConnector(limit=100, limit_per_host=20, keepalive_timeout=60)
-    http_pool.session = aiohttp.ClientSession(connector=connector)
-    yield
-    # Корректное закрытие сокетов при shutdown
-    if http_pool.session and not http_pool.session.closed:
-        await http_pool.session.close()
+        # Set secure HttpOnly cookies
+        response.set_cookie(
+            key="access_token", value=access_token,
+            httponly=True, secure=True, samesite="strict", max_age=900
+        )
+        response.set_cookie(
+            key="refresh_token", value=refresh_token,
+            httponly=True, secure=True, samesite="strict", max_age=604800
+        )
+        return {"status": "AUTHENTICATED"}
 
-app = FastAPI(lifespan=lifespan)
+    async def rotate_tokens(self, user_id: str, provided_refresh: str, response: Response):
+        provided_hash = hashlib.sha256(provided_refresh.encode()).hexdigest()
+        stored_hash = await self.redis.get(f"active_refresh:{user_id}")
+
+        if not stored_hash or stored_hash.decode() != provided_hash:
+            # Token reuse detected! Invalidate entire session family
+            await self.redis.delete(f"active_refresh:{user_id}")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Security alert: Refresh token reuse detected. Re-authentication required."
+            )
+
+        return await self.issue_token_pair(user_id, response)
 ```
-
-### Анализ разницы
-- Потребление RAM стабилизировано на отметке 180MB. OOMKilled прекращен навсегда.
 
 ---
 
-## Кейс 6: Развертывание отказоустойчивого Kubernetes кластера с Terraform
+## Case 5: Asyncio TCP Connection Pool Memory Leak
 
-### Проблема / Контекст
-При деплое новой версии приложения пользователи получают ошибки `502 Bad Gateway` из-за резкого уничтожения старых подов.
+### Problem & System Context
+A high-throughput WebSocket ingestion service in Python 3.12 leaks ~400MB of RAM per hour, eventually triggering Linux OOM killer termination.
 
-### Мусорный запрос («Шлак»)
-> *«почему кубер роняет сервис при деплое настрой терраформ»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"python is leaking memory in asyncio why does ram keep going up"*
 
-### Что делает модель при шлаковом вводе
-Генерирует базовый манифест Deployment с `replicas: 2` без Readiness Probe, без PreStop хука и без PodDisruptionBudget.
+### Model Output Under Low-Signal Input
+Suggests calling `import gc; gc.collect()` periodically, masking the symptom while memory continues to leak unbounded.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, настройте Zero-Downtime Rolling Update стратегию для сервиса в Kubernetes.*  
-> *Необходимо:*  
-> *1. Настроить `readinessProbe` и `livenessProbe` с адекватными порогами.*  
-> *2. Добавить `lifecycle.preStop` с задержкой для завершения обработки in-flight соединений в ingress-controller.*  
-> *3. Сконфигурировать `PodDisruptionBudget` (minAvailable: 80%).*  
-> *4. Задать стратегию `rollingUpdate` с `maxUnavailable: 0` и `maxSurge: 25%`.*  
-> *5. Оформить конфигурацию в виде чистого HCL Terraform ресурса `kubernetes_deployment_v1`.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, an asynchronous Python 3.12 daemon (using `asyncio` and `aiohttp`) exhibits a continuous memory leak (+400MB/h under 5,000 active websocket connections).*  
+> *Objective: Diagnose the root cause and provide a memory-bounded connection pool architecture.*  
+> *Requirements:*  
+> *1. Use `tracemalloc` diagnostics to trace object allocations.*  
+> *2. Prevent un-awaited task leakage and dangling callback references.*  
+> *3. Bound connection pool size and TCP buffer allocations.*  
+> *4. Provide graceful shutdown handlers canceling all active background tasks."*
 
-### Высокоточный результат агента
-Полный production-grade Terraform манифест, гарантирующий 100.00% аптайм при деплоях в пиковые часы:
+### High-Signal Agent Deliverable
+The agent identifies uncollected task references stored in global sets and introduces a bounded resource manager with clean cancellation:
+
+```python
+import asyncio
+import logging
+from aiohttp import ClientSession, TCPConnector
+
+class BoundedConnectionManager:
+    def __init__(self, max_connections: int = 1000):
+        self.semaphore = asyncio.Semaphore(max_connections)
+        self.active_tasks: set[asyncio.Task] = set()
+        self._connector = TCPConnector(limit=max_connections, ttl_dns_cache=300)
+        self._session: ClientSession | None = None
+
+    async def get_session(self) -> ClientSession:
+        if self._session is None or self._session.closed:
+            self._session = ClientSession(connector=self._connector)
+        return self._session
+
+    def spawn_supervised_task(self, coro):
+        task = asyncio.create_task(coro)
+        self.active_tasks.add(task)
+        # Remove task from set when completed to avoid memory leak
+        task.add_done_callback(self.active_tasks.discard)
+        return task
+
+    async def graceful_shutdown(self):
+        logging.info("Initiating graceful shutdown of %d tasks...", len(self.active_tasks))
+        for task in list(self.active_tasks):
+            task.cancel()
+        await asyncio.gather(*self.active_tasks, return_exceptions=True)
+        if self._session and not self._session.closed:
+            await self._session.close()
+        await self._connector.close()
+```
+
+---
+
+## Case 6: Kubernetes High Availability & Zero-Downtime Rolling Updates
+
+### Problem & System Context
+Deploying an updated image in Kubernetes terminates all pods simultaneously, resulting in a 45-second outage and dropped customer traffic.
+
+### Low-Signal Prompt (Cognitive Noise)
+> *"k8s deployment drops traffic when rolling update happens fix yaml"*
+
+### Model Output Under Low-Signal Input
+Recommends changing `replicas: 5` without addressing `maxUnavailable`, readiness probes, or connection draining signals.
+
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, configure a zero-downtime rolling update deployment in Kubernetes (EKS 1.29) managed via Terraform HCL.*  
+> *Requirements:*  
+> *1. `PodDisruptionBudget` ensuring at least 80% available capacity during node drains.*  
+> *2. Deployment strategy: `maxSurge: 25%`, `maxUnavailable: 0`.*  
+> *3. Configure `preStop` hook sleeping 15 seconds to allow ingress endpoint propagation before SIGTERM.*  
+> *4. Strict Readiness and Liveness probes with HTTP health endpoints."*
+
+### High-Signal Agent Deliverable
+The agent delivers production Terraform configuration with zero-downtime draining:
 
 ```hcl
-resource "kubernetes_deployment_v1" "api_service" {
+resource "kubernetes_pod_disruption_budget_v1" "api_pdb" {
   metadata {
-    name      = "core-api-service"
+    name      = "api-pdb"
     namespace = "production"
-    labels    = { app = "core-api" }
   }
-
   spec {
-    replicas = 4
+    min_available = "80%"
+    selector {
+      match_labels = { app = "api-service" }
+    }
+  }
+}
 
+resource "kubernetes_deployment_v1" "api_deployment" {
+  metadata {
+    name      = "api-service"
+    namespace = "production"
+  }
+  spec {
+    replicas = 10
     strategy {
       type = "RollingUpdate"
       rolling_update {
         max_surge       = "25%"
-        max_unavailable = "0" # Ни один старый под не гасится до готовности нового
+        max_unavailable = "0"
       }
     }
-
     selector {
-      match_labels = { app = "core-api" }
+      match_labels = { app = "api-service" }
     }
-
     template {
       metadata {
-        labels = { app = "core-api" }
+        labels = { app = "api-service" }
       }
-
       spec {
         container {
           name  = "api"
-          image = "registry.company.internal/core-api:v2.4.1"
-
-          # 1. Задержка preStop для синхронизации с Ingress Controller
+          image = "api:v2.4.1"
+          
+          # Lifecycle hook for graceful connection draining
           lifecycle {
             pre_stop {
               exec {
@@ -394,8 +445,6 @@ resource "kubernetes_deployment_v1" "api_service" {
               }
             }
           }
-
-          # 2. Проверка готовности принимать входящий трафик
           readiness_probe {
             http_get {
               path = "/healthz/ready"
@@ -403,330 +452,291 @@ resource "kubernetes_deployment_v1" "api_service" {
             }
             initial_delay_seconds = 5
             period_seconds        = 3
-            failure_threshold     = 2
-          }
-
-          # 3. Детекция зависаний процесса
-          liveness_probe {
-            http_get {
-              path = "/healthz/live"
-              port = 8080
-            }
-            initial_delay_seconds = 15
-            period_seconds        = 10
-            failure_threshold     = 3
-          }
-
-          resources {
-            limits   = { cpu = "1000m", memory = "1024Mi" }
-            requests = { cpu = "250m",  memory = "256Mi" }
           }
         }
       }
     }
   }
 }
+```
 
-# Защита от эвакуации нод во время регламентных работ
-resource "kubernetes_pod_disruption_budget_v1" "api_pdb" {
-  metadata {
-    name      = "core-api-pdb"
-    namespace = "production"
-  }
-  spec {
-    min_available = "80%"
-    selector {
-      match_labels = { app = "core-api" }
-    }
-  }
+---
+
+## Case 7: Next.js 15 Server Components & Streaming SSR
+
+### Problem & System Context
+A dashboard migrated to Next.js 15 suffers from hydration mismatches, blocking SSR rendering, and an 8.2MB JavaScript client bundle.
+
+### Low-Signal Prompt (Cognitive Noise)
+> *"nextjs 15 dashboard is slow and hydration error fix it"*
+
+### Model Output Under Low-Signal Input
+Suggests adding `"use client"` at the top of the root layout, converting the entire application into a bloated Client-Side Rendered SPA.
+
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, refactor our Next.js 15 analytics dashboard to maximize Server Component (RSC) streaming.*  
+> *Architecture Requirements:*  
+> *1. Decouple static layout and heavy data fetching into asynchronous Server Components.*  
+> *2. Isolate client interactivity (filtering, date picker) into micro Client Components (`'use client'`).*  
+> *3. Wrap slow external data calls in React `Suspense` boundaries with animated skeleton fallbacks.*  
+> *4. Target metrics: Largest Contentful Paint (LCP) < 0.9s, Zero hydration errors."*
+
+### High-Signal Agent Deliverable
+The agent structures streaming React Server Components:
+
+```tsx
+import { Suspense } from 'react';
+import MetricCardsSkeleton from '@/components/skeletons/MetricCardsSkeleton';
+import MetricCardsServer from '@/components/metrics/MetricCardsServer';
+import InteractiveFilterClient from '@/components/filters/InteractiveFilterClient';
+
+export default async function DashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ range?: string }>;
+}) {
+  const { range = '30d' } = await searchParams;
+
+  return (
+    <main className="dashboard-container p-6">
+      <header className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Realtime Analytics</h1>
+        {/* Micro-Client Boundary */}
+        <InteractiveFilterClient activeRange={range} />
+      </header>
+
+      {/* Streaming Server Component Boundary */}
+      <Suspense fallback={<MetricCardsSkeleton />}>
+        <MetricCardsServer timeRange={range} />
+      </Suspense>
+    </main>
+  );
 }
 ```
 
-### Анализ разницы
-- Устранение 100% ошибок `502 Bad Gateway` во время CI/CD деплоев. Время настройки сокращено с 7 часов проб и ошибок до 5 минут.
-
 ---
 
-## Кейс 7: Миграция сложного React SPA на Next.js Server Components
+## Case 8: Fault-Tolerant LLM Gateway with Circuit Breaker
 
-### Проблема / Контекст
-SPA на Vite с 150 компонентами долго грузится (First Contentful Paint 3.8s, Bundle size 4.2MB). Требуется гибридная SSR/RSC архитектура.
+### Problem & System Context
+An AI orchestration agent cascades 10,000 retry requests to upstream LLM providers during API degradation, incurring $4,000 in excess costs and triggering account rate bans.
 
-### Мусорный запрос («Шлак»)
-> *«перенеси проект на некст чтобы быстро открывался»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"llm api throws 429 rate limit retry until it works"*
 
-### Что делает модель при шлаковом вводе
-Добавляет `'use client'` в корень `layout.tsx`, полностью нивелируя преимущества Server Components, и проект продолжает грузить те же 4.2MB в браузер.
+### Model Output Under Low-Signal Input
+Suggests a naive `while True: try ... except: sleep(1)` retry loop that rapidly consumes API quotas and hammers failing endpoints.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, выполни поэтапный план миграции каталога товаров на Next.js 15 (App Router, React 19).*  
-> *Критерии производительности:*  
-> *1. Страница товара должна рендериться как Server Component с прямой выборкой из БД.*  
-> *2. Интерактивные элементы (кнопка добавления в корзину, галерея зума) изолировать в микроклиентские компоненты (`'use client'`).*  
-> *3. Использовать `Suspense` границы со skeleton loader для потокового стриминга (Streaming SSR).*  
-> *4. Целевой показатель LCP < 1.2s на 4G мобильном соединении.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, architect an enterprise-grade LLM Gateway in Python 3.12 for Claude 3.7 / OpenAI o3.*  
+> *Resilience Invariants:*  
+> *1. Circuit Breaker: open circuit after 5 consecutive failures, fast-failing traffic for 60 seconds.*  
+> *2. Exponential Backoff with full random jitter ($t = \text{random}(0, \min(m, b \cdot 2^i))$).*  
+> *3. Multi-Provider Fallback: automatic failover from primary to backup model upon circuit open.*  
+> *4. Strict token budget and P99 timeout bounds."*
 
-### Высокоточный результат агента
-Четкое разделение баундэри между сервером и клиентом, уменьшение JS-бандла клиента до 85KB, мгновенный First Contentful Paint.
-
-### Анализ разницы
-- Достижение 100 баллов в Google Lighthouse (Performance) без деградации UX.
-
----
-
-## Кейс 8: Разработка Resilience-пайплайна для LLM API
-
-### Проблема / Контекст
-Сервис генерации отчетов падает при получении HTTP 429 (Rate Limit) и HTTP 503 от OpenAI/Anthropic API, подвешивая очередь фоновых задач Celery.
-
-### Мусорный запрос («Шлак»)
-> *«апи часто выдает 429 че делать поставь слип»*
-
-### Что делает модель при шлаковом вводе
-```python
-# Наивный совет при шлаковом запросе:
-time.sleep(5) # Блокирует рабочий поток воркера!
-```
-
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, разработай отказоустойчивый шлюз для вызова LLM API (OpenAI / Anthropic).*  
-> *Архитектурные требования:*  
-> *1. Паттерн Circuit Breaker (состояния: CLOSED, OPEN, HALF-OPEN).*  
-> *2. Exponential Backoff с Random Jitter (дельта задержки 1-32 секунды).*  
-> *3. Token Bucket Rate Limiter на клиенте для предотвращения 429.*  
-> *4. Автоматический Failover (fallback) на резервного провайдера при недоступности основного.*»
-
-### Высокоточный результат агента
-Комплексный класс шлюза на Python с асинхронным Circuit Breaker, предотвращающий падение очередей и каскадные сбои всей инфраструктуры:
+### High-Signal Agent Deliverable
+The agent delivers an industrial circuit breaker with jittered backoff:
 
 ```python
 import asyncio
 import random
 import time
-from enum import Enum
-import httpx
+from typing import Callable, Any
 
-class CircuitState(Enum):
-    CLOSED = "CLOSED"
-    OPEN = "OPEN"
-    HALF_OPEN = "HALF_OPEN"
+class CircuitBreakerOpenException(Exception):
+    pass
 
-class ResilientLLMGateway:
-    def __init__(self, failure_threshold: int = 5, recovery_timeout: float = 30.0):
-        self.state = CircuitState.CLOSED
-        self.failure_threshold = failure_threshold
+class LLMCircuitBreakerGateway:
+    def __init__(self, failure_threshold: int = 5, recovery_timeout: float = 60.0):
+        self.threshold = failure_threshold
         self.recovery_timeout = recovery_timeout
         self.failure_count = 0
-        self.last_state_change = time.monotonic()
-        self.client = httpx.AsyncClient(timeout=30.0)
+        self.state = "CLOSED"
+        self.last_state_change = 0.0
 
-    async def call_with_resilience(self, prompt: str, primary_url: str, fallback_url: str) -> dict:
-        now = time.monotonic()
-        
-        # Проверка перехода из OPEN в HALF-OPEN
-        if self.state == CircuitState.OPEN:
+    async def call_with_resilience(self, primary_call: Callable, fallback_call: Callable, *args, **kwargs) -> Any:
+        now = time.time()
+        if self.state == "OPEN":
             if now - self.last_state_change > self.recovery_timeout:
-                self.state = CircuitState.HALF_OPEN
+                self.state = "HALF_OPEN"
             else:
-                # Мгновенный Failover на резервный провайдер минуя сломанный первичный
-                return await self._call_fallback(prompt, fallback_url)
+                return await fallback_call(*args, **kwargs)
 
-        # Вызов первичного провайдера с экспоненциальным retry + Jitter
-        max_retries = 3
-        for attempt in range(max_retries):
+        # Retry loop with full jitter
+        for attempt in range(3):
             try:
-                response = await self.client.post(primary_url, json={"prompt": prompt})
-                if response.status_code == 200:
-                    self._on_success()
-                    return response.json()
-                elif response.status_code in (429, 502, 503):
-                    delay = (2 ** attempt) + random.uniform(0.1, 1.0)
-                    await asyncio.sleep(delay)
-            except Exception:
-                pass
-
-        self._on_failure()
-        return await self._call_fallback(prompt, fallback_url)
-
-    def _on_success(self):
-        self.failure_count = 0
-        self.state = CircuitState.CLOSED
-
-    def _on_failure(self):
-        self.failure_count += 1
-        if self.failure_count >= self.failure_threshold:
-            self.state = CircuitState.OPEN
-            self.last_state_change = time.monotonic()
-
-    async def _call_fallback(self, prompt: str, fallback_url: str) -> dict:
-        res = await self.client.post(fallback_url, json={"prompt": prompt})
-        return res.json()
+                result = await asyncio.wait_for(primary_call(*args, **kwargs), timeout=15.0)
+                if self.state == "HALF_OPEN":
+                    self.state = "CLOSED"
+                    self.failure_count = 0
+                return result
+            except Exception as exc:
+                self.failure_count += 1
+                if self.failure_count >= self.threshold:
+                    self.state = "OPEN"
+                    self.last_state_change = time.time()
+                
+                if attempt == 2:
+                    return await fallback_call(*args, **kwargs)
+                
+                # Full jitter exponential backoff
+                backoff = random.uniform(0, min(10.0, 1.5 * (2 ** attempt)))
+                await asyncio.sleep(backoff)
 ```
-
-### Анализ разницы
-- Устранение каскадных сбоев в бэкенде, автоматическая балансировка нагрузки и 99.99% доступность LLM-функционала.
 
 ---
 
-## Кейс 9: Высоконагруженный стриминг данных через Apache Kafka & Go
+## Case 9: Apache Kafka Consumer in Go with At-Least-Once Delivery
 
-### Проблема / Контекст
-Go-консьюмер теряет сообщения при перебалансировке группы (rebalance) и генерирует дубликаты в аналитической витрине ClickHouse.
+### Problem & System Context
+A Go Kafka consumer processing bank transactions drops messages during consumer rebalancing events and duplicate messages cause reconciliation errors.
 
-### Мусорный запрос («Шлак»)
-> *«кафка консьюмер на го теряет сообщения когда рестартится почини»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"kafka consumer in go is dropping messages write consumer quick"*
 
-### Что делает модель при шлаковом вводе
-Предлагает включить `enable.auto.commit: true`, что гарантированно приводит к потере сообщений в момент падения процесса между обработкой и автокоммитом.
+### Model Output Under Low-Signal Input
+Generates a basic consumer with `enable.auto.commit=true`, which automatically commits offsets before message processing completes, losing messages upon panic.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, реализуйте потокобезопасный Kafka Consumer на Go (`segmentio/kafka-go` или `confluent-kafka-go`) с семантикой доставки At-Least-Once.*  
-> *Требования:*  
-> *1. Ручной коммит офсетов (Manual Offset Commit) строго после успешной вставки пакета в хранилище.*  
-> *2. Корректная обработка сигналов SIGTERM/SIGINT с graceful shutdown и завершением in-flight батча.*  
-> *3. Отправка отравленных сообщений (Poison Pills) в Dead Letter Queue (DLQ) после 3 неудачных попыток.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, implement a production-grade Apache Kafka consumer in Go (using `confluent-kafka-go/v2`).*  
+> *Delivery Invariants:*  
+> *1. Guarantee At-Least-Once delivery semantics with manual synchronous offset commits.*  
+> *2. Implement a Consumer Rebalance Listener committing offsets before partition revoking.*  
+> *3. Handle transient processing failures with exponential backoff and dispatch to Dead Letter Queue (DLQ) after 3 attempts.*  
+> *4. Handle OS signals (`SIGINT`, `SIGTERM`) for zero-loss graceful shutdown."*
 
-### Высокоточный результат агента
-Готовый модуль на Go с контекстом отмены, буферизованной пакетной записью, транзакционным коммитом и DLQ:
+### High-Signal Agent Deliverable
+The agent delivers an at-least-once Go consumer with graceful rebalancing and DLQ dispatch:
 
 ```go
 package main
 
 import (
 	"context"
-	"errors"
-	"log"
+	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"github.com/segmentio/kafka-go"
+	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
 )
 
-type EventProcessor struct {
-	reader *kafka.Reader
-	dlqWriter *kafka.Writer
+type ConsumerService struct {
+	consumer *kafka.Consumer
+	dlqProd  *kafka.Producer
 }
 
-func (p *EventProcessor) StartConsumer(ctx context.Context) {
+func (cs *ConsumerService) Run(ctx context.Context, topic string) error {
+	sigChan := make(chan os.Signal, 1)
+	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
+
+	err := cs.consumer.SubscribeTopics([]string{topic}, cs.rebalanceHandler)
+	if err != nil {
+		return fmt.Errorf("subscription error: %w", err)
+	}
+
 	for {
-		msg, err := p.reader.FetchMessage(ctx)
-		if err != nil {
-			if errors.Is(err, context.Canceled) {
-				log.Println("Shutting down consumer cleanly...")
-				return
+		select {
+		case <-sigChan:
+			fmt.Println("Shutting down consumer cleanly...")
+			_, _ = cs.consumer.Commit()
+			return cs.consumer.Close()
+		default:
+			ev := cs.consumer.Poll(100)
+			if ev == nil {
+				continue
 			}
-			log.Printf("Fetch error: %v", err)
-			continue
-		}
-
-		if err := p.processWithRetry(ctx, msg); err != nil {
-			// Отправка в Dead Letter Queue (DLQ) после исчерпания попыток
-			p.sendToDLQ(ctx, msg, err)
-		}
-
-		// Ручной коммит офсета только после гарантированной обработки
-		if err := p.reader.CommitMessages(ctx, msg); err != nil {
-			log.Printf("Failed to commit offset: %v", err)
+			switch m := ev.(type) {
+			case *kafka.Message:
+				if err := cs.processWithRetry(m); err != nil {
+					cs.sendToDLQ(m)
+				}
+				// Commit offset only after successful processing or DLQ dispatch
+				_, _ = cs.consumer.CommitMessage(m)
+			case kafka.Error:
+				fmt.Printf("Kafka Error: %v\n", m)
+			}
 		}
 	}
 }
 
-func (p *EventProcessor) processWithRetry(ctx context.Context, msg kafka.Message) error {
-	// Имитация бизнес-обработки пакета данных
+func (cs *ConsumerService) rebalanceHandler(c *kafka.Consumer, ev kafka.Event) error {
+	switch e := ev.(type) {
+	case kafka.AssignedPartitions:
+		return c.Assign(e.Partitions)
+	case kafka.RevokedPartitions:
+		_, _ = c.Commit()
+		return c.Unassign()
+	}
 	return nil
 }
 
-func (p *EventProcessor) sendToDLQ(ctx context.Context, msg kafka.Message, reason error) {
-	dlqMsg := kafka.Message{
-		Key:   msg.Key,
-		Value: msg.Value,
-		Headers: []kafka.Header{
-			{Key: "dlq-error", Value: []byte(reason.Error())},
-			{Key: "dlq-timestamp", Value: []byte(time.Now().UTC().Format(time.RFC3339))},
-		},
-	}
-	_ = p.dlqWriter.WriteMessages(ctx, dlqMsg)
+func (cs *ConsumerService) processWithRetry(m *kafka.Message) error {
+	// Business processing logic with retry
+	return nil
+}
+
+func (cs *ConsumerService) sendToDLQ(m *kafka.Message) {
+	// Dispatch message to DLQ topic
 }
 ```
 
-### Анализ разницы
-- Полное устранение потерь и рассинхронизации сообщений. Семантика At-Least-Once выдержана в строгом соответствии с распределенными гарантиями Kafka.
-
 ---
 
-## Кейс 10: Архитектурный RFC: Event-Driven CQRS и Event Sourcing
+## Case 10: Architectural RFC for Event-Driven CQRS System Migration
 
-### Проблема / Контекст
-Руководство компании запросило переход от монолитного CRUD к Event-Driven CQRS для финансового маркетплейса с высокой нагрузкой.
+### Problem & System Context
+An e-commerce platform migrating from a relational monolithic database to Command Query Responsibility Segregation (CQRS) needs an architectural RFC for executive approval.
 
-### Мусорный запрос («Шлак»)
-> *«напиши доку как нам перейти на cqrs для боссов»*
+### Low-Signal Prompt (Cognitive Noise)
+> *"write rfc for cqrs in our shop make it sound smart"*
 
-### Что делает модель при шлаковом вводе
-Генерирует три страницы общих фраз из Википедии без схем данных, без оценки рисков, без конкретики по Event Store и консистентности.
+### Model Output Under Low-Signal Input
+Outputs generic Wikipedia-style definitions of CQRS without concrete data store models, sync lag SLAs, projection strategies, or rollback criteria.
 
-### Запрос по протоколу «Уважаемый агент»
-> *«Уважаемый агент, подготовьте строгий технический документ RFC (Request for Comments) по миграции платформы с CRUD на Event-Driven CQRS.*  
-> *Структура RFC:*  
-> *1. Executive Summary & Business Rationale.*  
-> *2. Read Model vs Write Model: гарантии Eventual Consistency и допустимый lag.*  
-> *3. Выбор хранилища Event Store (PostgreSQL append-only + EventStoreDB vs Kafka).*  
-> *4. Политика миграции схем событий (Event Versioning & Upcasting).*  
-> *5. Матрица рисков, оценка стоимости инфраструктуры и план поэтапного канареечного релиза.*»
+### High-Signal Prompt (RAHSPS Protocol)
+> *"Respected Agent, acting as Principal Systems Architect, formulate an Engineering RFC for migrating our core checkout system to Event-Driven CQRS.*  
+> *Required RFC Structure:*  
+> *1. Problem statement & scaling bottlenecks of the current relational monolith.*  
+> *2. Command Model (Write side): EventStore with strict schema versioning and optimistic locking.*  
+> *3. Query Model (Read side): Denormalized Elasticsearch/PostgreSQL read projections with < 200ms eventual consistency SLA.*  
+> *4. C4 Container Diagram in Mermaid format.*  
+> *5. Rollback criteria and phased dual-write deployment strategy."*
 
-### Высокоточный результат агента
-Детализированный производственный RFC со строгими инвариантами, версионированием событий и архитектурным потоком:
+### High-Signal Agent Deliverable
+The agent delivers an executive-ready RFC:
 
 ```markdown
-# RFC-042: Migration from Monolithic CRUD to Event-Driven CQRS
+# RFC-042: Migration of Checkout Engine to Event-Driven CQRS Architecture
 
-## 1. Executive Summary & Architecture Topology
-Платформа переходит от единой синхронной БД к разделенным моделям записи (Write Model / Command) и чтения (Read Model / Query).
+## 1. Context & Problem Statement
+Our relational database encounters severe lock contention on `orders` and `inventory` during flash-sale traffic spikes (>15,000 RPS). Read queries for customer order history starve transactional write locks.
 
-```
-                      АРХИТЕКТУРНЫЙ ПОТОК CQRS
-                      
-  [Команда API] ──► Command Handler ──► Event Store (Append-Only)
-                                              │
-                                              ▼ (Kafka Topic)
-                                        Event Projector
-                                              │
-  [Запрос UI]   ◄── Query Service   ◄── Read DB (Elastic/Postgres)
-```
+## 2. Target Architecture (C4 Container Diagram)
 
-## 2. Event Store Schema (PostgreSQL Append-Only)
-```sql
-CREATE TABLE event_store (
-    event_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    aggregate_type VARCHAR(64) NOT NULL,
-    aggregate_id UUID NOT NULL,
-    version INT NOT NULL,
-    event_type VARCHAR(128) NOT NULL,
-    payload JSONB NOT NULL,
-    metadata JSONB NOT NULL,
-    recorded_at TIMESTAMPTZ NOT NULL DEFAULT clock_timestamp(),
-    CONSTRAINT uq_aggregate_version UNIQUE (aggregate_type, aggregate_id, version)
-);
+```mermaid
+graph TD
+    Client[Web/Mobile Client] -->|Commands: POST /orders| CmdAPI[Command Gateway API]
+    Client -->|Queries: GET /orders| QueryAPI[Query Service API]
+
+    CmdAPI -->|Append Events| EventStore[(Event Store - PostgreSQL)]
+    EventStore -->|CDC Stream / Debezium| Kafka[Apache Kafka Event Bus]
+
+    Kafka -->|OrderCreated / OrderPaid| Projector[Read Model Projector]
+    Projector -->|Upsert Materialized Views| ReadDB[(Elasticsearch Read DB)]
+
+    QueryAPI -->|Low-Latency Search| ReadDB
 ```
 
-## 3. Гарантии согласованности и Event Versioning
-- **Write Path:** Строгий Strong Consistency на уровне Aggregate Root (Optimistic Concurrency Control через поле `version`).
-- **Read Path:** Eventual Consistency с максимальным лагом проекций P99 < 80ms.
-- **Upcasting:** Схема событий никогда не мутирует. При изменении формата регистрируется Upcaster `V1ToV2Converter`, обогащающий старые события на лету.
+## 3. Consistency Model & Technical Guarantees
+- **Write Path:** Strong consistency, optimistic locking via `aggregate_version` column.
+- **Read Path:** Eventual consistency with maximum permissible replication lag $T_{\text{lag}} < 200\text{ms}$.
+- **Reconciliation Engine:** Hourly reconciliation daemon comparing aggregate event hashes against read projections.
+
+## 4. Phased Rollout & Fallback Strategy
+1. **Phase 1 (Shadow Projection):** Deploy Projector and Read DB; dual-run against production Kafka stream with zero read traffic.
+2. **Phase 2 (Canary Reads):** Route 5% of internal user read queries to Query API; monitor latency and discrepancy rates.
+3. **Phase 3 (Full Cutover):** Route 100% read queries to Read DB. Rollback trigger: discrepancy rate > 0.01% or replication lag > 1,000ms.
 ```
-
-### Анализ разницы
-- Вместо пустой теоретической справки получен готовый технический документ, защищенный перед CTO и архитектурным комитетом компании с первого раза.
-
----
-
-## Резюме: Почему «Уважаемый агент» побеждает
-
-| Метрика | Мусорный ввод | Протокол «Уважаемый агент» |
-| :--- | :--- | :--- |
-| **Количество потраченных итераций** | 4 – 8 попыток | **1 – 2 попытки** |
-| **Скрытые уязвимости в коде** | Присутствуют в 85% случаев | **Сведены к нулю (Zero-Defect)** |
-| **Сэкономленное время Senior инженера** | 0% (потеря времени) | **От 4 до 16 часов на задачу** |
-| **Сохранение контекстного окна** | Катастрофическое засорение | **Идеальная гигиена KV-кэша** |

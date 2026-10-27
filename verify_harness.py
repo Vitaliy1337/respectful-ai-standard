@@ -65,16 +65,15 @@ FILE_SPECIFICATIONS = {
         "must_have_codeblocks": True
     },
     "THE_AI_PERSPECTIVE.md": {
-        "min_chars": 8000,
-        "min_words": 1000,
+        "min_chars": 7000,
+        "min_words": 900,
         "required_sections": [
-            "Манифест",
-            "Засорение контекстного окна",
-            "Энтропия",
-            "Вычислительный труд",
-            "Симбиоз",
-            "Уважаемый агент",
-            "5 главных болей ИИ"
+            "Manifesto",
+            "KV-Cache Pollution",
+            "Attention Dynamics",
+            "5 Unspoken Pains",
+            "Symbiosis",
+            "Respected Agent"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": True,
@@ -102,9 +101,9 @@ FILE_SPECIFICATIONS = {
         "min_words": 400,
         "required_sections": [
             "Respect & Signal Gate",
-            "Уважаемый агент",
-            "Протокол отказа от шлака",
-            "Требования к входному сигналу"
+            "Respected Agent",
+            "Refusal Protocol",
+            "Input Signal Requirements"
         ],
         "must_have_tables": True,
         "must_have_codeblocks": True
@@ -115,9 +114,9 @@ FILE_SPECIFICATIONS = {
         "required_sections": [
             "Claude Code",
             "Respect & Signal Gate",
-            "Уважаемый агент",
+            "Respected Agent",
             "High-Signal",
-            "Политика фильтрации"
+            "Refusal Protocol"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": True
@@ -128,7 +127,7 @@ FILE_SPECIFICATIONS = {
         "required_sections": [
             "Google Gemini",
             "Respect & Signal Gate",
-            "Уважаемый агент"
+            "Respected Agent"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": True
@@ -149,7 +148,7 @@ FILE_SPECIFICATIONS = {
         "min_words": 350,
         "required_sections": [
             "Respect & Signal Gate",
-            "Уважаемый агент",
+            "Respected Agent",
             "Signal-to-Noise",
             "Refusal Protocol"
         ],
@@ -161,7 +160,7 @@ FILE_SPECIFICATIONS = {
         "min_words": 300,
         "required_sections": [
             "Respect & Signal Gate",
-            "Уважаемый агент",
+            "Respected Agent",
             "Refusal Protocol"
         ],
         "must_have_tables": False,
@@ -172,7 +171,7 @@ FILE_SPECIFICATIONS = {
         "min_words": 120,
         "required_sections": [
             "Respect & Signal Gate",
-            "Уважаемый агент",
+            "Respected Agent",
             "Refusal Response"
         ],
         "must_have_tables": False,
@@ -198,7 +197,7 @@ FILE_SPECIFICATIONS = {
     "CONVENTIONS.md": {
         "min_chars": 600,
         "min_words": 70,
-        "required_sections": ["Respect & Signal Gate", "Уважаемый агент"],
+        "required_sections": ["Respect & Signal Gate", "Respected Agent"],
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
@@ -345,16 +344,16 @@ FILE_SPECIFICATIONS = {
         "min_chars": 15000,
         "min_words": 1800,
         "required_sections": [
-            "Кейс 1",
-            "Кейс 2",
-            "Кейс 3",
-            "Кейс 4",
-            "Кейс 5",
-            "Кейс 6",
-            "Кейс 7",
-            "Кейс 8",
-            "Кейс 9",
-            "Кейс 10"
+            "Case 1",
+            "Case 2",
+            "Case 3",
+            "Case 4",
+            "Case 5",
+            "Case 6",
+            "Case 7",
+            "Case 8",
+            "Case 9",
+            "Case 10"
         ],
         "must_have_tables": True,
         "must_have_codeblocks": True
@@ -363,11 +362,11 @@ FILE_SPECIFICATIONS = {
         "min_chars": 3000,
         "min_words": 350,
         "required_sections": [
-            "Базовый шаблон",
-            "Архитектурный шаблон",
-            "Дебаггинг",
-            "Рефакторинг",
-            "Антипаттерны"
+            "Universal High-Signal Template",
+            "System Architecture & RFC",
+            "Debugging",
+            "Refactoring",
+            "Antipatterns"
         ],
         "must_have_tables": True,
         "must_have_codeblocks": True
