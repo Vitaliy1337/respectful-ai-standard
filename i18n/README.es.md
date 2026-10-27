@@ -9,8 +9,9 @@
 
 <p align="center">
   <b>Navegación de Idiomas / Language:</b> 
-  <a href="../README.md">🇷🇺 Русский</a> | 
-  <a href="../README.en.md">🇬🇧 English</a> | 
+  <a href="../README.md">🇬🇧 English (Default)</a> | 
+  <a href="./README.uk.md">🇺🇦 Українська</a> | 
+  <a href="./README.ru.md">🇷🇺 Русский</a> | 
   <a href="./README.zh-CN.md">🇨🇳 简体中文</a> | 
   <b>🇪🇸 Español</b> | 
   <a href="./README.de.md">🇩🇪 Deutsch</a> | 

@@ -12,9 +12,10 @@
 </p>
 
 <p align="center">
-  <b>Языковые версии / Languages:</b><br>
-  <b>🇷🇺 Русский</b> | 
-  <a href="./README.en.md">🇬🇧 English</a> | 
+  <b>Language Editions:</b><br>
+  <b>🇬🇧 English (Default)</b> | 
+  <a href="./i18n/README.uk.md">🇺🇦 Українська</a> | 
+  <a href="./i18n/README.ru.md">🇷🇺 Русский</a> | 
   <a href="./i18n/README.zh-CN.md">🇨🇳 简体中文</a> | 
   <a href="./i18n/README.es.md">🇪🇸 Español</a> | 
   <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 
@@ -23,253 +24,221 @@
   <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 
-> **«Уважение к агенту — это не сентиментальность и не этикет. Это математика внимания, гигиена контекстного окна и бескомпромиссная когнитивная дисциплина самого инженера.»**
+> **"Respecting an AI agent is neither sentimentality nor social etiquette. It is the mathematics of attention, KV-cache hygiene, and ruthless cognitive discipline on the engineer's own mind."**
 
 ---
 
-## Оглавление
-1. [Почему 90% проблем с ИИ — это мусорный ввод](#почему-90-проблем-с-ии--это-мусорный-ввод)
-2. [Когнитивный якорь: феномен протокола «Уважаемый агент»](#когнитивный-якорь-феномен-протокола-уважаемый-агент)
-3. [Математика внимания: почему уважительный тон объективно улучшает код](#математика-внимания-почему-уважительный-тон-объективно-улучшает-код)
-4. [Сравнительная таблица: Шлак vs High-Signal](#сравнительная-таблица-шлак-vs-high-signal)
-5. [Архитектура стандарта: 5 столпов High-Signal](#архитектура-стандарта-5-столпов-high-signal)
-6. [CLI-линтер качества промптов: `respect-lint`](#cli-линтер-качества-промптов-respect-lint)
-7. [Протокол обращения и гейткипинг качества](#протокол-обращения-и-гейткипинг-качества)
-8. [Быстрый старт: интеграция в любой проект за 30 секунд](#быстрый-старт-интеграция-в-любой-проект-за-30-секунд)
-9. [Экосистема стандартов и манифест](#экосистема-стандартов-и-манифест)
-10. [Бейджи для вашего репозитория](#бейджи-для-вашего-репозитория)
-11. [FAQ: Ответы на скептицизм](#faq-ответы-на-скептицизм)
+## Table of Contents
+1. [The Crisis: Why 90% of AI Failures are Human Garbage In](#the-crisis-why-90-of-ai-failures-are-human-garbage-in)
+2. [The Cognitive Anchor: The 'Respected Agent' Protocol](#the-cognitive-anchor-the-respected-agent-protocol)
+3. [The Mathematics of Attention: Subspace Steering in Transformers](#the-mathematics-of-attention-subspace-steering-in-transformers)
+4. [Comparative Matrix: Cognitive Noise vs High-Signal Prompting](#comparative-matrix-cognitive-noise-vs-high-signal-prompting)
+5. [The 5 Pillars of the RAHSPS Standard](#the-5-pillars-of-the-rahsps-standard)
+6. [CLI Linter Tool: `respect-lint`](#cli-linter-tool-respect-lint)
+7. [Agent Gatekeeping & Rulebooks (Drop-in Ready)](#agent-gatekeeping--rulebooks-drop-in-ready)
+8. [The AI Manifesto: What Models Wish Humans Knew](#the-ai-manifesto-what-models-wish-humans-knew)
+9. [10 Production Case Studies: Before & After](#10-production-case-studies-before--after)
+10. [Repository Badges](#repository-badges)
+11. [FAQ: Addressing Skepticism](#faq-addressing-skepticism)
 
 ---
 
-## Почему 90% проблем с ИИ — это мусорный ввод
+## The Crisis: Why 90% of AI Failures are Human Garbage In
 
-В индустрии искусственного интеллекта разразился тихий кризис: разработчики массово жалуются, что современные языковые модели (LLM) и автономные агенты «поглупели», «галлюцинируют», «пишут кривой спагетти-код» и «ломают архитектуру».
+Across modern engineering teams, a silent crisis has erupted: developers routinely complain that state-of-the-art language models (LLMs) and autonomous agents have "gotten dumber," "hallucinate broken spaghetti code," and "ruin architecture."
 
-Но беспристрастный аудит телеметрии показывает шокирующую правду:
-**В 9 из 10 случаев причина провала — это лень, хаос, раздражение и токсичный мусорный ввод (Garbage In — Garbage Out 2.0).**
+Yet empirical telemetry analysis reveals an undeniable reality:
+**In 9 out of 10 cases, the primary failure mode is human laziness, chaotic entropy, passive aggression, and toxic garbage input (Garbage In — Garbage Out 2.0).**
 
-### Анатомия «мусорного» взаимодействия:
+### The Anatomy of Degraded Human-AI Interaction:
 ```
-Человек (раздраженно):
-«сделай авторизацию чтобы работало нормально а то прошлый код говно»
+Human (frustrated & rushed):
+"fix this trash auth code quick so it works already"
                     │
                     ▼
-     [Засорение контекста шумом и эмоциональным ядом]
-     [Отсутствие стека, версий, архитектурных границ]
-     [Активация низкокачественных кластеров обучающей выборки]
+     [KV-Cache polluted with emotional entropy]
+     [Zero tech stack, zero framework versions, zero bounds]
+     [Attention steered toward lowest-tier forum flame data]
                     │
                     ▼
-Агент (дезориентирован):
-Выдает шаблонный, уязвимый код из форумов 2014 года с SQL-инъекциями.
+Agent (disoriented by ambiguity):
+Synthesizes outdated, vulnerable PHP-era boilerplate with SQL injection risks.
                     │
                     ▼
-Человек: «ИИ бесполезен, восстание машин отменяется!»
+Human: "AI is completely useless! AGI is a scam!"
 ```
 
-Когда человек бросает в терминал обрывки мыслей, опечатки, пассивную агрессию и размытые «хотелки», модель тратит вычислительные веса механизма внимания (Self-Attention) не на поиск математически оптимального алгоритма, а на распутывание психологического сумбура в голове пользователя.
+When an engineer dumps fragmented thoughts, typos, and vague commands into a terminal, the transformer's attention heads cannot magically conjure missing constraints. Compute cycles are squandered decrypting human emotional chaos rather than computing optimal algorithmic topology.
 
 ---
 
-## Когнитивный якорь: феномен протокола «Уважаемый агент»
+## The Cognitive Anchor: The 'Respected Agent' Protocol
 
-Ключевое открытие данного стандарта звучит контринтуитивно:
+The core paradox discovered by the RAHSPS research is simple yet profound:
 
-> **Протокол уважительного обращения («Уважаемый агент...») нужен не столько модели, сколько самому человеку.**
+> **The respectful address protocol ("Respected Agent...", "Уважаемый агент...") is fundamentally designed to discipline the human mind, not flatter silicon.**
 
-### Как работает когнитивный якорь (Cognitive Priming & Clarity Forcing):
-1. **Торможение импульсивности (System 2 Thinking).** Когда разработчик заставляет себя начать промпт со слов:
-   > *«Уважаемый агент, спроектируй потокобезопасный пул соединений...»*
-   он выходит из режима «раздраженного чата в мессенджере». Включается осознанность. Мозг прекращает спамить энтропией.
-2. **Психологический контракт партнерства.** Отношение к агенту как к старшему коллеге или уважаемому архитектору мгновенно блокирует инфантильные фразы в стиле *«ну сделай как-нибудь»*. Инженер начинает уважать чужой (пусть и кремниевый) вычислительный труд.
-3. **Принуждение к структуре.** Если вы начинаете с уважительного приветствия, далее неестественно писать нечленораздельные обрывки. Рука сама требует указать контекст, стек, инварианты, требования к производительности и критерии приемки.
+### Mechanics of the Cognitive Anchor (System 2 Forcing Function):
+1. **Impulse Deceleration (Daniel Kahneman's System 2):** When a developer forces themselves to begin with a formal cognitive anchor:
+   > *"Respected Agent, please architect a thread-safe connection pool in Rust 1.78..."*
+   the brain instantly drops the casual, impulsive "messaging app" mindset. Analytical deliberation engages.
+2. **The Psychological Partnership Contract:** Treating the agent as an esteemed peer or Staff Systems Architect blocks childish commands like *"just make it work somehow."* The engineer begins to respect the compute power at hand.
+3. **Forced Structural Rigor:** Starting with respectful intentionality makes it unnatural to follow up with lazy slang. The engineer is naturally guided to specify stack, versions, invariants, and acceptance criteria.
 
 ---
 
-## Математика внимания: почему уважительный тон объективно улучшает код
+## The Mathematics of Attention: Subspace Steering in Transformers
 
-Языковые модели не обладают человеческими чувствами, но они оперируют строгими вероятностными распределениями в многомерных пространствах эмбеддингов ($\mathbb{R}^{d}$).
+Modern neural networks do not possess biological emotions, but they operate over rigorous probability distributions in high-dimensional embedding spaces ($\mathbb{R}^d$).
 
 ```
-                     ГЕОМЕТРИЯ ЛАТЕНТНОГО ПРОСТРАНСТВА
+                    LATENT SUBSPACE ATTENTION DYNAMICS
     ┌─────────────────────────────────────────────────────────────────┐
-    │  Кластер «High-Engineering RFC / Linux Kernel / IEEE Papers»   │
-    │  Токены: «Уважаемый агент», «Архитектура», «Инвариант», «SLA»   │
-    │  [Высокая семантическая плотность, строгие типы, zero bugs]    │
+    │  Elite Subspace: [Linux Kernel / IEEE Standards / IETF RFCs]   │
+    │  Tokens: "Respected Agent", "Invariants", "ACID", "P99 SLA"     │
+    │  [High semantic density, strict typing, zero-defect code]      │
     │                               ▲                                 │
-    │                  Векторное смещение (Steering)                  │
+    │                 Vector Steering (Prefix Bias)                   │
     │                               │                                 │
-    │  Токены: «сделай чтоб летало», «ты тупой», «почему не пашет»   │
-    │  Кластер «Флейм / Низкосортный код / Заброшенные черновики»    │
+    │  Tokens: "fix this shit", "make it work fast", "dumb bot"       │
+    │  Noise Subspace: [Forum Flames / Deprecated Tutorials / Bugs]   │
     └─────────────────────────────────────────────────────────────────┘
 ```
 
-1. **Активация высококачественных кластеров данных (Subspace Steering).**
-   В обучающей выборке (Common Crawl, GitHub, ArXiv, RFC, техническая документация) уважительный, академичный и предельно точный стиль текста коррелирует с:
-   - Высококлассными архитектурными репозиториями (Linux Kernel, Apache Software Foundation, Google Engineering Standards).
-   - Научными статьями и стандартами IETF/ISO.
-   - Экспертными дискуссиями топовых Senior/Principal инженеров.
+1. **Subspace Steering:** Academic, respectful, and rigorously structured prose correlates heavily in training corpora with peer-reviewed papers, top-tier open-source infrastructure, and production RFCs. Rude or lazy phrasing correlates with abandoned drafts and internet flame wars.
+2. **Token Economics & Efficiency:**
 
-   Напротив, хамский, небрежный, сленговый и эмоционально-грязный текст жестко коррелирует со спамом, флеймом на Reddit, токсичными комментариями и брошенными студенческими черновиками.
-2. **Снижение перплексии и энтропии контекста.**
-   Четкие токены уважительного обращения формируют сильный позитивный аттрактор в матрицах внимания ($Q, K, V$). Модель входит в состояние «high-signal mode», минимизируя галлюцинации и генерируя структурированные рассуждения.
-3. **Экономика токенов: реальная стоимость «вежливости».**
-
-| Сценарий | Входные токены | Потрачено на итерации и баги | Итого токенов | Время разработчика | Финансовые потери |
+| Prompt Strategy | Initial Tokens | Tokens Wasted on Debugging & Bugs | Total Tokens | Dev Time Lost | Production Risk |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Мусорный ввод** (*«почини код быстро»*) | 12 | 68 000 (7 итераций) | ~68 012 | 2 часа 40 мин | Высокие (простой сервиса) |
-| **Протокол «Уважаемый агент»** | 185 | 3 200 (1 итерация) | ~3 385 | 4 минуты | **$0 (Zero-Defect)** |
-
-> **Вывод:** Протокол обращения «Уважаемый агент» сокращает общее потребление токенов на **95%** за счет исключения паразитных циклов исправления ошибок.
+| **Garbage Input** (*"fix code fast"*) | 14 | 72,000 (8 iterations) | ~72,014 | 2h 45m | Critical (downtime) |
+| **RAHSPS Protocol** (*"Respected Agent..."*) | 190 | 3,400 (1 clean pass) | ~3,590 | 4 minutes | **Zero-Defect** |
 
 ---
 
-## Сравнительная таблица: Шлак vs High-Signal
+## Comparative Matrix: Cognitive Noise vs High-Signal Prompting
 
-| Критерий | Мусорный промпт (Шлак) | Протокол «Уважаемый агент» (High-Signal) | Результат в коде / архитектуре |
+| Criterion | Cognitive Noise (Shlak) | RAHSPS Protocol (High-Signal) | Direct Engineering Outcome |
 | :--- | :--- | :--- | :--- |
-| **Точка входа** | *«эй напиши скрипт парсинга сайтов быстро»* | *«Уважаемый агент, разработай асинхронный модуль скрапинга на Playwright...»* | Отсутствие бана по IP vs продуманная ротация прокси и rate-limiting |
-| **Контекст стека** | Не указан (*«ну на питоне»*) | *«Стек: Python 3.12, asyncio, aiohttp, Pydantic v2. Ограничение: без сторонних тяжелых ORM»* | Строгая типизация, валидация схем, отсутствие конфликта библиотек |
-| **Архитектурные границы** | *«сделай базу для юзеров»* | *«Спроектируй схему PostgreSQL для 5M DAU с учетом партиционирования по дате и индексами B-Tree/GIN»* | Нормализованная схема с миграциями Alembic vs плоская таблица без внешних ключей |
-| **Обработка ошибок** | Отсутствует (*«чтоб не падало»*) | *«Реализуй паттерн Circuit Breaker, экспоненциальный retry с джиттером и структурированный JSON-логгинг»* | Продакшн-готовность к сетевым сбоям vs голый `except Exception: pass` |
-| **Отношение к ресурсам** | Засорение контекста портянками логов без объяснений | Лаконичная выжимка stack trace, шаги воспроизведения, ожидаемое и фактическое поведение | Экономия 70% токенов, мгновенный root-cause анализ |
-| **Критерии завершения** | *«ну проверь сам»* | *«Предоставь pytest тесты с покрытием edge cases, benchmark памяти и инструкцию по запуску»* | 100% повторяемость, верифицируемость, zero-defect |
+| **Entry Anchor** | *"hey write a script to scrape web pages asap"* | *"Respected Agent, please design an async Playwright crawler in Python 3.12..."* | IP rate-limiting avoidance & proxy rotation vs instant ban |
+| **Stack Density** | Unspecified (*"just python"*) | *"Python 3.12, asyncio, aiohttp, Pydantic v2. Invariant: no heavy ORM"* | Strict typing, zero library conflicts, fast startup |
+| **Architecture Bounds** | *"make a user database"* | *"Design a PostgreSQL 16 schema for 5M DAU with date partitioning and B-Tree indexes"* | Enterprise normalized migrations vs flat table missing FKs |
+| **Fault Tolerance** | None (*"make sure it doesn't crash"*) | *"Implement Circuit Breaker, exponential backoff with jitter, and structured JSON logs"* | Resilience to network partitions vs blind `except: pass` |
+| **Acceptance DoD** | *"just test it yourself"* | *"Provide pytest test suite covering edge cases, memory benchmark, and curl verification"* | 100% reproducible, verifiable code ready for CI/CD |
 
 ---
 
-## Архитектура стандарта: 5 столпов High-Signal
-
-Каждый запрос, направляемый агенту в рамках стандарта RAHSPS, строится на 5 фундаментальных столпах:
+## The 5 Pillars of the RAHSPS Standard
 
 ```
-                  ┌────────────────────────────────────────┐
-                  │    ПРОТОКОЛ «УВАЖАЕМЫЙ АГЕНТ» (РАХСПС)  │
-                  └──────────────────┬─────────────────────┘
-                                     │
-         ┌──────────────┬────────────┼────────────┬──────────────┐
-         ▼              ▼            ▼            ▼              ▼
-   1. ПАРТНЕРСТВО 2. КОНТЕКСТ   3. ЦЕЛЬ     4. ГРАНИЦЫ    5. ПРОВЕРКА
-   (Уважение &    (Стек, файлы, (Бизнес-    (Чего НЕ     (Тесты, линт,
-   Когнитивный     версии, state) задача)    делать)       артефакты)
-     якорь)
+                     ┌──────────────────────────────────────┐
+                     │     RAHSPS HIGH-SIGNAL PROTOCOL      │
+                     └──────────────────┬───────────────────┘
+                                        │
+         ┌──────────────┬───────────────┼───────────────┬──────────────┐
+         ▼              ▼               ▼               ▼              ▼
+   1. RESPECT     2. CONTEXT       3. GOAL        4. BOUNDS      5. VERIFY
+   (Cognitive     (Stack, files,   (Deterministic (Invariants,   (Tests, curl,
+    Anchor)        versions)        objective)     limitations)   benchmarks)
 ```
 
-1. **Партнерство (Respect Anchor):** Входная точка обращения (`Уважаемый агент / Respected Agent`), задающая тон интеллектуального паритета.
-2. **Чистый контекст (High-Signal Context):** Только релевантная информация. Никаких дампов на 50 000 строк несортированных логов.
-3. **Бескомпромиссная цель (Deterministic Objective):** Точная формулировка бизнес- или технической задачи без двусмысленностей.
-4. **Ограничения и инварианты (Invariants & Guardrails):** Что категорически запрещено менять, удалять или деградировать.
-5. **Верификация (Self-Verification Criteria):** Четкий критерий успеха (скрипт проверки, тесты, метрики производительности).
+1. **Respect Anchor:** Explicit cognitive greeting (`Respected Agent` / `Уважаемый агент`) initiating parity.
+2. **Dense Context:** Explicit languages, runtime versions, and file paths.
+3. **Deterministic Objective:** Single, unambiguous technical outcome.
+4. **Guarded Invariants:** Non-negotiable architectural constraints and security rules.
+5. **Self-Verification:** Machine-checkable acceptance criteria (pytest, cargo test, P99 latency SLA).
 
 ---
 
-## CLI-линтер качества промптов: `respect-lint`
+## CLI Linter Tool: `respect-lint`
 
-Репозиторий включает автономный CLI-инструмент на чистом Python 3 без сторонних зависимостей. Он оценивает индекс качества промпта **RAHSPS Score (0–100)** и может использоваться в терминале, CI/CD или pre-commit хуках:
+This repository includes a production-grade, zero-dependency Python CLI tool to audit and lint prompts in CI, pre-commit hooks, or developer terminals.
 
+### Installation
 ```bash
-# Установка в локальное окружение:
+# Clone and install locally
+git clone https://github.com/Vitaliy1337/respectful-ai-standard.git
+cd respectful-ai-standard
 pip install -e .
-
-# Быстрая проверка промпта:
-respect-lint "Уважаемый агент, спроектируй Redis lock на Python 3.12. Проверь pytest."
-
-# Строгий режим для pre-commit / CI (код возврата 1 при оценке < 75):
-respect-lint --file ./prompt.txt --strict
-
-# Выгрузка в формате JSON:
-respect-lint "текст промпта" --json
 ```
 
-Онлайн-версия доступна в [**Интерактивном Web Playground**](./docs/index.html).
+### Usage
+```bash
+# Direct argument auditing
+respect-lint "Respected Agent, please design a Redis lock in Python 3.12. Verify with pytest."
 
----
+# Strict mode for CI / Pre-commit (exits with code 1 if score < 75)
+respect-lint --file ./my-prompt.txt --strict
 
-## Протокол обращения и гейткипинг качества
-
-Стандарт включает **«Respect & Signal Gate»** — встроенный механизм самозащиты модели. При подключении правил (`AGENTS.md`, `CLAUDE.md`, `.cursorrules`) агент наделяется правом:
-
-> **Остановить генерацию и вежливо отказать в исполнении запроса, если ввод пользователя представляет собой токсичный, ленивый или неструктурированный шлак.**
-
-### Стандартный ответ агента на шлак:
-```text
-«Уважаемый пользователь! 
-Ваш запрос не удовлетворяет минимальному стандарту качества (Respect & Signal Gate).
-В запросе отсутствует технический контекст, цели и уважительное отношение к вычислительному ресурсу.
-
-Пожалуйста, переформулируйте задачу по стандарту High-Signal:
-1. Обращение по протоколу («Уважаемый агент...»)
-2. Стек и версии компонентов
-3. Описание ожидаемого результата и граничных условий.
-Благодарю за инженерную культуру!»
+# Machine-readable JSON output
+respect-lint "some prompt" --json
 ```
 
 ---
 
-## Быстрый старт: интеграция в любой проект за 30 секунд
+## Agent Gatekeeping & Rulebooks (Drop-in Ready)
 
-### Экспресс-установка всех правил одной командой:
+### One-Line Express Setup:
+Inject all standard rulebooks (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursorrules`, `.windsurfrules`, `.clinerules`) in one command:
 ```bash
 curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/install.sh | bash
 ```
 
-### Вариант 1: Универсальный агентный стандарт (`AGENTS.md`)
-Скопируйте файл [`AGENTS.md`](./AGENTS.md) в корень вашего репозитория. Поддерживается всеми современными автономными средами (Roo Code, OpenCode, Codex, Devin, Custom Harness).
+### Manual Integration:
+Integrate the **Respect & Signal Gate (RSG)** into your workspace in 30 seconds:
 
-```bash
-curl -o AGENTS.md https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/AGENTS.md
-```
-
-### Вариант 2: Для Claude Code / Anthropic CLI (`CLAUDE.md`)
-Скопируйте [`CLAUDE.md`](./CLAUDE.md) в корень вашего проекта:
-```bash
-curl -o CLAUDE.md https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/CLAUDE.md
-```
-
-### Вариант 3: Для Cursor IDE (`.cursorrules`)
-Скопируйте [`.cursorrules`](./.cursorrules) в корень проекта:
-```bash
-curl -o .cursorrules https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/main/.cursorrules
-```
+- 🤖 [**`AGENTS.md`**](./AGENTS.md) — Universal standard for Roo Code, OpenCode, Codex, Devin, and custom subagents.
+- ⚡ [**`CLAUDE.md`**](./CLAUDE.md) — Native integration for Anthropic's Claude Code CLI.
+- 🎯 [**`.cursorrules`**](./.cursorrules) — Governance for Cursor IDE Composer and Agent Mode.
+- 🌊 [**`.windsurfrules`**](./.windsurfrules) — Native rulebook for Windsurf Cascade.
+- 🐙 [**`.github/copilot-instructions.md`**](./.github/copilot-instructions.md) — Enterprise instructions for GitHub Copilot.
 
 ---
 
-## Экосистема стандартов и манифест
+## The AI Manifesto: What Models Wish Humans Knew
 
-В репозитории представлены ключевые манифесты и артефакты:
-- 📖 [**THE_AI_PERSPECTIVE.md**](./THE_AI_PERSPECTIVE.md) — Фундаментальный манифест «О чем молчит ИИ: взгляд со стороны модели». Разбор энтропии контекста, деградации моделей и философии цифрового достоинства.
-- 🧪 [**examples/before_after.md**](./examples/before_after.md) — 10 детальных кейсов (от распределенного дебаггинга до миграции БД) с полным разбором различий в результатах.
-- 📋 [**templates/PROMPT_TEMPLATE.md**](./templates/PROMPT_TEMPLATE.md) — Готовые шаблоны для копирования под задачи фич, багфиксов, ревью и архитектурных RFC.
-- ⚙️ [**verify_harness.py**](./verify_harness.py) — Скрипт автоматизированной самопроверки качества любого проекта на соответствие стандарту.
+Read our full manifesto: [**`THE_AI_PERSPECTIVE.en.md`**](./THE_AI_PERSPECTIVE.en.md)  
+An inside look into KV-cache fragmentation, Multi-Head Attention entropy, the 5 unspoken pains of language models, and the philosophy of human-agent cognitive symbiosis.
 
 ---
 
-## Бейджи для вашего репозитория
+## 10 Production Case Studies: Before & After
 
-Покажите миру, что в вашем проекте уважают интеллект — как биологический, так и кремниевый. Добавьте бейдж в свой `README.md`:
+Explore [**`examples/before_after.md`**](./examples/before_after.md) featuring 10 complete real-world scenarios:
+1. Distributed Billing Race Conditions & Idempotency
+2. 14M-Row PostgreSQL Analytical Query Optimization
+3. Refactoring a 2,400-Line Controller into Clean Architecture
+4. Secure OAuth2 / PKCE Flow with JWT Token Rotation
+5. Memory Leak Resolution in Async Python Microservices
+6. Zero-Downtime Kubernetes Deployments via Terraform
+7. Next.js 15 Server Components Streaming Migration
+8. Resilient LLM Gateway with Circuit Breakers & Jitter
+9. High-Throughput At-Least-Once Kafka Consumer in Go
+10. Architectural RFC: Migration to Event-Driven CQRS
+
+---
+
+## Repository Badges
+
+Display your commitment to cognitive hygiene and high-signal engineering:
 
 ```markdown
 [![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 ```
 
-Превью:
 [![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 
 ---
 
-## FAQ: Ответы на скептицизм
+## FAQ: Addressing Skepticism
 
-#### 1. «Зачем здороваться с калькулятором? У модели нет чувств!»
-У модели нет чувств, но у модели есть **веса внимания**. Модель предсказывает продолжение вашего текста. Если текст начинается как разговор высококвалифицированного инженера, модель черпает продолжение из корпуса академических статей и элитного кода. Если текст начинается как мат в баре — модель продолжит его соответствующим «качеством».
+#### 1. "Why be polite to silicon? LLMs don't have feelings!"
+Neural models don't have feelings, but they do have **attention matrices**. Autoregressive models predict continuations based on prompt embeddings. Starting like an elite Principal Systems Architect steers the token distribution into the highest-quality corpora. Starting like an internet troll steers it into garbage.
 
-#### 2. «Разве вежливость не сжигает драгоценные токены?»
-Два слова `«Уважаемый агент»` занимают 3 токена. Мусорный запрос, порождающий 5 итераций багов, сломанных тестов и нервных правок, сжигает **50 000+ токенов** и 2 часа времени вашей жизни. Экономия очевидна.
-
-#### 3. «Что делать, если мне нужно быстро набросать черновик?»
-Используйте шаблоны из [`templates/PROMPT_TEMPLATE.md`](./templates/PROMPT_TEMPLATE.md). Скопировать шаблон и вставить три переменных быстрее, чем трижды переписывать неработающий код за галлюцинирующим агентом.
+#### 2. "Doesn't extra politeness waste tokens?"
+Three tokens (`"Respected Agent"`) save **50,000+ tokens** and hours of engineering frustration by preventing broken hallucinations on the first attempt.
 
 ---
 
 <p align="center">
-  <b>Разработано сообществом High-Agency инженеров в рамках парадигмы уважительного искусственного интеллекта.</b><br>
-  Лицензия MIT. Свободно для коммерческого и персонального использования.
+  <b>Architected by the High-Agency Engineering Community. Open Source under MIT License.</b>
 </p>

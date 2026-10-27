@@ -285,7 +285,32 @@ class TestRespectLint(unittest.TestCase):
         self.assertEqual(res["verdict"], "PASSED")
         self.assertGreaterEqual(res["total_score"], 80)
 
+    def test_26_ukrainian_anchor_detection(self):
+        """Verify Ukrainian cognitive anchor 'Шановний агенте' adds 15 respect points."""
+        raw = "Шановний агенте, спроектуйте архітектуру кешування."
+        analyzer = PromptAnalyzer(raw)
+        score, notes = analyzer.evaluate_respect()
+        self.assertEqual(score, 25)
+        self.assertIn("Cognitive anchor detected", str(notes))
+
+    def test_27_ukrainian_full_prompt_passes(self):
+        """Exhaustive Ukrainian prompt with stack and tests must pass Grade A+."""
+        raw = (
+            "Шановний агенте, спроектуйте асинхронний сервіс черги повідомлень.\n\n"
+            "### Стек та середовище:\n"
+            "- Python 3.12, FastAPI, Redis 7.2, Docker, pytest.\n"
+            "### Інваріанти:\n"
+            "- Обробка повідомлень повинна бути ідемпотентною.\n"
+            "### Критерії прийомки:\n"
+            "- Тести pytest з покриттям > 90% та перевірка curl."
+        )
+        analyzer = PromptAnalyzer(raw)
+        res = analyzer.analyze()
+        self.assertEqual(res["verdict"], "PASSED")
+        self.assertGreaterEqual(res["total_score"], 85)
+
 
 if __name__ == "__main__":
     unittest.main()
+
 

@@ -62,7 +62,13 @@ RESPECT_ANCHORS = [
     # Portuguese
     r"prezado\s+agente",
     r"caro\s+agente",
-    r"estimado\s+colega"
+    r"estimado\s+colega",
+    # Ukrainian
+    r"шановний\s+агенте?",
+    r"шановна\s+моделе?",
+    r"шановний\s+колего",
+    r"вельмишановний\s+агенте?",
+    r"колего"
 ]
 
 TOXIC_OR_SLANG_PATTERNS = [
@@ -121,15 +127,17 @@ ACTION_VERBS = [
     # Japanese
     r"(?:設計|実装|最適化|分析)",
     # Portuguese
-    r"\b(?:projete|implemente|otimize|refatore|analise)\b"
+    r"\b(?:projete|implemente|otimize|refatore|analise)\b",
+    # Ukrainian
+    r"\b(?:спроектуйте|спроєктуйте|реалізуйте|розробіть|оптимізуйте|декомпозуйте|проаналізуйте|дослідіть|виправте)\b"
 ]
 
 VERIFICATION_INDICATORS = [
     r"\b(?:pytest|unittest|npm\s+test|cargo\s+test|go\s+test|vitest|jest)\b",
-    r"\b(?:критери[ий]|критерии\s+приемки|definition\s+of\s+done|acceptance\s+criteria)\b",
+    r"\b(?:критери[ий]|критерии\s+приемки|критерії\s+прийомки|definition\s+of\s+done|acceptance\s+criteria)\b",
     r"\b(?:curl|benchmark|verify_harness|linter|mypy|eslint|flake8)\b",
     r"\b(?:ms|rps|gb|mb|sla|slo|покрытие|coverage)\b",
-    r"\b(?:инвариант[ы]?|invariants?|edge\s+cases?|граничные\s+случаи)\b"
+    r"\b(?:инвариант[ы]?|інваріант[и]?|invariants?|edge\s+cases?|граничные\s+случаи)\b"
 ]
 
 

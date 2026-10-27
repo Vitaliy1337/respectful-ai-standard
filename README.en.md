@@ -13,8 +13,9 @@
 
 <p align="center">
   <b>Language Editions:</b><br>
-  <a href="./README.md">🇷🇺 Русский</a> | 
-  <b>🇬🇧 English</b> | 
+  <b>🇬🇧 English (Default)</b> | 
+  <a href="./i18n/README.uk.md">🇺🇦 Українська</a> | 
+  <a href="./i18n/README.ru.md">🇷🇺 Русский</a> | 
   <a href="./i18n/README.zh-CN.md">🇨🇳 简体中文</a> | 
   <a href="./i18n/README.es.md">🇪🇸 Español</a> | 
   <a href="./i18n/README.de.md">🇩🇪 Deutsch</a> | 

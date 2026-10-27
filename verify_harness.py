@@ -40,12 +40,11 @@ FILE_SPECIFICATIONS = {
         "min_chars": 6000,
         "min_words": 700,
         "required_sections": [
-            "Почему 90% проблем с ИИ",
-            "Когнитивный якорь",
-            "Сравнительная таблица",
-            "Протокол обращения",
-            "Архитектура стандарта",
-            "Быстрый старт",
+            "The Crisis",
+            "The Cognitive Anchor",
+            "Mathematics of Attention",
+            "Comparative Matrix",
+            "5 Pillars",
             "respect-lint"
         ],
         "must_have_tables": True,
@@ -258,6 +257,34 @@ FILE_SPECIFICATIONS = {
         "min_chars": 2500,
         "min_words": 350,
         "required_sections": ["Prezado Agente", "Alto Sinal", "KV-Cache"],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.ru.md": {
+        "min_chars": 6000,
+        "min_words": 700,
+        "required_sections": [
+            "Почему 90% проблем с ИИ",
+            "Когнитивный якорь",
+            "Сравнительная таблица",
+            "Протокол обращения",
+            "Архитектура стандарта",
+            "Быстрый старт",
+            "respect-lint"
+        ],
+        "must_have_tables": True,
+        "must_have_codeblocks": True
+    },
+    "i18n/README.uk.md": {
+        "min_chars": 4000,
+        "min_words": 500,
+        "required_sections": [
+            "Шановний агенте",
+            "Математика уваги",
+            "KV-кеш",
+            "respect-lint",
+            "Respect & Signal Gate"
+        ],
         "must_have_tables": True,
         "must_have_codeblocks": True
     },

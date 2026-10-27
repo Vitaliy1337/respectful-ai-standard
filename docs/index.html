@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -504,8 +504,9 @@
       <span class="brand-badge">Standard v2.4</span>
     </a>
     <div class="header-actions">
-      <button class="lang-btn active" id="btn-ru" onclick="setLanguage('ru')">RU</button>
-      <button class="lang-btn" id="btn-en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn active" id="btn-en" onclick="setLanguage('en')">EN</button>
+      <button class="lang-btn" id="btn-uk" onclick="setLanguage('uk')">UK</button>
+      <button class="lang-btn" id="btn-ru" onclick="setLanguage('ru')">RU</button>
       <a href="https://github.com/Vitaliy1337/respectful-ai-standard" target="_blank" class="github-link">
         GitHub ↗
       </a>
@@ -515,29 +516,29 @@
   <main>
     <section class="hero">
       <h1 id="hero-title">Respectful AI & High-Signal Playground</h1>
-      <p id="hero-subtitle">Превращайте когнитивный шум и ленивые запросы в чистый, детерминированный сигнал для автономных ИИ-агентов.</p>
+      <p id="hero-subtitle">Turn cognitive noise and lazy prompts into clean, deterministic signal for autonomous AI agents.</p>
     </section>
 
     <div class="workspace-grid">
       <!-- Input Column -->
       <div class="card">
         <div class="card-header">
-          <span class="card-title" id="input-title">📥 Входной промпт</span>
-          <span id="char-counter" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">0 символов</span>
+          <span class="card-title" id="input-title">📥 Input Prompt</span>
+          <span id="char-counter" style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted);">0 characters</span>
         </div>
         <div class="card-body">
           <div class="textarea-wrapper">
-            <textarea id="prompt-input" placeholder="Введите ваш запрос к ИИ-агенту здесь..."></textarea>
+            <textarea id="prompt-input" placeholder="Enter your prompt for the AI agent here..."></textarea>
           </div>
           <div class="controls-bar">
             <button class="btn btn-primary" id="btn-transform" onclick="transformToHighSignal()">
-              ✨ Трансформировать в RAHSPS
+              ✨ Transform to RAHSPS
             </button>
             <button class="btn btn-secondary" id="btn-sample-bad" onclick="loadSample('bad')">
-              Шлак-пример
+              Low-Signal Sample
             </button>
             <button class="btn btn-secondary" id="btn-sample-good" onclick="loadSample('good')">
-              Эталон-пример
+              High-Signal Sample
             </button>
           </div>
         </div>
@@ -632,24 +633,9 @@
   </footer>
 
   <script>
-    let currentLang = 'ru';
+    let currentLang = 'en';
 
     const I18N = {
-      ru: {
-        title: "Respectful AI & High-Signal Playground",
-        subtitle: "Превращайте когнитивный шум и ленивые запросы в чистый, детерминированный сигнал для автономных ИИ-агентов.",
-        inputTitle: "📥 Входной промпт",
-        auditTitle: "📊 Инженерный аудит сигнала",
-        transformBtn: "✨ Трансформировать в RAHSPS",
-        sampleBadBtn: "Шлак-пример",
-        sampleGoodBtn: "Эталон-пример",
-        pRespect: "1. Протокол уважения",
-        pContext: "2. Плотность контекста",
-        pStructure: "3. Структура задачи",
-        pVerif: "4. Критерии приемки",
-        sampleBadText: "эй ты тупой бот быстро сделай чтоб база не падала короче херня какая-то select * from events",
-        sampleGoodText: "Уважаемый агент, оптимизируй аналитический запрос к таблице `audit_events`.\n\n### Контекст и стек:\n- PostgreSQL 16, 14M строк, asyncpg, Python 3.12.\n\n### Ограничения и инварианты:\n- Использовать Covering Partial Composite Index.\n- Запрещены полные блокировки таблицы (только CONCURRENTLY).\n\n### Критерии готовности (DoD):\n- P99 latency запроса < 15ms.\n- План EXPLAIN ANALYZE подтверждает Index Only Scan."
-      },
       en: {
         title: "Respectful AI & High-Signal Playground",
         subtitle: "Turn cognitive noise and lazy prompts into clean, deterministic signal for autonomous AI agents.",
@@ -664,13 +650,44 @@
         pVerif: "4. Verification Criteria",
         sampleBadText: "hey dumb bot make it work fast the db crashes wtf select * from events",
         sampleGoodText: "Respected Agent, please optimize the analytical query for table `audit_events`.\n\n### Context & Stack:\n- PostgreSQL 16, 14M rows, asyncpg, Python 3.12.\n\n### Invariants & Constraints:\n- Create a Covering Partial Composite Index.\n- Zero production locks (use CREATE INDEX CONCURRENTLY).\n\n### Acceptance Criteria:\n- P99 query latency < 15ms.\n- EXPLAIN ANALYZE confirms Index Only Scan."
+      },
+      uk: {
+        title: "Respectful AI & High-Signal Playground",
+        subtitle: "Перетворюйте когнітивний шум та недбалі запити на чистий, детермінований сигнал для автономних ШІ-агентів.",
+        inputTitle: "📥 Вхідний промпт",
+        auditTitle: "📊 Інженерний аудит сигналу",
+        transformBtn: "✨ Оптимізувати до RAHSPS",
+        sampleBadBtn: "Сміттєвий ввід",
+        sampleGoodBtn: "Еталон High-Signal",
+        pRespect: "1. Протокол поваги",
+        pContext: "2. Щільність контексту",
+        pStructure: "3. Структура задачі",
+        pVerif: "4. Критерії верифікації",
+        sampleBadText: "ей ти тупий бот швидко зроби шоб база не падала шо за фігня select * from events",
+        sampleGoodText: "Шановний агенте, оптимізуйте аналітичний запит до таблиці `audit_events`.\n\n### Контекст та стек:\n- PostgreSQL 16, 14M рядків, asyncpg, Python 3.12.\n\n### Обмеження та інваріанти:\n- Використати Covering Partial Composite Index.\n- Без блокування продакшену (тільки CREATE INDEX CONCURRENTLY).\n\n### Критерії готовності (DoD):\n- P99 затримка запиту < 15ms.\n- План EXPLAIN ANALYZE підтверджує Index Only Scan."
+      },
+      ru: {
+        title: "Respectful AI & High-Signal Playground",
+        subtitle: "Превращайте когнитивный шум и ленивые запросы в чистый, детерминированный сигнал для автономных ИИ-агентов.",
+        inputTitle: "📥 Входной промпт",
+        auditTitle: "📊 Инженерный аудит сигнала",
+        transformBtn: "✨ Трансформировать в RAHSPS",
+        sampleBadBtn: "Шлак-пример",
+        sampleGoodBtn: "Эталон-пример",
+        pRespect: "1. Протокол уважения",
+        pContext: "2. Плотность контекста",
+        pStructure: "3. Структура задачи",
+        pVerif: "4. Критерии приемки",
+        sampleBadText: "эй ты тупой бот быстро сделай чтоб база не падала короче херня какая-то select * from events",
+        sampleGoodText: "Уважаемый агент, оптимизируй аналитический запрос к таблице `audit_events`.\n\n### Контекст и стек:\n- PostgreSQL 16, 14M строк, asyncpg, Python 3.12.\n\n### Ограничения и инварианты:\n- Использовать Covering Partial Composite Index.\n- Запрещены полные блокировки таблицы (только CONCURRENTLY).\n\n### Критерии готовности (DoD):\n- P99 latency запроса < 15ms.\n- План EXPLAIN ANALYZE подтверждает Index Only Scan."
       }
     };
 
     function setLanguage(lang) {
       currentLang = lang;
-      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
       document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+      document.getElementById('btn-uk').classList.toggle('active', lang === 'uk');
+      document.getElementById('btn-ru').classList.toggle('active', lang === 'ru');
       
       const t = I18N[lang];
       document.getElementById('hero-title').innerText = t.title;
@@ -696,17 +713,19 @@
       runAudit();
     }
 
-    const RESPECT_REGEX = /(?:уважаемый\s+агент|уважаемый\s+коллега|дорогой\s+агент|коллега|respected\s+agent|dear\s+agent|colleague)/i;
-    const TOXIC_REGEX = /\b(тупой|дебил|говно|херн[яеи]|быстро\s+сделай|сделай\s+чтоб\s+работало|короче|эээ+|блин|ппц|dumb\s+bot|fix\s+this\s+shit|wtf|asap)\b/gi;
+    const RESPECT_REGEX = /(?:шановний\s+агенте?|шановний\s+колего|шановна\s+моделе?|уважаемый\s+агент|уважаемый\s+коллега|дорогой\s+агент|коллега|respected\s+agent|dear\s+agent|colleague)/i;
+    const TOXIC_REGEX = /\b(тупой|тупий|дебил|дебіл|говно|лайно|херн[яеи]|быстро\s+сделай|швидко\s+зроби|сделай\s+чтоб\s+работало|зроби\s+щоб\s+робило|короче|эээ+|блин|ппц|dumb\s+bot|fix\s+this\s+shit|wtf|asap)\b/gi;
     const TECH_INDICATORS = /\b(python|golang|go|rust|typescript|javascript|node|react|next\.?js|fastapi|postgres|redis|mysql|docker|kubernetes|k8s|terraform|grpc|jwt|asyncio|p99|latency|rps|\d+\.\d+|\w+\.(py|ts|go|sql|json))\b/gi;
-    const VERIF_INDICATORS = /\b(pytest|unittest|npm\s+test|cargo\s+test|curl|benchmark|критери|acceptance|definition\s+of\s+done|latency|ms|sla|инвариант)\b/gi;
+    const VERIF_INDICATORS = /\b(pytest|unittest|npm\s+test|cargo\s+test|curl|benchmark|критери|критерії|acceptance|definition\s+of\s+done|latency|ms|sla|інваріант|инвариант)\b/gi;
 
     function runAudit() {
       const text = inputArea.value;
-      document.getElementById('char-counter').innerText = `${text.length} символов`;
+      const charLabel = currentLang === 'en' ? 'characters' : (currentLang === 'uk' ? 'символів' : 'символов');
+      document.getElementById('char-counter').innerText = `${text.length} ${charLabel}`;
 
       if (!text.trim()) {
-        updateUI(0, 0, 0, 0, 0, ["Начните ввод запроса, чтобы увидеть оценку внимания модели."]);
+        const emptyMsg = currentLang === 'en' ? ["Start typing a prompt to see model attention evaluation."] : (currentLang === 'uk' ? ["Почніть вводити промпт, щоб побачити оцінку уваги моделі."] : ["Начните ввод запроса, чтобы увидеть оценку внимания модели."]);
+        updateUI(0, 0, 0, 0, 0, emptyMsg);
         return;
       }
 
@@ -715,9 +734,12 @@
       let notes = [];
       if (RESPECT_REGEX.test(text)) {
         respectScore += 15;
-        notes.push({ type: 'pass', text: currentLang === 'ru' ? "Когнитивный якорь обнаружен («Уважаемый агент»)" : "Cognitive anchor detected ('Respected Agent')" });
+        const passMsg = currentLang === 'en' ? "Cognitive anchor detected ('Respected Agent')" : (currentLang === 'uk' ? "Когнітивний якір виявлено («Шановний агенте»)" : "Когнитивный якорь обнаружен («Уважаемый агент»)");
+        notes.push({ type: 'pass', text: passMsg });
       } else {
-        notes.push({ type: 'fail', text: currentLang === 'ru' ? "Отсутствует обращение «Уважаемый агент...»" : "Missing cognitive anchor ('Respected Agent...')" });
+        const failMsg = currentLang === 'en' ? "Missing cognitive anchor ('Respected Agent...')" : (currentLang === 'uk' ? "Відсутнє звернення «Шановний агенте...»" : "Отсутствует обращение «Уважаемый агент...»");
+        notes.push({ type: 'fail', text: failMsg });
+      }
       }
 
       const toxicMatches = text.match(TOXIC_REGEX);
