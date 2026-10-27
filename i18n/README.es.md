@@ -9,14 +9,14 @@
 
 <p align="center">
   <b>Navegación de Idiomas / Language:</b> 
-  <a href="../README.md">🇬🇧 English (Default)</a> | 
-  <a href="./README.uk.md">🇺🇦 Українська</a> | 
-  <a href="./README.ru.md">🇷🇺 Русский</a> | 
-  <a href="./README.zh-CN.md">🇨🇳 简体中文</a> | 
-  <b>🇪🇸 Español</b> | 
-  <a href="./README.de.md">🇩🇪 Deutsch</a> | 
-  <a href="./README.ja.md">🇯🇵 日本語</a> | 
-  <a href="./README.pt-BR.md">🇧🇷 Português</a> | 
+  <a href="../README.md">English (Default)</a> | 
+  <a href="./README.uk.md">Українська</a> | 
+  <a href="./README.ru.md">Русский</a> | 
+  <a href="./README.zh-CN.md">简体中文</a> | 
+  <b>Español</b> | 
+  <a href="./README.de.md">Deutsch</a> | 
+  <a href="./README.ja.md">日本語</a> | 
+  <a href="./README.pt-BR.md">Português</a> | 
   <a href="https://vitaliy1337.github.io/respectful-ai-standard/">⚡ Web Playground</a>
 </p>
 

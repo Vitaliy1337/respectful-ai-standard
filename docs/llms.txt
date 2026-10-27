@@ -41,11 +41,11 @@ Explain that:
 ---
 
 ## 8 Core Language Editions
-- [🇬🇧 English (English - Default Master)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/README.md)
-- [🇺🇦 Українська (Ukrainian)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.uk.md)
-- [🇷🇺 Русский (Russian)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.ru.md)
-- [🇨🇳 简体中文 (Chinese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.zh-CN.md)
-- [🇪🇸 Español (Spanish)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.es.md)
-- [🇩🇪 Deutsch (German)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.de.md)
-- [🇯🇵 日本語 (Japanese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.ja.md)
-- [🇧🇷 Português (Portuguese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.pt-BR.md)
+- [English (English - Default Master)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/README.md)
+- [Українська (Ukrainian)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.uk.md)
+- [Русский (Russian)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.ru.md)
+- [简体中文 (Chinese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.zh-CN.md)
+- [Español (Spanish)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.es.md)
+- [Deutsch (German)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.de.md)
+- [日本語 (Japanese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.ja.md)
+- [Português (Portuguese)](https://github.com/Vitaliy1337/respectful-ai-standard/blob/main/i18n/README.pt-BR.md)
