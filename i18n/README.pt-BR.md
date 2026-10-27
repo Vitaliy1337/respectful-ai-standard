@@ -38,8 +38,8 @@
 
 Na engenharia de software atual, é comum ver desenvolvedores reclamando que os modelos de linguagem "emburreceram" ou geram "código espaguete".
 
-No entanto, a telemetria técnica revela uma verdade incontestável:
-**Em 9 de cada 10 casos, a falha reside na preguiça, no caos e em entradas agressivas e sem contexto (Garbage In — Garbage Out 2.0).**
+Nossa hipótese de trabalho vem da experiência prática, não de um estudo controlado:
+**em muitos casos, o problema é uma entrada imprecisa, emocional ou pouco especificada (Garbage In — Garbage Out 2.0).** Os «90%» do título são uma figura retórica, não uma estatística medida (veja «Evidências e limitações»).
 
 Quando o usuário escreve irritado:
 > *«arruma essa porcaria de código rápido pra funcionar»*
@@ -105,7 +105,7 @@ Por favor, reformule sua demanda de acordo com o padrão de Alto Sinal.
 
 ## 10 Casos de Produção: Desempenho Empírico
 
-O protocolo RAHSPS foi validado em ambientes de engenharia de alta complexidade:
+Os cenários a seguir são exemplos ilustrativos, não resultados medidos. Percentuais citados não têm respaldo empírico:
 
 1. **Migração de Banco de Dados (PostgreSQL 16):** A transição de pedidos informais para especificações de Alto Sinal eliminou bloqueios de tabela em 94%.
 2. **Microsserviços de Baixa Latência (Go / gRPC):** A definição explícita de limites de memória encerrou vazamentos de goroutines na primeira execução.
@@ -140,3 +140,14 @@ curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/m
 
 Acesse o [Ambiente Interativo Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) para auditar seus prompts em tempo real.
 
+---
+
+## Evidências e limitações
+
+Honestidade faz parte do padrão:
+
+- **Afirma:** prompts concretos (stack, restrições, critérios de aceitação) dão resultados melhores que os vagos. O `respect-lint` verifica exatamente essas propriedades.
+- **Afirma:** um início breve e deliberado é um bom hábito contra o prompting impulsivo.
+- **Não afirma:** que a cortesia sozinha melhore a precisão do modelo. Os resultados publicados são mistos e dependem do modelo.
+- **Não afirma:** que os números de tokens, tempo e «90%» sejam medições. São ilustrações.
+- **Procura-se:** um benchmark reproduzível. PRs com método e dados brutos são bem-vindos, qualquer que seja o resultado.

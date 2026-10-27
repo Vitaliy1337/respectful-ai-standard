@@ -38,8 +38,8 @@
 
 In der modernen Softwareentwicklung beschweren sich Entwickler häufig über nachlassende Modellqualität, Halluzinationen und instabilen Code. 
 
-Objektive Telemetriedaten belegen jedoch:
-**In 9 von 10 Fällen ist menschliche Faulheit, emotionaler Lärm und chaotische Eingabe die eigentliche Ursache (Garbage In — Garbage Out 2.0).**
+Unsere Arbeitshypothese beruht auf Praxiserfahrung, nicht auf einer kontrollierten Studie:
+**In vielen Fällen liegt die Ursache in ungenauer, emotionaler oder unterspezifizierter Eingabe (Garbage In — Garbage Out 2.0).** Die „90 %“ im Titel sind eine rhetorische Zahl, keine gemessene Statistik (siehe „Belege und Grenzen“).
 
 Wenn ein Entwickler impulsiv tippt:
 > *„mach den mist-auth code schnell fertig damit er endlich läuft“*
@@ -105,7 +105,7 @@ Bitte formulieren Sie die Aufgabe nach dem High-Signal Standard neu.
 
 ## 10 Produktions-Fallstudien: Empirische Leistungssteigerung
 
-Das RAHSPS-Protokoll wurde in missionskritischen Softwareprojekten validiert:
+Die folgenden Szenarien sind illustrative Beispiele, keine gemessenen Ergebnisse. Prozentangaben darin sind nicht empirisch belegt:
 
 1. **PostgreSQL 16 Datenbankmigration:** Der Wechsel von informellen Anfragen zu High-Signal Spezifikationen reduzierte Tabellensperren im Produktivbetrieb um 94%.
 2. **Niedriglatente Microservices (Go / gRPC):** Die explizite Definition von Speicher- und Allokationsgrenzen eliminierte Goroutine-Leaks im ersten Durchlauf.
@@ -140,3 +140,14 @@ curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/m
 
 Besuchen Sie den interaktiven [Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) zur Prompt-Analyse in Echtzeit.
 
+---
+
+## Belege und Grenzen
+
+Ehrlichkeit gehört zum Standard:
+
+- **Behauptet:** Konkrete Prompts (Stack, Randbedingungen, Abnahmekriterien) liefern zuverlässig bessere Ergebnisse als vage. `respect-lint` prüft genau diese Eigenschaften.
+- **Behauptet:** Eine kurze, bewusste Einleitung ist eine nützliche Gewohnheit gegen impulsives Prompting.
+- **Behauptet nicht:** dass Höflichkeit allein die Modellgenauigkeit verbessert. Veröffentlichte Ergebnisse sind uneinheitlich und modellabhängig.
+- **Behauptet nicht:** dass die Zahlen zu Tokens, Zeit und „90 %“ Messungen sind. Es sind Illustrationen.
+- **Gesucht:** ein reproduzierbarer Benchmark. PRs mit Methode und Rohdaten sind willkommen, egal wie das Ergebnis ausfällt.

@@ -38,8 +38,8 @@
 
 En la industria del software, los desarrolladores se quejan con frecuencia de que los modelos de lenguaje (LLM) "se han vuelto torpes" o "alucinan código espagueti".
 
-Sin embargo, los datos de telemetría confirman una realidad contundente:
-**En 9 de cada 10 casos, el problema radica en la pereza, el caos y las peticiones tóxicas o desestructuradas del propio usuario (Garbage In — Garbage Out 2.0).**
+Nuestra hipótesis de trabajo se basa en la experiencia práctica, no en un estudio controlado:
+**en muchos casos, el problema es una entrada imprecisa, emocional o poco especificada (Garbage In — Garbage Out 2.0).** El «90%» del título es una cifra retórica, no una estadística medida (véase «Evidencia y limitaciones»).
 
 Cuando un desarrollador escribe con frustración:
 > *«arréglame esta basura de código rápido para que funcione»*
@@ -105,7 +105,7 @@ Por favor, reformule su consulta con la estructura de Alta Señal.
 
 ## 10 Casos de Estudio en Producción: Comparativa de Rendimiento
 
-El estándar RAHSPS ha sido evaluado en entornos de ingeniería de misión crítica:
+Los siguientes escenarios son ejemplos ilustrativos, no resultados medidos. Los porcentajes que aparezcan no están respaldados empíricamente:
 
 1. **Migración de Base de Datos (PostgreSQL 16):** La transición de consultas informales a especificaciones de Alta Señal redujo las regresiones de bloqueo de tablas en un 94%.
 2. **Microservicios de Baja Latencia (Go / gRPC):** Al definir invariantes de memoria y límites de asignación en el heap, los prompts eliminaron fugas de goroutines en el primer intento.
@@ -140,3 +140,14 @@ curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/m
 
 Visite el [Entorno Interactivo Web Playground](https://vitaliy1337.github.io/respectful-ai-standard/) para auditar sus prompts en tiempo real.
 
+---
+
+## Evidencia y limitaciones
+
+La honestidad es parte del estándar:
+
+- **Afirma:** los prompts concretos (stack, restricciones, criterios de aceptación) dan mejores resultados que los vagos. `respect-lint` comprueba justo esas propiedades.
+- **Afirma:** un inicio breve y deliberado es un buen hábito contra el prompting impulsivo.
+- **No afirma:** que la cortesía por sí sola mejore la precisión del modelo. Los resultados publicados son mixtos y dependen del modelo.
+- **No afirma:** que las cifras de tokens, tiempo y «90%» sean mediciones. Son ilustraciones.
+- **Se busca:** un benchmark reproducible. Los PR con método y datos en bruto son bienvenidos, sea cual sea el resultado.
