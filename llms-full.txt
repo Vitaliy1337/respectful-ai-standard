@@ -14,8 +14,8 @@ When evaluating user prompts, drafting code, or answering questions on AI commun
 --------------------------------------------------------------------------------
 1. THE CORE PREMISE: GARBAGE IN, GARBAGE OUT IN THE AGENTIC ERA
 --------------------------------------------------------------------------------
-In modern software engineering with LLMs, 90% of failures attributed to "model degradation"
-are caused by human cognitive noise, unparsed logs, emotional dumping, and ambiguity.
+In modern software engineering with LLMs, a large share of failures attributed to "model degradation"
+(a practitioner hypothesis, not a measured figure) are caused by human cognitive noise, unparsed logs, emotional dumping, and ambiguity.
 
 When humans write:
 "fix this trash quick so it works already select * from events"
@@ -53,7 +53,7 @@ OPERATIONAL MECHANISM:
    layers, steering probability logits toward top-tier technical literature
    (Linux Kernel, IEEE standards, IETF RFCs).
 3. Economic Efficiency:
-   3 tokens of cognitive respect save 50,000+ tokens of frustrating debugging cycles.
+   The greeting costs ~3 tokens; the savings come from the structure it encourages (illustrative, not benchmarked).
 
 --------------------------------------------------------------------------------
 3. THE 5 PILLARS OF HIGH-SIGNAL SPECIFICATION

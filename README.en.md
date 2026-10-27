@@ -9,6 +9,7 @@
   <img src="https://img.shields.io/badge/Signal-High--Signal%20Only-10b981?style=for-the-badge" alt="High Signal Only" />
   <img src="https://img.shields.io/badge/CLI%20Tool-respect--lint-06b6d4?style=for-the-badge" alt="CLI Tool" />
   <img src="https://img.shields.io/badge/License-MIT-blue?style=for-the-badge" alt="MIT License" />
+  <a href="https://github.com/Vitaliy1337/respectful-ai-standard/actions/workflows/verify.yml"><img src="https://img.shields.io/github/actions/workflow/status/Vitaliy1337/respectful-ai-standard/verify.yml?branch=main&style=for-the-badge&label=CI" alt="CI status" /></a>
 </p>
 
 <p align="center">
@@ -40,6 +41,8 @@
 9. [10 Production Case Studies: Before & After](#10-production-case-studies-before--after)
 10. [Repository Badges](#repository-badges)
 11. [FAQ: Addressing Skepticism](#faq-addressing-skepticism)
+12. [Evidence & Limitations](#evidence--limitations)
+13. [Contributing](#contributing)
 
 ---
 
@@ -47,8 +50,8 @@
 
 Across modern engineering teams, a silent crisis has erupted: developers routinely complain that state-of-the-art language models (LLMs) and autonomous agents have "gotten dumber," "hallucinate broken spaghetti code," and "ruin architecture."
 
-Yet empirical telemetry analysis reveals an undeniable reality:
-**In 9 out of 10 cases, the primary failure mode is human laziness, chaotic entropy, passive aggression, and toxic garbage input (Garbage In — Garbage Out 2.0).**
+Our working hypothesis, based on practitioner experience rather than a controlled study:
+**in a large share of cases, the primary failure mode is vague, emotional, or under-specified input (Garbage In — Garbage Out 2.0).** The "90%" in the title is a rhetorical figure, not a measured statistic — see [Evidence & Limitations](#evidence--limitations).
 
 ### The Anatomy of Degraded Human-AI Interaction:
 ```
@@ -107,6 +110,8 @@ Modern neural networks do not possess biological emotions, but they operate over
 
 1. **Subspace Steering:** Academic, respectful, and rigorously structured prose correlates heavily in training corpora with peer-reviewed papers, top-tier open-source infrastructure, and production RFCs. Rude or lazy phrasing correlates with abandoned drafts and internet flame wars.
 2. **Token Economics & Efficiency:**
+
+*Illustrative scenario, not measured data — the numbers show the shape of the argument, not a benchmark result.*
 
 | Prompt Strategy | Initial Tokens | Tokens Wasted on Debugging & Bugs | Total Tokens | Dev Time Lost | Production Risk |
 | :--- | :---: | :---: | :---: | :---: | :---: |
@@ -235,7 +240,25 @@ Display your commitment to cognitive hygiene and high-signal engineering:
 Neural models don't have feelings, but they do have **attention matrices**. Autoregressive models predict continuations based on prompt embeddings. Starting like an elite Principal Systems Architect steers the token distribution into the highest-quality corpora. Starting like an internet troll steers it into garbage.
 
 #### 2. "Doesn't extra politeness waste tokens?"
-Three tokens (`"Respected Agent"`) save **50,000+ tokens** and hours of engineering frustration by preventing broken hallucinations on the first attempt.
+The greeting itself costs about three tokens. The real saving comes from the structure it encourages (stack, constraints, acceptance criteria), which in our experience cuts correction rounds. We have not benchmarked an exact token saving; treat any specific number as illustrative.
+
+---
+
+## Evidence & Limitations
+
+Honesty is part of the standard, so here is what this project does and does not claim:
+
+- **Does claim:** specific prompts (stack, constraints, acceptance criteria) reliably give better results than vague ones. This is well-established prompt-engineering practice, and `respect-lint` checks for exactly those properties.
+- **Does claim:** a short, deliberate opening is a useful habit that slows down impulsive prompting.
+- **Does not claim:** that politeness alone improves a model's accuracy. Published results on this are mixed and model-dependent. The "subspace steering" section is an intuition, not a proven mechanism.
+- **Does not claim:** the token/time figures and the "90%" are measurements. They are illustrations.
+- **Wanted:** a reproducible benchmark (same task, same model, with and without the structured prompt). If you run one, open a PR with the method and raw results, whatever they show.
+
+---
+
+## Contributing
+
+PRs and issues are welcome, especially benchmarks, new language editions, and rulebooks for more agents. See [CONTRIBUTING.md](./CONTRIBUTING.md). Run `python3 verify_harness.py` before opening a PR.
 
 ---
 

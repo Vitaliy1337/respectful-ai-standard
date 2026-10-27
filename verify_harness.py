@@ -700,7 +700,7 @@ class QualityHarness:
                 print(f"  • {err}")
             return 1
         else:
-            print(f"\n{GREEN}{BOLD}HARNESS v3.0 SUCCEEDED! All {len(FILE_SPECIFICATIONS)} files, 25 unit tests & volume verified!{RESET}")
+            print(f"\n{GREEN}{BOLD}HARNESS v3.0 SUCCEEDED! All {len(FILE_SPECIFICATIONS)} files, unit tests & volume verified!{RESET}")
             return 0
 
 

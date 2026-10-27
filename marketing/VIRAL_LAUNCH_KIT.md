@@ -27,7 +27,7 @@ Hey HN,
 
 Over the last 18 months, our team monitored thousands of multi-turn autonomous coding sessions across frontier model architectures (Claude 3.7 / 4 Sonnet & Opus, OpenAI o3 / GPT-4.5 / Codex, Google Gemini 2.5 Pro, and DeepSeek R1 / V3). We observed a persistent phenomenon: engineers treating agents like disposable chat boxes ("yo fix this bug quick", "why is it broken", dumping 8,000 unparsed log lines) suffered an average of 4.8 debugging turns per task, a 42% first-turn success rate (Pass@1), and continuous hallucination regressions.
 
-Conversely, prompts beginning with a deliberate cognitive anchor (`"Respected Agent..."` or `«Уважаемый агент...»`) coupled with dense specifications (exact runtime, constraints, and machine-verifiable DoD) slashed debugging loops to 1.2 iterations and pushed Pass@1 to 89.4%–97.6% across models.
+Conversely, prompts beginning with a deliberate cognitive anchor (`"Respected Agent..."` or `«Уважаемый агент...»`) coupled with dense specifications (exact runtime, constraints, and machine-verifiable DoD) tend to reduce correction rounds in our experience (not yet benchmarked; see the Evidence & Limitations section of the README).
 
 This is not polite anthropomorphism or social etiquette; it is the raw physics of transformer attention:
 1. **Mathematical Subspace Steering:** In scaled dot-product attention $\text{softmax}(QK^T / \sqrt{d_k})V$, early tokens act as prefix steering vectors. Slang, emotional impatience, and low-density phrasing project latent representations toward noisy internet forum clusters. A formal, respectful anchor steers key vectors toward high-coherence subspaces (RFCs, formal mathematics, and senior peer code reviews).
@@ -89,13 +89,13 @@ Live Playground: https://vitaliy1337.github.io/respectful-ai-standard/
 ```
 
 ### 2.3 r/ClaudeAI
-**Title:** `Empirical study on Claude 3.7 / 4 Sonnet & Opus: How cognitive anchoring slashes multi-turn token costs by 95%`  
+**Title:** `Show HN-style: a structured-prompt standard (and linter) for AI coding agents. Looking for benchmark help`  
 **Post Content:**
 ```markdown
-We benchmarked Claude 3.7 / 4 Sonnet & Opus across 10 mission-critical software refactorings (PostgreSQL 16, Go Kafka consumer, Redis distributed locking, Clean Architecture).
+We wrote 10 before/after prompt scenarios (PostgreSQL 16, Go Kafka consumer, Redis locking, Clean Architecture). These are illustrative examples, not benchmark results. We would love help turning them into a real benchmark.
 
-- **Low-Signal casual prompt:** 14 tokens initially -> 72,000 tokens across 8 painful debugging iterations -> 2.5 hours lost.
-- **RAHSPS Protocol ("Respected Agent..."):** 185 tokens initially -> 3,200 tokens single-turn generation -> zero regressions (Pass@1 reached 97.6%).
+- **Low-signal prompt (illustrative):** short prompt, many correction rounds.
+- **Structured prompt (illustrative):** longer prompt with stack, constraints and acceptance criteria, usually fewer rounds. No measured Pass@1 is claimed.
 
 Check the full benchmark tables and math in our open standard:
 https://github.com/Vitaliy1337/respectful-ai-standard
@@ -286,7 +286,7 @@ curl -sSL https://raw.githubusercontent.com/Vitaliy1337/respectful-ai-standard/m
 
 ### 4.3 Пост для Telegram-каналов (@proghr, @ai_dev, @it_digest):
 ```text
-⚡ Почему обращение «Уважаемый агент» экономит до 90% токенов и нервов разработчика?
+⚡ Почему обращение «Уважаемый агент» помогает писать точные промпты и экономить нервы разработчика?
 
 Если вы когда-нибудь орали на Cursor или ChatGPT капсом «ТЫ ЗАБЫЛ ИМПОРТЫ!», у нас для вас новость: вы лично загрязнили KV-кэш и сместили веса трансформера в сторону самого багованного кода интернета.
 
