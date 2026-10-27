@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/banner.svg" alt="RAHSPS — Respectful AI & High-Signal Prompting Standard" width="100%" />
+</p>
+
 # Respectful AI & High-Signal Prompting Standard (RAHSPS)
 
 <p align="center">
@@ -152,7 +156,7 @@ This repository includes a production-grade, zero-dependency Python CLI tool to 
 ```bash
 # Clone and install locally
 git clone https://github.com/Vitaliy1337/respectful-ai-standard.git
-cd standard
+cd respectful-ai-standard
 pip install -e .
 ```
 
@@ -220,7 +224,7 @@ Display your commitment to cognitive hygiene and high-signal engineering:
 [![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 ```
 
-[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](#)
+[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 
 ---
 

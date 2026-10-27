@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./docs/banner.svg" alt="RAHSPS — Respectful AI & High-Signal Prompting Standard" width="100%" />
+</p>
+
 # Respectful AI & High-Signal Prompting Standard (RAHSPS)
 
 <p align="center">
@@ -248,7 +252,7 @@ curl -o .cursorrules https://raw.githubusercontent.com/Vitaliy1337/respectful-ai
 ```
 
 Превью:
-[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](#)
+[![High-Signal AI](https://img.shields.io/badge/AI%20Standard-Respected%20Agent-6366f1.svg)](https://github.com/Vitaliy1337/respectful-ai-standard)
 
 ---
 

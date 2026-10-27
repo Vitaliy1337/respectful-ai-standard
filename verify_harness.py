@@ -419,12 +419,12 @@ FILE_SPECIFICATIONS = {
         "must_have_tables": False,
         "must_have_codeblocks": False
     },
-    ".github/workflows/pages.yml": {
-        "min_chars": 300,
-        "min_words": 30,
+    "docs/banner.svg": {
+        "min_chars": 800,
+        "min_words": 15,
         "required_sections": [
-            "deploy-pages",
-            "upload-pages-artifact"
+            "RAHSPS",
+            "Respect & Signal Gate"
         ],
         "must_have_tables": False,
         "must_have_codeblocks": False

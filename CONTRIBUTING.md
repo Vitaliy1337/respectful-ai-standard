@@ -18,7 +18,7 @@ In this repository, we practice what we preach:
 1. **Fork and Clone the Repository:**
    ```bash
    git clone https://github.com/Vitaliy1337/respectful-ai-standard.git
-   cd standard
+   cd respectful-ai-standard
    ```
 
 2. **Install Local Tooling:**
